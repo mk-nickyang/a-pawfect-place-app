@@ -1,0 +1,31 @@
+{
+  "Create React Functional Component": {
+    "prefix": "fc",
+    "body": [
+      "export const Foo = () => {",
+      "return (",
+      "<></>",
+      ");",
+      "};"
+    ],
+    "description": "Create a basic React Functional Component"
+  },
+  "Create React Functional Component with Props": {
+    "prefix": "fc_props",
+    "body": [
+      "type Props = {};",
+      "",
+      "export const Foo = ({}: Props) => {",
+      "return (",
+      "<></>",
+      ");",
+      "};"
+    ],
+    "description": "Create a basic React Functional Component with Props"
+  },
+  "Create React Custom Hook": {
+    "prefix": "custom_hook",
+    "body": ["export const useHook = () => {", "return {};", "};"],
+    "description": "Create a basic React custom hook"
+  }
+}
