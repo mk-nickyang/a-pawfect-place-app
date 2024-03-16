@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import type { Product } from '@shopify/hydrogen-react/storefront-api-types';
 import { Image } from 'expo-image';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
@@ -5,8 +6,13 @@ import { View, Text, StyleSheet, Pressable } from 'react-native';
 type Props = { product: Product };
 
 export const CollectionProduct = ({ product }: Props) => {
+  const navigation = useNavigation();
+
   return (
-    <Pressable style={styles.container}>
+    <Pressable
+      onPress={() => navigation.navigate('Product', { productId: product.id })}
+      style={styles.container}
+    >
       <View style={styles.imageContainer}>
         <Image
           source={product.featuredImage.url}

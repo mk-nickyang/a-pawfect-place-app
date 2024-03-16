@@ -1,10 +1,10 @@
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import type { ProductEdge } from '@shopify/hydrogen-react/storefront-api-types';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
-import { useCollection } from './api/useCollection/useCollection';
-import { CollectionProduct } from './components/CollectionProduct/CollectionProduct';
+import { useCollection } from './api/useCollection';
+import { CollectionProduct } from './components/CollectionProduct';
 
+import { Loading } from '@/components/Loading';
 import { useEvent } from '@/hooks/useEvent';
 
 const keyExtractor = (item: ProductEdge) => item.node.id;
@@ -37,16 +37,4 @@ export const Shop = () => {
   );
 };
 
-const ListFooter = () => (
-  <View style={styles.footer}>
-    <ActivityIndicator />
-  </View>
-);
-
-const styles = StyleSheet.create({
-  footer: {
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const ListFooter = () => <Loading height={50} />;

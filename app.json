@@ -23,6 +23,15 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "@sentry/react-native/expo",
+        {
+          "organization": "a-pawfect-place",
+          "project": "react-native"
+        }
+      ]
+    ]
   }
 }
