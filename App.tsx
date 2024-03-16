@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/react-native';
+import { ThemeProvider } from '@shopify/restyle';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   SafeAreaProvider,
@@ -7,6 +8,7 @@ import {
 
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { AppNavigator } from '@/navigation/AppNavigator';
+import theme from '@/theme';
 
 Sentry.init({ dsn: process.env.EXPO_PUBLIC_SENTRY_DSN });
 
@@ -14,13 +16,15 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
-    <ErrorBoundary>
-      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-        <QueryClientProvider client={queryClient}>
-          <AppNavigator />
-        </QueryClientProvider>
-      </SafeAreaProvider>
-    </ErrorBoundary>
+    <ThemeProvider theme={theme}>
+      <ErrorBoundary>
+        <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+          <QueryClientProvider client={queryClient}>
+            <AppNavigator />
+          </QueryClientProvider>
+        </SafeAreaProvider>
+      </ErrorBoundary>
+    </ThemeProvider>
   );
 }
 

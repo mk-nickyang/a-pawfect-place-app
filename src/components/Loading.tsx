@@ -1,18 +1,13 @@
-import { ActivityIndicator, View, StyleSheet, FlexStyle } from 'react-native';
+import { ActivityIndicator, FlexStyle } from 'react-native';
+
+import { Box } from './Box';
 
 type Props = { height?: FlexStyle['height'] };
 
 export const Loading = ({ height }: Props) => {
   return (
-    <View style={[styles.container, { height }]}>
+    <Box alignItems="center" justifyContent="center" height={height}>
       <ActivityIndicator />
-    </View>
+    </Box>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

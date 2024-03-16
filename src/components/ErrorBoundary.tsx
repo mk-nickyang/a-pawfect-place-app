@@ -1,6 +1,8 @@
 import * as Sentry from '@sentry/react-native';
 import { Component, PropsWithChildren } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+
+import { Box } from './Box';
+import { Text } from './Text';
 
 class ErrorBoundary extends Component<
   PropsWithChildren,
@@ -23,9 +25,9 @@ class ErrorBoundary extends Component<
   render() {
     if (this.state.hasError) {
       return (
-        <View style={styles.container}>
-          <Text style={styles.text}>Something went wrong</Text>
-        </View>
+        <Box flex={1} alignItems="center" justifyContent="center">
+          <Text variant="subheader">Something went wrong</Text>
+        </Box>
       );
     }
 
@@ -34,15 +36,3 @@ class ErrorBoundary extends Component<
 }
 
 export { ErrorBoundary };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: {
-    fontWeight: 'bold',
-    fontSize: 24,
-  },
-});

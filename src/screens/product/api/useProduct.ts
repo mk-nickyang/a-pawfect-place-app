@@ -12,7 +12,7 @@ const getProductGQLQuery = (productId: string) => `
       images(first: 10) {
         edges {
           node {
-            src
+            url
             id
           }
         }
