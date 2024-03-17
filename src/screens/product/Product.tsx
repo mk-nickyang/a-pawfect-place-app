@@ -3,6 +3,7 @@ import { ScrollView } from 'react-native';
 
 import { useProduct } from './api/useProduct';
 import { ProductDescription } from './components/ProductDescription';
+import { ProductForm } from './components/ProductForm/ProductForm';
 import { ProductImages } from './components/ProductImages';
 
 import { Box } from '@/components/Box';
@@ -21,11 +22,16 @@ export const Product = ({
 
   return (
     <ScrollView>
-      <ProductImages images={product.images} />
+      {product.images.edges.length > 0 ? (
+        <ProductImages images={product.images} />
+      ) : null}
 
       <Box p="m" backgroundColor="mainBackground">
-        <Text variant="subheader">{product.title}</Text>
+        <Text variant="h2">{product.title}</Text>
 
+        <ProductForm product={product} />
+
+        <Text variant="h2">Description</Text>
         <ProductDescription descriptionHtml={product.descriptionHtml} />
       </Box>
     </ScrollView>

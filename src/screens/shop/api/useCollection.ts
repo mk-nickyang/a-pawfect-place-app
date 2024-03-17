@@ -18,14 +18,21 @@ const getCollectionGQLQuery = (endCursor?: string) => `
               url
               id
             }
+            availableForSale
+            compareAtPriceRange {
+              minVariantPrice {
+                amount
+              }
+              maxVariantPrice {
+                amount
+              }
+            }
             priceRange {
               maxVariantPrice {
                 amount
-                currencyCode
               }
               minVariantPrice {
                 amount
-                currencyCode
               }
             }
           }

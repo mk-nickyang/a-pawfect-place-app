@@ -26,7 +26,7 @@ class ErrorBoundary extends Component<
     if (this.state.hasError) {
       return (
         <Box flex={1} alignItems="center" justifyContent="center">
-          <Text variant="subheader">Something went wrong</Text>
+          <Text variant="h2">Something went wrong</Text>
         </Box>
       );
     }

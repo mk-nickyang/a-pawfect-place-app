@@ -17,6 +17,30 @@ const getProductGQLQuery = (productId: string) => `
           }
         }
       }
+      variants(first: 100) {
+        edges {
+          node {
+            price {
+              amount
+            }
+            compareAtPrice {
+              amount
+            }
+            id
+            title
+            selectedOptions {
+              name
+              value
+            }
+            availableForSale
+          }
+        }
+      }
+      options(first: 10) {
+        id
+        name
+        values
+      }
     }
   }
 `;

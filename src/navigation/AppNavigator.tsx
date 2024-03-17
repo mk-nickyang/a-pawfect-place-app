@@ -25,7 +25,11 @@ const ShopStackNavigator = () => {
   return (
     <ShopStack.Navigator>
       <ShopStack.Screen name="Shop" component={Shop} />
-      <ShopStack.Screen name="Product" component={Product} />
+      <ShopStack.Screen
+        name="Product"
+        component={Product}
+        options={{ title: '' }}
+      />
     </ShopStack.Navigator>
   );
 };

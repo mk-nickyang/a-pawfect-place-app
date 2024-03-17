@@ -1,9 +1,11 @@
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import type { ProductEdge } from '@shopify/hydrogen-react/storefront-api-types';
+import { useWindowDimensions } from 'react-native';
 
 import { useCollection } from './api/useCollection';
 import { CollectionProduct } from './components/CollectionProduct';
 
+import { Box } from '@/components/Box';
 import { Loading } from '@/components/Loading';
 import { useEvent } from '@/hooks/useEvent';
 
@@ -14,7 +16,9 @@ const renderItem: ListRenderItem<ProductEdge> = ({ item }) => (
 );
 
 export const Shop = () => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+  const { width: windowWidth } = useWindowDimensions();
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useCollection();
 
   const fetchNextCollectionProductsPage = useEvent(() => {
@@ -23,17 +27,21 @@ export const Shop = () => {
     }
   });
 
+  if (isLoading) return <Loading height="100%" />;
+
   return (
-    <FlashList
-      numColumns={2}
-      data={data}
-      renderItem={renderItem}
-      keyExtractor={keyExtractor}
-      estimatedItemSize={250}
-      onEndReached={fetchNextCollectionProductsPage}
-      onEndReachedThreshold={0.5}
-      ListFooterComponent={hasNextPage ? ListFooter : null}
-    />
+    <Box flex={1} backgroundColor="mainBackground">
+      <FlashList
+        numColumns={2}
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        estimatedItemSize={windowWidth / 2 + 112}
+        onEndReached={fetchNextCollectionProductsPage}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={hasNextPage ? ListFooter : null}
+      />
+    </Box>
   );
 };
 
