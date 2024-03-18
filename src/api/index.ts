@@ -11,11 +11,13 @@ const shopifyClient = axios.create({
 });
 
 export const shopifyQuery = async <T>(query: string): Promise<{ data: T }> => {
-  try {
-    const response = await shopifyClient.post('', { query });
-    return response.data;
-  } catch (error) {
-    console.log('GraphQL Query Error: ', error.response);
-    Sentry.captureException(error);
+  const response = await shopifyClient.post('', { query });
+  return response.data;
+};
+
+export const logQueryError = (error: unknown) => {
+  if (__DEV__) {
+    console.log(error);
   }
+  Sentry.captureException(error);
 };

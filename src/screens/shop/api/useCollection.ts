@@ -66,7 +66,7 @@ export const useCollection = () => {
     queryFn: fetchCollectionProducts,
     queryKey: ['collection', 'products'],
     select: flattenProductsPagesData,
-    initialPageParam: undefined,
+    initialPageParam: '',
     getNextPageParam: (lastPage) => lastPage.pageInfo.endCursor,
   });
 };

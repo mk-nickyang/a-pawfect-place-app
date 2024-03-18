@@ -43,7 +43,7 @@ export const CollectionProduct = ({ product }: Props) => {
     >
       <View style={styles.imageContainer}>
         <Image
-          source={product.featuredImage.url}
+          source={product.featuredImage?.url}
           style={StyleSheet.absoluteFill}
         />
       </View>

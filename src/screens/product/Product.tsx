@@ -20,6 +20,8 @@ export const Product = ({
 
   if (isLoading) return <Loading height="100%" />;
 
+  if (!product) return null;
+
   return (
     <ScrollView>
       {product.images.edges.length > 0 ? (

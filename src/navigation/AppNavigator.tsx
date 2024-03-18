@@ -2,6 +2,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import type { RootStackParamList } from './types';
+
 import { Icon } from '@/components/Icon';
 import { Account } from '@/screens/account/Account';
 import { Cart } from '@/screens/cart/Cart';
@@ -9,7 +11,7 @@ import { Home } from '@/screens/home/Home';
 import { Product } from '@/screens/product/Product';
 import { Shop } from '@/screens/shop/Shop';
 
-const HomeStack = createNativeStackNavigator();
+const HomeStack = createNativeStackNavigator<RootStackParamList>();
 
 const HomeStackNavigator = () => {
   return (
@@ -19,7 +21,7 @@ const HomeStackNavigator = () => {
   );
 };
 
-const ShopStack = createNativeStackNavigator();
+const ShopStack = createNativeStackNavigator<RootStackParamList>();
 
 const ShopStackNavigator = () => {
   return (
@@ -34,17 +36,21 @@ const ShopStackNavigator = () => {
   );
 };
 
-const CartStack = createNativeStackNavigator();
+const CartStack = createNativeStackNavigator<RootStackParamList>();
 
 const CartStackNavigator = () => {
   return (
     <CartStack.Navigator>
-      <CartStack.Screen name="Cart" component={Cart} />
+      <CartStack.Screen
+        name="Cart"
+        component={Cart}
+        options={{ title: 'Shopping Cart' }}
+      />
     </CartStack.Navigator>
   );
 };
 
-const AccountStack = createNativeStackNavigator();
+const AccountStack = createNativeStackNavigator<RootStackParamList>();
 
 const AccountStackNavigator = () => {
   return (

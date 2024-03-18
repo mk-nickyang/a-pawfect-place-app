@@ -4,10 +4,10 @@ import type {
 } from '@shopify/hydrogen-react/storefront-api-types';
 import { useState } from 'react';
 
+import { AddToCartButton } from './AddToCartButton';
 import { ProductOptionItem } from './ProductOptionItem';
 
 import { Box } from '@/components/Box';
-import { Button } from '@/components/Button';
 import { Text } from '@/components/Text';
 import { useEvent } from '@/hooks/useEvent';
 
@@ -76,7 +76,7 @@ export const ProductForm = ({ product }: Props) => {
 
         {isOnSale ? (
           <Text color="contentSecondary" textDecorationLine="line-through">
-            ${selectedVariant.compareAtPrice.amount}
+            ${selectedVariant.compareAtPrice?.amount}
           </Text>
         ) : null}
 
@@ -110,6 +110,7 @@ export const ProductForm = ({ product }: Props) => {
               (selectedVariantOption) =>
                 selectedVariantOption.name === productOption.name,
             );
+            if (!selectedOption) return null;
 
             return (
               <Box mb="m" key={productOption.id}>
@@ -136,13 +137,10 @@ export const ProductForm = ({ product }: Props) => {
           })
         : null}
 
-      <Box mt="s">
-        <Button
-          label={isSoldOut ? 'SOLD OUT' : 'ADD TO CART'}
-          disabled={isSoldOut}
-          onPress={() => {}}
-        />
-      </Box>
+      <AddToCartButton
+        selectedVariantId={selectedVariant.id}
+        isSoldOut={isSoldOut}
+      />
     </Box>
   );
 };

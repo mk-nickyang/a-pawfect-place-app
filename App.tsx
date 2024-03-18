@@ -1,12 +1,17 @@
 import * as Sentry from '@sentry/react-native';
 import { ThemeProvider } from '@shopify/restyle';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
 import { persistQueryClient } from '@tanstack/react-query-persist-client';
 import {
   SafeAreaProvider,
   initialWindowMetrics,
 } from 'react-native-safe-area-context';
 
+import { logQueryError } from '@/api';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { clientPersister } from '@/modules/storage';
 import { AppNavigator } from '@/navigation/AppNavigator';
@@ -20,6 +25,9 @@ const queryClient = new QueryClient({
       gcTime: 1000 * 60 * 60 * 24, // 24 hours
     },
   },
+  queryCache: new QueryCache({
+    onError: (error) => logQueryError(error),
+  }),
 });
 
 persistQueryClient({

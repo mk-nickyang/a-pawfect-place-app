@@ -3,7 +3,7 @@ import { MMKV } from 'react-native-mmkv';
 
 const storage = new MMKV();
 
-const PersistedStorage = {
+export const PersistedStorage = {
   setItem: (key: string, value: Parameters<typeof storage.set>[1]) => {
     storage.set(key, value);
   },
