@@ -10,7 +10,7 @@ const QUANTITY_BUTTON_SIZE = 40;
 
 export const LineItemQuantity = ({ quantity }: Props) => {
   return (
-    <Box flexDirection="row" borderWidth={1} borderColor="contentPrimary">
+    <Box mb="s" flexDirection="row" borderWidth={1} borderColor="borderPrimary">
       <PressableOpacity style={styles.box}>
         <Text>-</Text>
       </PressableOpacity>
@@ -19,7 +19,7 @@ export const LineItemQuantity = ({ quantity }: Props) => {
         style={styles.box}
         borderLeftWidth={1}
         borderRightWidth={1}
-        borderColor="contentPrimary"
+        borderColor="borderPrimary"
       >
         <Text>{quantity}</Text>
       </Box>

@@ -1,12 +1,15 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { View } from 'react-native';
 
 import type { RootStackParamList } from './types';
 
 import { Icon } from '@/components/Icon';
 import { Account } from '@/screens/account/Account';
 import { Cart } from '@/screens/cart/Cart';
+import { CartBadge } from '@/screens/cart/components/CartBadge';
+import { Checkout } from '@/screens/checkout/Checkout';
 import { Home } from '@/screens/home/Home';
 import { Product } from '@/screens/product/Product';
 import { Shop } from '@/screens/shop/Shop';
@@ -41,11 +44,8 @@ const CartStack = createNativeStackNavigator<RootStackParamList>();
 const CartStackNavigator = () => {
   return (
     <CartStack.Navigator>
-      <CartStack.Screen
-        name="Cart"
-        component={Cart}
-        options={{ title: 'Shopping Cart' }}
-      />
+      <CartStack.Screen name="Cart" component={Cart} />
+      <CartStack.Screen name="Checkout" component={Checkout} />
     </CartStack.Navigator>
   );
 };
@@ -92,7 +92,10 @@ export const AppNavigator = () => {
           options={{
             title: 'Cart',
             tabBarIcon: ({ color, size }) => (
-              <Icon name="cart" color={color} size={size} />
+              <View>
+                <Icon name="cart" color={color} size={size} />
+                <CartBadge />
+              </View>
             ),
           }}
         />

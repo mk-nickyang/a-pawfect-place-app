@@ -5,8 +5,8 @@
   "scripts": {
     "start": "watchman watch-del-all && expo start -c",
     "prebuild": "npx expo prebuild --clean",
-    "android": "expo run:android",
-    "ios": "expo run:ios",
+    "android": "watchman watch-del-all && expo run:android",
+    "ios": "watchman watch-del-all && expo run:ios",
     "web": "expo start --web",
     "ts:check": "tsc",
     "lint": "eslint ."

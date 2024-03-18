@@ -50,8 +50,6 @@ const getCartGQLQuery = (cartId: string) => `
 `;
 
 const fetchCart = async (cartId: string) => {
-  if (!cartId) return;
-
   const res = await shopifyQuery<{ cart: Cart }>(getCartGQLQuery(cartId));
   return res.data.cart;
 };
@@ -60,5 +58,15 @@ export const useCart = (cartId: string) => {
   return useQuery({
     queryFn: () => fetchCart(cartId),
     queryKey: getCartQueryKey(cartId),
+  });
+};
+
+const selectCartItemsLength = (cart: Cart) => cart.lines.edges.length;
+
+export const useCartItemsLength = (cartId: string) => {
+  return useQuery({
+    queryFn: () => fetchCart(cartId),
+    queryKey: getCartQueryKey(cartId),
+    select: selectCartItemsLength,
   });
 };
