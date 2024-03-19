@@ -47,10 +47,10 @@ mutation {
 `;
 
 const createCart = async (variantId: string) => {
-  const res = await shopifyQuery<{ cartCreate: CartCreatePayload }>(
+  const res = await shopifyQuery<{ cartCreate?: CartCreatePayload }>(
     createCartGQLMutation(variantId),
   );
-  return res.data.cartCreate.cart?.id;
+  return res.data.cartCreate?.cart?.id;
 };
 
 const addItemToCart = async ({
@@ -60,10 +60,10 @@ const addItemToCart = async ({
   variantId: string;
   cartId: string;
 }) => {
-  const res = await shopifyQuery<{ cartLinesAdd: CartLinesAddPayload }>(
+  const res = await shopifyQuery<{ cartLinesAdd?: CartLinesAddPayload }>(
     addItemToCartGQLMutation({ variantId, cartId }),
   );
-  return res.data.cartLinesAdd.cart?.id;
+  return res.data.cartLinesAdd?.cart?.id;
 };
 
 export const useAddToCart = () => {

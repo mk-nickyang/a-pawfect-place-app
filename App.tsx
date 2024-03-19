@@ -6,6 +6,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 import { persistQueryClient } from '@tanstack/react-query-persist-client';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   SafeAreaProvider,
   initialWindowMetrics,
@@ -42,7 +43,9 @@ function App() {
       <ErrorBoundary>
         <SafeAreaProvider initialMetrics={initialWindowMetrics}>
           <QueryClientProvider client={queryClient}>
-            <AppNavigator />
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <AppNavigator />
+            </GestureHandlerRootView>
           </QueryClientProvider>
         </SafeAreaProvider>
       </ErrorBoundary>

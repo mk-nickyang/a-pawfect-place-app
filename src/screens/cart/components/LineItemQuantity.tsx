@@ -1,18 +1,35 @@
+import { memo } from 'react';
 import { StyleSheet } from 'react-native';
+
+import { useUpdateCartItemQuantity } from '../api/useUpdateCartItemQuantity';
+import { getCurrentCartId } from '../utils';
 
 import { Box } from '@/components/Box';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
 
-type Props = { quantity: number };
+type Props = { quantity: number; lineId: string };
 
 const QUANTITY_BUTTON_SIZE = 40;
 
-export const LineItemQuantity = ({ quantity }: Props) => {
+export const LineItemQuantity = memo(({ quantity, lineId }: Props) => {
+  const { mutate, isPending } = useUpdateCartItemQuantity();
+
+  const onQuantityUpdate = (newQuantity: number) => {
+    const cartId = getCurrentCartId();
+    if (!cartId) return;
+
+    mutate({ lineId, cartId, quantity: newQuantity });
+  };
+
   return (
     <Box mb="s" flexDirection="row" borderWidth={1} borderColor="borderPrimary">
-      <PressableOpacity style={styles.box}>
-        <Text>-</Text>
+      <PressableOpacity
+        disabled={isPending}
+        onPress={() => onQuantityUpdate(quantity - 1)}
+        style={styles.box}
+      >
+        <Text color={isPending ? 'disabled' : 'contentPrimary'}>-</Text>
       </PressableOpacity>
 
       <Box
@@ -24,12 +41,18 @@ export const LineItemQuantity = ({ quantity }: Props) => {
         <Text>{quantity}</Text>
       </Box>
 
-      <PressableOpacity style={styles.box}>
-        <Text>+</Text>
+      <PressableOpacity
+        disabled={isPending}
+        onPress={() => onQuantityUpdate(quantity + 1)}
+        style={styles.box}
+      >
+        <Text color={isPending ? 'disabled' : 'contentPrimary'}>+</Text>
       </PressableOpacity>
     </Box>
   );
-};
+});
+
+LineItemQuantity.displayName = 'LineItemQuantity';
 
 const styles = StyleSheet.create({
   box: {

@@ -48,7 +48,7 @@ export const CartLineItem = ({ cartLine }: Props) => {
           ) : null}
         </Box>
 
-        <LineItemQuantity quantity={quantity} />
+        <LineItemQuantity quantity={quantity} lineId={cartLine.id} />
 
         <Text fontWeight="600">
           <Text color="contentSecondary">Subtotal:</Text> $

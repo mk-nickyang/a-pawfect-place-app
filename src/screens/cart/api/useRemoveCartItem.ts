@@ -20,13 +20,13 @@ const removeCartItemGQLMutation = ({
       }
     }
   }
-  `;
+`;
 
-const removeCartItem = async ({ lineId, cartId }: RemoveCartItemPayload) => {
-  const res = await shopifyQuery<{ cartLinesRemove: CartLinesRemovePayload }>(
-    removeCartItemGQLMutation({ lineId, cartId }),
+const removeCartItem = async (payload: RemoveCartItemPayload) => {
+  const res = await shopifyQuery<{ cartLinesRemove?: CartLinesRemovePayload }>(
+    removeCartItemGQLMutation(payload),
   );
-  return res.data.cartLinesRemove.cart?.id;
+  return res.data.cartLinesRemove?.cart?.id;
 };
 
 export const useRemoveCartItem = () => {

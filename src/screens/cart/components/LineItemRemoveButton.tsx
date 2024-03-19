@@ -1,11 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 import { useRemoveCartItem } from '../api/useRemoveCartItem';
-import { CART_ID_STORAGE_KEY } from '../utils';
+import { getCurrentCartId } from '../utils';
 
 import { Icon } from '@/components/Icon';
 import { PressableOpacity } from '@/components/PressableOpacity';
-import { PersistedStorage } from '@/modules/storage';
 
 type Props = { lineId: string };
 
@@ -13,7 +12,7 @@ export const LineItemRemoveButton = ({ lineId }: Props) => {
   const { mutate } = useRemoveCartItem();
 
   const onRemove = () => {
-    const cartId = PersistedStorage.getItem(CART_ID_STORAGE_KEY);
+    const cartId = getCurrentCartId();
     if (!cartId) return;
 
     mutate({ lineId, cartId });

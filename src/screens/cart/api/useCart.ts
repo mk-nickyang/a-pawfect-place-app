@@ -11,6 +11,14 @@ const getCartGQLQuery = (cartId: string) => `
       id
       checkoutUrl
       note
+      cost {
+        subtotalAmount {
+          amount
+        }
+        totalAmount {
+          amount
+        }
+      }
       lines(first: 100) {
         edges {
           node {
