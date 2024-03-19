@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import type {
   CartLine,
   ComponentizableCartLine,
@@ -8,6 +9,7 @@ import { LineItemQuantity } from './LineItemQuantity';
 import { LineItemRemoveButton } from './LineItemRemoveButton';
 
 import { Box } from '@/components/Box';
+import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
 
 type Props = { cartLine: CartLine | ComponentizableCartLine };
@@ -18,17 +20,31 @@ export const CartLineItem = ({ cartLine }: Props) => {
   const { merchandise, quantity, cost } = cartLine;
   const { image, product, selectedOptions } = merchandise;
 
+  const navigation = useNavigation();
+
+  const navigateToProduct = () => {
+    navigation.navigate('ShopTab', {
+      screen: 'Product',
+      params: { productId: product.id },
+      initial: false,
+    });
+  };
+
   return (
     <Box flexDirection="row" alignItems="flex-start" g="m" p="m">
-      <Image
-        source={image?.url}
-        style={{ width: CART_ITEM_IMAGE_SIZE, height: CART_ITEM_IMAGE_SIZE }}
-      />
+      <PressableOpacity onPress={navigateToProduct}>
+        <Image
+          source={image?.url}
+          style={{ width: CART_ITEM_IMAGE_SIZE, height: CART_ITEM_IMAGE_SIZE }}
+        />
+      </PressableOpacity>
 
       <Box flex={1} alignItems="flex-start" pr="l">
-        <Text mb="s" fontWeight="600">
-          {product.title}
-        </Text>
+        <PressableOpacity onPress={navigateToProduct}>
+          <Text mb="s" fontWeight="600">
+            {product.title}
+          </Text>
+        </PressableOpacity>
 
         {(selectedOptions || []).map((variantOption) => {
           if (variantOption.name.toLowerCase() === 'title') return null;

@@ -39,6 +39,7 @@ const getCartGQLQuery = (cartId: string) => `
               ... on ProductVariant {
                 id
                 product {
+                  id
                   title
                 }
                 image {
