@@ -12,11 +12,11 @@ import { Box } from '@/components/Box';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
 
-type Props = { cartLine: CartLine | ComponentizableCartLine };
+type Props = { cartLine: CartLine | ComponentizableCartLine; cartId: string };
 
 const CART_ITEM_IMAGE_SIZE = 120;
 
-export const CartLineItem = ({ cartLine }: Props) => {
+export const CartLineItem = ({ cartLine, cartId }: Props) => {
   const { merchandise, quantity, cost } = cartLine;
   const { image, product, selectedOptions } = merchandise;
 
@@ -64,7 +64,11 @@ export const CartLineItem = ({ cartLine }: Props) => {
           ) : null}
         </Box>
 
-        <LineItemQuantity quantity={quantity} lineId={cartLine.id} />
+        <LineItemQuantity
+          quantity={quantity}
+          lineId={cartLine.id}
+          cartId={cartId}
+        />
 
         <Text fontWeight="600">
           <Text color="contentSecondary">Subtotal:</Text> $
@@ -72,7 +76,7 @@ export const CartLineItem = ({ cartLine }: Props) => {
         </Text>
       </Box>
 
-      <LineItemRemoveButton lineId={cartLine.id} />
+      <LineItemRemoveButton lineId={cartLine.id} cartId={cartId} />
     </Box>
   );
 };

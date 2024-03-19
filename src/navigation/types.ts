@@ -20,10 +20,10 @@ type AccountTabParamList = {
 
 export type RootStackParamList = {
   // Tabs
-  HomeTab: NavigatorScreenParams<HomeTabParamList>;
-  ShopTab: NavigatorScreenParams<ShopTabParamList>;
-  CartTab: NavigatorScreenParams<CartTabParamList>;
-  AccountTab: NavigatorScreenParams<AccountTabParamList>;
+  HomeTab: NavigatorScreenParams<HomeTabParamList> | undefined;
+  ShopTab: NavigatorScreenParams<ShopTabParamList> | undefined;
+  CartTab: NavigatorScreenParams<CartTabParamList> | undefined;
+  AccountTab: NavigatorScreenParams<AccountTabParamList> | undefined;
   // Stack screens
   Home: undefined;
   Shop: undefined;

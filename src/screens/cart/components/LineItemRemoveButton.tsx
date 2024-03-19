@@ -1,21 +1,19 @@
 import { StyleSheet } from 'react-native';
 
 import { useRemoveCartItem } from '../api/useRemoveCartItem';
-import { getCurrentCartId } from '../utils';
 
 import { Icon } from '@/components/Icon';
 import { PressableOpacity } from '@/components/PressableOpacity';
+import { Haptics } from '@/modules/haptics';
 
-type Props = { lineId: string };
+type Props = { lineId: string; cartId: string };
 
-export const LineItemRemoveButton = ({ lineId }: Props) => {
-  const { mutate } = useRemoveCartItem();
+export const LineItemRemoveButton = ({ lineId, cartId }: Props) => {
+  const { mutate } = useRemoveCartItem(cartId);
 
   const onRemove = () => {
-    const cartId = getCurrentCartId();
-    if (!cartId) return;
-
-    mutate({ lineId, cartId });
+    Haptics.impact();
+    mutate(lineId);
   };
 
   return (

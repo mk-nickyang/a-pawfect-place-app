@@ -1,27 +1,27 @@
-import { BottomSheetModal, BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { memo, useRef, useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { useUpdateCartNote } from '../api/useUpdateCartNote';
-import { getCurrentCartId } from '../utils';
 
 import { Box } from '@/components/Box';
 import { Button } from '@/components/Button';
 import { Icon } from '@/components/Icon';
-import { Modal } from '@/components/Modal';
+import { Modal, ModalRef } from '@/components/Modal';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
+import { Haptics } from '@/modules/haptics';
 import theme from '@/theme';
 
-type Props = { note: string | undefined | null };
+type Props = { note: string | undefined | null; cartId: string };
 
-export const CartNote = memo(({ note }: Props) => {
+export const CartNote = memo(({ note, cartId }: Props) => {
   const noteString = (note || '').trim();
 
-  const modalRef = useRef<BottomSheetModal>(null);
+  const modalRef = useRef<ModalRef>(null);
   const noteRef = useRef(noteString);
 
-  const { mutate, isPending } = useUpdateCartNote();
+  const { mutate, isPending } = useUpdateCartNote(cartId);
 
   const onCartNoteChange = useCallback(
     (newText: string) => (noteRef.current = newText),
@@ -29,13 +29,13 @@ export const CartNote = memo(({ note }: Props) => {
   );
 
   const onCartNoteSave = () => {
-    const cartId = getCurrentCartId();
-    if (!cartId) return;
-
-    mutate(
-      { cartId, note: noteRef.current.trim() },
-      { onSuccess: () => modalRef.current?.close() },
-    );
+    const newNote = noteRef.current.trim();
+    mutate(newNote, {
+      onSuccess: () => {
+        Haptics.impact();
+        modalRef.current?.close();
+      },
+    });
   };
 
   return (
@@ -62,7 +62,7 @@ export const CartNote = memo(({ note }: Props) => {
         )}
       </PressableOpacity>
 
-      <Modal modalRef={modalRef}>
+      <Modal modalRef={modalRef} size="large">
         <Text variant="h3" mb="m">
           Name of your pets and delivery instruction (optional)
         </Text>
@@ -77,7 +77,6 @@ export const CartNote = memo(({ note }: Props) => {
             placeholder="e.g. Bella. Please leave by the front door."
             maxLength={255}
             returnKeyType="done"
-            onSubmitEditing={onCartNoteSave}
             style={styles.input}
           />
         </Box>

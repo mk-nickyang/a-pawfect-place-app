@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import type { BaseCartLineEdge } from '@shopify/hydrogen-react/storefront-api-types';
-import { memo, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 
 import { CartLineItem } from './CartLineItem';
 import { CartNote } from './CartNote';
@@ -16,14 +16,15 @@ type Props = { cartId: string; emptyView: JSX.Element };
 
 const keyExtractor = (item: BaseCartLineEdge) => item.node.id;
 
-const renderItem: ListRenderItem<BaseCartLineEdge> = ({ item }) => (
-  <CartLineItem cartLine={item.node} />
-);
-
 export const CartList = memo(({ cartId, emptyView }: Props) => {
   const navigation = useNavigation();
 
   const { data: cart } = useCart(cartId);
+
+  const renderItem: ListRenderItem<BaseCartLineEdge> = useCallback(
+    ({ item }) => <CartLineItem cartLine={item.node} cartId={cartId} />,
+    [cartId],
+  );
 
   const cartItemsLength = cart?.lines.edges.length;
   const cartSubtotal = cart?.cost.subtotalAmount.amount;
@@ -61,7 +62,7 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
             </Box>
           </Box>
 
-          <CartNote note={cart.note} />
+          <CartNote note={cart.note} cartId={cartId} />
 
           <Button
             label="CHECKOUT"
@@ -80,6 +81,7 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
     [
       cart?.checkoutUrl,
       cart?.note,
+      cartId,
       cartItemsLength,
       cartSubtotal,
       cartTotal,

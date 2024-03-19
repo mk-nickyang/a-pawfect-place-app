@@ -3,7 +3,6 @@ import { createTheme, useTheme as _useTheme } from '@shopify/restyle';
 const palette = {
   black: '#212121',
   white: '#FFFFFF',
-
   lightGrey: '#e3e3e3',
   grey: '#8a8a8a',
 };
@@ -17,6 +16,7 @@ const theme = createTheme({
     contentSecondary: palette.grey,
     contentInverse: palette.white,
     borderPrimary: palette.lightGrey,
+
     disabled: palette.grey,
 
     saleBadgeBackground: '#f00c',

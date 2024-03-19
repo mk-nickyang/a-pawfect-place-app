@@ -1,25 +1,29 @@
 import { memo } from 'react';
-import { StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 
 import { useUpdateCartItemQuantity } from '../api/useUpdateCartItemQuantity';
-import { getCurrentCartId } from '../utils';
 
 import { Box } from '@/components/Box';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
+import { Haptics } from '@/modules/haptics';
 
-type Props = { quantity: number; lineId: string };
+type Props = { quantity: number; lineId: string; cartId: string };
 
 const QUANTITY_BUTTON_SIZE = 40;
 
-export const LineItemQuantity = memo(({ quantity, lineId }: Props) => {
-  const { mutate, isPending } = useUpdateCartItemQuantity();
+export const LineItemQuantity = memo(({ quantity, lineId, cartId }: Props) => {
+  const { mutate, isPending } = useUpdateCartItemQuantity(cartId);
 
   const onQuantityUpdate = (newQuantity: number) => {
-    const cartId = getCurrentCartId();
-    if (!cartId) return;
-
-    mutate({ lineId, cartId, quantity: newQuantity });
+    mutate(
+      { lineId, quantity: newQuantity },
+      {
+        onSuccess: () => {
+          Haptics.impact();
+        },
+      },
+    );
   };
 
   return (
@@ -38,7 +42,11 @@ export const LineItemQuantity = memo(({ quantity, lineId }: Props) => {
         borderRightWidth={1}
         borderColor="borderPrimary"
       >
-        <Text>{quantity}</Text>
+        {isPending ? (
+          <ActivityIndicator size="small" />
+        ) : (
+          <Text>{quantity}</Text>
+        )}
       </Box>
 
       <PressableOpacity

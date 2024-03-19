@@ -37,17 +37,18 @@ const updateCartItemQuantity = async (
   return res.data.cartLinesUpdate?.cart?.id;
 };
 
-export const useUpdateCartItemQuantity = () => {
+export const useUpdateCartItemQuantity = (cartId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: UpdateCartItemQuantityPayload) =>
-      updateCartItemQuantity(payload),
-    onSuccess: (cartId) => {
-      if (cartId) {
-        // Refetch cart query when cart is updated
-        queryClient.invalidateQueries({ queryKey: getCartQueryKey(cartId) });
-      }
+    mutationFn: ({
+      lineId,
+      quantity,
+    }: Omit<UpdateCartItemQuantityPayload, 'cartId'>) =>
+      updateCartItemQuantity({ lineId, quantity, cartId }),
+    onSuccess: () => {
+      // Refetch cart query when cart is updated
+      queryClient.invalidateQueries({ queryKey: getCartQueryKey(cartId) });
     },
   });
 };

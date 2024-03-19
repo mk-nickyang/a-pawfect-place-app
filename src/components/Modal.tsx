@@ -11,20 +11,27 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-
-import { Box } from './Box';
-import { Icon } from './Icon';
-import { PressableOpacity } from './PressableOpacity';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import theme, { useTheme } from '@/theme';
 
 type Props = PropsWithChildren<{
   modalRef: RefObject<BottomSheetModalMethods>;
+  size: 'small' | 'large';
 }>;
 
-const BOTTOM_SHEET_SNAP_POINTS = ['75%'];
+const BOTTOM_SHEET_SNAP_POINTS = {
+  small: ['40%'],
+  large: ['75%'],
+} as const;
 
-export const Modal = ({ modalRef, children }: Props) => {
+export type ModalRef = BottomSheetModal;
+
+export const Modal = ({ modalRef, size, children }: Props) => {
+  const { spacing } = useTheme();
+
+  const insets = useSafeAreaInsets();
+
   const closeModal = useCallback(() => {
     modalRef.current?.close();
   }, [modalRef]);
@@ -39,25 +46,16 @@ export const Modal = ({ modalRef, children }: Props) => {
   return (
     <BottomSheetModal
       ref={modalRef}
-      snapPoints={BOTTOM_SHEET_SNAP_POINTS}
-      handleComponent={null}
+      snapPoints={BOTTOM_SHEET_SNAP_POINTS[size]}
       enablePanDownToClose
       backdropComponent={renderBackdrop}
       keyboardBehavior="extend"
       keyboardBlurBehavior="restore"
     >
-      <BottomSheetView style={styles.container}>
-        <Box p="l">
-          <PressableOpacity
-            hitSlop={10}
-            onPress={closeModal}
-            style={styles.closeBtn}
-          >
-            <Icon name="close" size={24} />
-          </PressableOpacity>
-
-          {children}
-        </Box>
+      <BottomSheetView
+        style={[styles.container, { paddingBottom: spacing.s + insets.bottom }]}
+      >
+        {children}
       </BottomSheetView>
     </BottomSheetModal>
   );
@@ -75,7 +73,7 @@ const BottomSheetBackdrop = ({
     opacity: interpolate(
       animatedIndex.value,
       [-1, 0],
-      [0, 0.5],
+      [0, 0.2],
       Extrapolation.CLAMP,
     ),
   }));
@@ -102,6 +100,8 @@ const BottomSheetBackdrop = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: theme.spacing.l,
+    paddingHorizontal: theme.spacing.l,
   },
   closeBtn: {
     marginBottom: theme.spacing.m,

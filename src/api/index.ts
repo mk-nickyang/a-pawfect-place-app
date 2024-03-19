@@ -18,6 +18,7 @@ export const shopifyQuery = async <T>(query: string): Promise<{ data: T }> => {
 export const logQueryError = (error: unknown) => {
   if (__DEV__) {
     console.log(error);
+  } else {
+    Sentry.captureException(error);
   }
-  Sentry.captureException(error);
 };
