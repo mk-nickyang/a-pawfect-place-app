@@ -1,5 +1,6 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import * as Sentry from '@sentry/react-native';
+import { ShopifyCheckoutSheetProvider } from '@shopify/checkout-sheet-kit';
 import { ThemeProvider } from '@shopify/restyle';
 import {
   QueryCache,
@@ -46,7 +47,9 @@ function App() {
           <QueryClientProvider client={queryClient}>
             <GestureHandlerRootView style={{ flex: 1 }}>
               <BottomSheetModalProvider>
-                <AppNavigator />
+                <ShopifyCheckoutSheetProvider>
+                  <AppNavigator />
+                </ShopifyCheckoutSheetProvider>
               </BottomSheetModalProvider>
             </GestureHandlerRootView>
           </QueryClientProvider>

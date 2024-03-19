@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import { useShopifyCheckoutSheet } from '@shopify/checkout-sheet-kit';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import type { BaseCartLineEdge } from '@shopify/hydrogen-react/storefront-api-types';
 import { memo, useCallback, useMemo } from 'react';
@@ -20,6 +21,8 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
   const navigation = useNavigation();
 
   const { data: cart } = useCart(cartId);
+
+  const shopifyCheckout = useShopifyCheckoutSheet();
 
   const renderItem: ListRenderItem<BaseCartLineEdge> = useCallback(
     ({ item }) => <CartLineItem cartLine={item.node} cartId={cartId} />,
@@ -67,8 +70,7 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
           <Button
             label="CHECKOUT"
             onPress={() =>
-              cart?.checkoutUrl &&
-              navigation.navigate('Checkout', { checkoutUrl: cart.checkoutUrl })
+              cart?.checkoutUrl && shopifyCheckout.present(cart.checkoutUrl)
             }
           />
           <Button
@@ -86,6 +88,7 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
       cartSubtotal,
       cartTotal,
       navigation,
+      shopifyCheckout,
     ],
   );
 

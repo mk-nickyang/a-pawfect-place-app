@@ -73,7 +73,7 @@ const BottomSheetBackdrop = ({
     opacity: interpolate(
       animatedIndex.value,
       [-1, 0],
-      [0, 0.2],
+      [0, 0.3],
       Extrapolation.CLAMP,
     ),
   }));
