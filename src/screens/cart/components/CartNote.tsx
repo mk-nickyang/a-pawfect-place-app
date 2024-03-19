@@ -1,6 +1,5 @@
-import BottomSheet, { BottomSheetTextInput } from '@gorhom/bottom-sheet';
-import { memo, useRef } from 'react';
-import { StyleSheet } from 'react-native';
+import { memo, useState } from 'react';
+import { Modal, StyleSheet } from 'react-native';
 
 import { Icon } from '@/components/Icon';
 import { PressableOpacity } from '@/components/PressableOpacity';
@@ -9,30 +8,27 @@ import theme from '@/theme';
 
 type Props = { note: string | undefined | null };
 
-const CART_NOTE_BOTTOM_SHEET_SNAP_POINTS = ['25%', '50%'];
-
 export const CartNote = memo(({ note }: Props) => {
-  const bottomSheetRef = useRef<BottomSheet>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <>
       <PressableOpacity
         hitSlop={theme.spacing.s}
-        onPress={() => bottomSheetRef.current?.expand()}
+        onPress={() => setIsModalOpen(true)}
         style={styles.container}
       >
         <Icon name="note-text-outline" size={20} />
         <Text>Add a Note</Text>
       </PressableOpacity>
 
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={1}
-        snapPoints={CART_NOTE_BOTTOM_SHEET_SNAP_POINTS}
-        keyboardBehavior="fillParent"
+      <Modal
+        visible={isModalOpen}
+        animationType="slide"
+        onRequestClose={() => setIsModalOpen(false)}
       >
-        <BottomSheetTextInput />
-      </BottomSheet>
+        <Text>Name of your pets and delivery instruction (optional)</Text>
+      </Modal>
     </>
   );
 });
