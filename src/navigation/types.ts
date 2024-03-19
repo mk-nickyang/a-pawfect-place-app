@@ -11,7 +11,6 @@ type ShopTabParamList = {
 
 type CartTabParamList = {
   Cart: undefined;
-  Checkout: { checkoutUrl: string };
 };
 
 type AccountTabParamList = {
@@ -29,7 +28,6 @@ export type RootStackParamList = {
   Shop: undefined;
   Product: { productId: string };
   Cart: undefined;
-  Checkout: { checkoutUrl: string };
   Account: undefined;
 };
 

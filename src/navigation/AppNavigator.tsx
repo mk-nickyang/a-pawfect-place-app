@@ -9,7 +9,6 @@ import { Icon } from '@/components/Icon';
 import { Account } from '@/screens/account/Account';
 import { Cart } from '@/screens/cart/Cart';
 import { CartBadge } from '@/screens/cart/components/CartBadge';
-import { Checkout } from '@/screens/checkout/Checkout';
 import { Home } from '@/screens/home/Home';
 import { Product } from '@/screens/product/Product';
 import { Shop } from '@/screens/shop/Shop';
@@ -45,7 +44,6 @@ const CartStackNavigator = () => {
   return (
     <CartStack.Navigator>
       <CartStack.Screen name="Cart" component={Cart} />
-      <CartStack.Screen name="Checkout" component={Checkout} />
     </CartStack.Navigator>
   );
 };

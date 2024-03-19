@@ -16,6 +16,7 @@ import {
 
 import { logQueryError } from '@/api';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { shopifyCheckoutConfig } from '@/config';
 import { clientPersister } from '@/modules/storage';
 import { AppNavigator } from '@/navigation/AppNavigator';
 import theme from '@/theme';
@@ -47,7 +48,9 @@ function App() {
           <QueryClientProvider client={queryClient}>
             <GestureHandlerRootView style={{ flex: 1 }}>
               <BottomSheetModalProvider>
-                <ShopifyCheckoutSheetProvider>
+                <ShopifyCheckoutSheetProvider
+                  configuration={shopifyCheckoutConfig}
+                >
                   <AppNavigator />
                 </ShopifyCheckoutSheetProvider>
               </BottomSheetModalProvider>
