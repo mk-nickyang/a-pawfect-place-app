@@ -1,3 +1,4 @@
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import * as Sentry from '@sentry/react-native';
 import { ThemeProvider } from '@shopify/restyle';
 import {
@@ -6,6 +7,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 import { persistQueryClient } from '@tanstack/react-query-persist-client';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   SafeAreaProvider,
   initialWindowMetrics,
@@ -42,7 +44,11 @@ function App() {
       <ErrorBoundary>
         <SafeAreaProvider initialMetrics={initialWindowMetrics}>
           <QueryClientProvider client={queryClient}>
-            <AppNavigator />
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <BottomSheetModalProvider>
+                <AppNavigator />
+              </BottomSheetModalProvider>
+            </GestureHandlerRootView>
           </QueryClientProvider>
         </SafeAreaProvider>
       </ErrorBoundary>
