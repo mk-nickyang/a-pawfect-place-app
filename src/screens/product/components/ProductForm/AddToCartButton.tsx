@@ -1,22 +1,24 @@
 import { useNavigation } from '@react-navigation/native';
 import { memo, useRef } from 'react';
 import { StyleSheet } from 'react-native';
-import { Skottie } from 'react-native-skottie';
 
 import { useAddToCart } from '../../api/useAddToCart';
 
 import { Box } from '@/components/Box';
 import { Button } from '@/components/Button';
+import { Icon } from '@/components/Icon';
 import { Modal, ModalRef } from '@/components/Modal';
 import { Text } from '@/components/Text';
 import { Haptics } from '@/modules/haptics';
-import theme from '@/theme';
+import theme, { useTheme } from '@/theme';
 
 type Props = { selectedVariantId: string; isSoldOut: boolean };
 
 export const AddToCartButton = memo(
   ({ selectedVariantId, isSoldOut }: Props) => {
     const modalRef = useRef<ModalRef>(null);
+
+    const { colors } = useTheme();
 
     const navigation = useNavigation();
 
@@ -46,11 +48,7 @@ export const AddToCartButton = memo(
             <Box g="s" alignItems="center">
               <Text variant="h3">ITEM ADDED TO YOUR CART</Text>
 
-              <Skottie
-                style={styles.skottie}
-                source={require('./assets/lottie-success.json')}
-                autoPlay
-              />
+              <Icon name="check-circle" size={48} color={colors.success} />
             </Box>
 
             <Box g="s">

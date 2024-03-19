@@ -5,6 +5,7 @@ const palette = {
   white: '#FFFFFF',
   lightGrey: '#e3e3e3',
   grey: '#8a8a8a',
+  green: '#4caf50',
 };
 
 const theme = createTheme({
@@ -18,6 +19,7 @@ const theme = createTheme({
     borderPrimary: palette.lightGrey,
 
     disabled: palette.grey,
+    success: palette.green,
 
     saleBadgeBackground: '#f00c',
     soldOutBadgeBackground: palette.black,
