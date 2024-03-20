@@ -4,7 +4,7 @@ import type {
 } from '@shopify/hydrogen-react/storefront-api-types';
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 
-import { shopifyQuery } from '@/api';
+import { shopifyStorefrontQuery } from '@/api';
 
 const getCollectionGQLQuery = (endCursor?: string) => `
   {
@@ -51,7 +51,7 @@ const fetchCollectionProducts = async ({
 }: {
   pageParam?: string;
 }) => {
-  const res = await shopifyQuery<{ collection: Collection }>(
+  const res = await shopifyStorefrontQuery<{ collection: Collection }>(
     getCollectionGQLQuery(pageParam),
   );
   return res.data.collection.products;

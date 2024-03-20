@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { SHOPIFY_STOREFRONT_API_URL } from '@/config';
 
-const shopifyClient = axios.create({
+const shopifyStorefrontClient = axios.create({
   baseURL: SHOPIFY_STOREFRONT_API_URL,
   headers: {
     'Content-Type': 'application/json',
@@ -12,8 +12,10 @@ const shopifyClient = axios.create({
   },
 });
 
-export const shopifyQuery = async <T>(query: string): Promise<{ data: T }> => {
-  const response = await shopifyClient.post('', { query });
+export const shopifyStorefrontQuery = async <T>(
+  query: string,
+): Promise<{ data: T }> => {
+  const response = await shopifyStorefrontClient.post('', { query });
   return response.data;
 };
 

@@ -4,7 +4,7 @@ import {
 } from '@shopify/hydrogen-react/storefront-api-types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { shopifyQuery } from '@/api';
+import { shopifyStorefrontQuery } from '@/api';
 import { getCartQueryKey } from '@/screens/cart/api/utils';
 import { useCartId } from '@/screens/cart/useCartId';
 
@@ -47,7 +47,7 @@ mutation {
 `;
 
 const createCart = async (variantId: string) => {
-  const res = await shopifyQuery<{ cartCreate?: CartCreatePayload }>(
+  const res = await shopifyStorefrontQuery<{ cartCreate?: CartCreatePayload }>(
     createCartGQLMutation(variantId),
   );
   return res.data.cartCreate?.cart?.id;
@@ -60,9 +60,9 @@ const addItemToCart = async ({
   variantId: string;
   cartId: string;
 }) => {
-  const res = await shopifyQuery<{ cartLinesAdd?: CartLinesAddPayload }>(
-    addItemToCartGQLMutation({ variantId, cartId }),
-  );
+  const res = await shopifyStorefrontQuery<{
+    cartLinesAdd?: CartLinesAddPayload;
+  }>(addItemToCartGQLMutation({ variantId, cartId }));
   return res.data.cartLinesAdd?.cart?.id;
 };
 

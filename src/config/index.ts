@@ -2,12 +2,14 @@ import { ColorScheme, type Configuration } from '@shopify/checkout-sheet-kit';
 
 import theme from '@/theme';
 
-export const WEBSITE_URL = 'https://apawfectplace.com.au';
-
 const SHOPIFY_SHOP_ID = '50403049658';
-export const SHOPIFY_STOREFRONT_API_URL =
-  'https://a-pawfect-place.myshopify.com/api/2024-01/graphql.json';
+const SHOPIFY_SHOP_SLUG = 'a-pawfect-place';
+export const SHOPIFY_WEBSITE_URL = 'https://apawfectplace.com.au';
+
+export const SHOPIFY_STOREFRONT_API_URL = `https://${SHOPIFY_SHOP_SLUG}.myshopify.com/api/2024-01/graphql.json`;
+
 export const SHOPIFY_CUSTOMER_ACCOUNT_AUTH_URL = `https://shopify.com/${SHOPIFY_SHOP_ID}/auth/oauth/authorize`;
+export const SHOPIFY_CUSTOMER_ACCOUNT_AUTH_TOKEN_URL = `https://shopify.com/${SHOPIFY_SHOP_ID}/auth/oauth/token`;
 
 export const shopifyCheckoutConfig: Configuration = {
   colorScheme: ColorScheme.automatic,

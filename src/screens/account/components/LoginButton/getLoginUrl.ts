@@ -3,10 +3,11 @@ import { btoa } from 'react-native-quick-base64';
 
 import { AUTH_CODE_VERIFIER_STORAGE_KEY } from '../../utils';
 
-import { SHOPIFY_CUSTOMER_ACCOUNT_AUTH_URL, WEBSITE_URL } from '@/config';
+import {
+  SHOPIFY_CUSTOMER_ACCOUNT_AUTH_URL,
+  SHOPIFY_WEBSITE_URL,
+} from '@/config';
 import { PersistedStorage } from '@/modules/storage';
-
-const LOGIN_REDIRECT_URL = WEBSITE_URL;
 
 /** @see https://shopify.dev/docs/api/customer#step-authorization */
 export const getLoginUrl = async () => {
@@ -26,7 +27,7 @@ export const getLoginUrl = async () => {
 
   authorizationRequestUrl.searchParams.append(
     'redirect_uri',
-    LOGIN_REDIRECT_URL,
+    SHOPIFY_WEBSITE_URL,
   );
 
   authorizationRequestUrl.searchParams.append('state', generateState());

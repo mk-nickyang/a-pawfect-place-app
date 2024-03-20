@@ -5,7 +5,7 @@ import type {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
 
-import { logQueryError, shopifyQuery } from '@/api';
+import { logQueryError, shopifyStorefrontQuery } from '@/api';
 import { getCartQueryKey } from '@/screens/cart/api/utils';
 
 type RemoveCartItemPayload = { lineId: string; cartId: string };
@@ -27,9 +27,9 @@ const removeCartItemGQLMutation = ({
 `;
 
 const removeCartItem = async (payload: RemoveCartItemPayload) => {
-  const res = await shopifyQuery<{ cartLinesRemove?: CartLinesRemovePayload }>(
-    removeCartItemGQLMutation(payload),
-  );
+  const res = await shopifyStorefrontQuery<{
+    cartLinesRemove?: CartLinesRemovePayload;
+  }>(removeCartItemGQLMutation(payload));
   return res.data.cartLinesRemove?.cart?.id;
 };
 

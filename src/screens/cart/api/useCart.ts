@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getCartQueryKey } from './utils';
 
-import { shopifyQuery } from '@/api';
+import { shopifyStorefrontQuery } from '@/api';
 
 const getCartGQLQuery = (cartId: string) => `
   {
@@ -59,7 +59,9 @@ const getCartGQLQuery = (cartId: string) => `
 `;
 
 const fetchCart = async (cartId: string) => {
-  const res = await shopifyQuery<{ cart: Cart }>(getCartGQLQuery(cartId));
+  const res = await shopifyStorefrontQuery<{ cart: Cart }>(
+    getCartGQLQuery(cartId),
+  );
   return res.data.cart;
 };
 

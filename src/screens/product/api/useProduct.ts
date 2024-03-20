@@ -1,7 +1,7 @@
 import type { Product } from '@shopify/hydrogen-react/storefront-api-types';
 import { useQuery } from '@tanstack/react-query';
 
-import { shopifyQuery } from '@/api';
+import { shopifyStorefrontQuery } from '@/api';
 
 const getProductGQLQuery = (productId: string) => `
   {
@@ -46,7 +46,7 @@ const getProductGQLQuery = (productId: string) => `
 `;
 
 const fetchProduct = async (productId: string) => {
-  const res = await shopifyQuery<{ product: Product }>(
+  const res = await shopifyStorefrontQuery<{ product: Product }>(
     getProductGQLQuery(productId),
   );
   return res.data.product;

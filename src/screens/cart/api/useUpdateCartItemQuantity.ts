@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { getCartQueryKey } from './utils';
 
-import { shopifyQuery } from '@/api';
+import { shopifyStorefrontQuery } from '@/api';
 
 type UpdateCartItemQuantityPayload = {
   cartId: string;
@@ -31,9 +31,9 @@ const updateCartItemQuantityGQLMutation = ({
 const updateCartItemQuantity = async (
   payload: UpdateCartItemQuantityPayload,
 ) => {
-  const res = await shopifyQuery<{ cartLinesUpdate?: CartLinesUpdatePayload }>(
-    updateCartItemQuantityGQLMutation(payload),
-  );
+  const res = await shopifyStorefrontQuery<{
+    cartLinesUpdate?: CartLinesUpdatePayload;
+  }>(updateCartItemQuantityGQLMutation(payload));
   return res.data.cartLinesUpdate?.cart?.id;
 };
 
