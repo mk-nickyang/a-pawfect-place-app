@@ -1,5 +1,7 @@
+import type { AxiosError } from 'axios';
 import * as Linking from 'expo-linking';
 import { memo, useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 
 import { getAccessToken } from './getAccessToken';
 import { getLoginUrl } from './getLoginUrl';
@@ -16,10 +18,13 @@ export const LoginButton = memo(() => {
         const authCode = queryParams.code as string;
 
         try {
-          const accessToken = await getAccessToken(authCode);
-          console.log(accessToken);
+          const response = await getAccessToken(authCode);
+          Alert.alert('Success', response.access_token);
         } catch (error) {
-          console.log(error);
+          Alert.alert(
+            'FAIL',
+            (error as AxiosError).response?.headers['www-authenticate'],
+          );
         }
 
         setIsLoading(false);
