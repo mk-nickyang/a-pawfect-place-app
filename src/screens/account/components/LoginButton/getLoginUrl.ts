@@ -1,9 +1,15 @@
+import * as Crypto from 'expo-crypto';
+import { btoa } from 'react-native-quick-base64';
+
+import { AUTH_CODE_VERIFIER_STORAGE_KEY } from '../../utils';
+
 import { SHOPIFY_CUSTOMER_ACCOUNT_AUTH_URL, WEBSITE_URL } from '@/config';
+import { PersistedStorage } from '@/modules/storage';
 
 const LOGIN_REDIRECT_URL = WEBSITE_URL;
 
 /** @see https://shopify.dev/docs/api/customer#step-authorization */
-export const getLoginUrl = () => {
+export const getLoginUrl = async () => {
   const authorizationRequestUrl = new URL(SHOPIFY_CUSTOMER_ACCOUNT_AUTH_URL);
 
   authorizationRequestUrl.searchParams.append(
@@ -29,6 +35,14 @@ export const getLoginUrl = () => {
 
   // Public client
   const verifier = generateCodeVerifier();
+  const challenge = await generateCodeChallenge(verifier);
+
+  PersistedStorage.setItem(AUTH_CODE_VERIFIER_STORAGE_KEY, verifier);
+
+  authorizationRequestUrl.searchParams.append('code_challenge', challenge);
+  authorizationRequestUrl.searchParams.append('code_challenge_method', 'S256');
+
+  return authorizationRequestUrl.toString();
 };
 
 function generateState() {
@@ -52,7 +66,7 @@ function generateNonce(length: number) {
 
 function generateRandomCode() {
   const array = new Uint8Array(32);
-  crypto.getRandomValues(array);
+  Crypto.getRandomValues(array);
   return String.fromCharCode.apply(null, Array.from(array));
 }
 
@@ -65,4 +79,13 @@ function base64UrlEncode(str: string) {
 function generateCodeVerifier() {
   const rando = generateRandomCode();
   return base64UrlEncode(rando);
+}
+
+async function generateCodeChallenge(codeVerifier: string) {
+  const digest = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    codeVerifier,
+    { encoding: Crypto.CryptoEncoding.BASE64 },
+  );
+  return digest;
 }
