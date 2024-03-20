@@ -1,8 +1,10 @@
 import * as Sentry from '@sentry/react-native';
 import axios from 'axios';
 
+import { SHOPIFY_STOREFRONT_API_URL } from '@/config';
+
 const shopifyClient = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_SHOPIFY_API_URL,
+  baseURL: SHOPIFY_STOREFRONT_API_URL,
   headers: {
     'Content-Type': 'application/json',
     'X-Shopify-Storefront-Access-Token':
