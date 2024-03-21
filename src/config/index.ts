@@ -10,6 +10,7 @@ export const SHOPIFY_STOREFRONT_API_URL = `https://${SHOPIFY_SHOP_SLUG}.myshopif
 
 export const SHOPIFY_CUSTOMER_ACCOUNT_AUTH_URL = `https://shopify.com/${SHOPIFY_SHOP_ID}/auth/oauth/authorize`;
 export const SHOPIFY_CUSTOMER_ACCOUNT_AUTH_TOKEN_URL = `https://shopify.com/${SHOPIFY_SHOP_ID}/auth/oauth/token`;
+export const SHOPIFY_CUSTOMER_ACCOUNT_AUTH_LOGOUT_URL = `https://shopify.com/${SHOPIFY_SHOP_ID}/auth/logout`;
 
 export const shopifyCheckoutConfig: Configuration = {
   colorScheme: ColorScheme.automatic,

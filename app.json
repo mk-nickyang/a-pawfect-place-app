@@ -12,10 +12,12 @@
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": ["**/*"],
+    "scheme": "apawfectplace",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "come.apawfectplace.app",
-      "associatedDomains": ["applinks:apawfectplace.com.au"]
+      "associatedDomains": ["applinks:apawfectplace.com.au"],
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {
