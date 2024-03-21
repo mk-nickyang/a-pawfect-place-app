@@ -17,7 +17,10 @@
       "supportsTablet": true,
       "bundleIdentifier": "come.apawfectplace.app",
       "associatedDomains": ["applinks:apawfectplace.com.au"],
-      "buildNumber": "2"
+      "buildNumber": "2",
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -49,7 +52,8 @@
           "organization": "a-pawfect-place",
           "project": "react-native"
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "extra": {
       "eas": {

@@ -1,3 +1,4 @@
+import '@/utils/polyfills';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import * as Sentry from '@sentry/react-native';
 import { ShopifyCheckoutSheetProvider } from '@shopify/checkout-sheet-kit';
