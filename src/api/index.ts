@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/react-native';
 import axios from 'axios';
 
 import { SHOPIFY_SHOP_SLUG, SHOPIFY_SHOP_ID } from '@/config';
@@ -47,12 +46,4 @@ export const shopifyCustomerAccountQuery = async (query: string) => {
   );
 
   return response.data;
-};
-
-export const logQueryError = (error: unknown) => {
-  if (__DEV__) {
-    console.log(error);
-  } else {
-    Sentry.captureException(error);
-  }
 };

@@ -17,8 +17,36 @@ type CustomerAccountAPIAccessTokenResponse = {
 };
 
 const SHOPIFY_CUSTOMER_ACCOUNT_AUTH_URL = `https://shopify.com/${SHOPIFY_SHOP_ID}/auth/oauth/authorize`;
+/**
+ * Since Shopify only allows https OAuth callback url,
+ * we created an intermediary web page in Next.js to handle the redirection.
+ *
+ * The Next.js page will
+ * - Receive the OAuth2 code and other query parameters from the callback url
+ * - Append all query parameters to the app deeplink URL (e.g. apawfectplace://)
+ * - Redirect to the app
+ *
+ * When Shopify does support deeplink as the callback url in the future,
+ * we can possibly utilize the expo-auth-session library to handle OAuth flow more seamlessly
+ * @see https://docs.expo.dev/guides/authentication/
+ */
 const SHOPIFY_CUSTOMER_ACCOUNT_AUTH_REDIRECT_URL =
-  'https://a-pawfect-place-oauth2-callback.vercel.app';
+  process.env.EXPO_PUBLIC_SHOPIFY_CUSTOMER_ACCOUNT_AUTH_REDIRECT_URL;
+/**
+ * Technically once we receive the OAuth code, we can use it to request the access token via
+ * `POST https://shopify.com/<shop_id>/auth/oauth/token`
+ * @see https://shopify.dev/docs/api/customer#step-obtain-access-token
+ *
+ * However, when we send the request from the React Native app, the Shopify token endpoint will always return 401 for some reason.
+ * we guess it's something to do with the Public authentication and the Javascript origin block.
+ * @see https://shopify.dev/docs/custom-storefronts/building-with-the-customer-account-api/getting-started#step-4-set-up-client-application-settings
+ *
+ * We also submitted a support ticket, hopefully can get some help one day.
+ * @see https://community.shopify.com/c/hydrogen-headless-and-storefront/customer-account-api-obtain-access-token-from-react-native-app/td-p/2497245
+ *
+ * But as a workaround, we created an `/token` endpoint in the same Next.js application,
+ * where we can safely store the Customer Account API secret and use the Confidential authentication.
+ */
 const SHOPIFY_CUSTOMER_ACCOUNT_AUTH_TOKEN_URL = `${SHOPIFY_CUSTOMER_ACCOUNT_AUTH_REDIRECT_URL}/token`;
 
 const ACCESS_TOKEN_STORAGE_KEY = 'auth.access_token';
@@ -26,7 +54,10 @@ const REFRESH_TOKEN_STORAGE_KEY = 'auth.refresh_token';
 const ID_TOKEN_STORAGE_KEY = 'auth.id_token';
 
 export const Auth = {
-  /** @see https://shopify.dev/docs/api/customer#step-authorization */
+  /**
+   * Get a url that redirects customer to the Shopify login page
+   * @see https://shopify.dev/docs/api/customer#step-authorization
+   */
   generateLoginUrl: async () => {
     const authorizationRequestUrl = new URL(SHOPIFY_CUSTOMER_ACCOUNT_AUTH_URL);
 
@@ -37,7 +68,7 @@ export const Auth = {
 
     authorizationRequestUrl.searchParams.append(
       'client_id',
-      process.env.EXPO_PUBLIC_SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID || '',
+      process.env.EXPO_PUBLIC_SHOPIFY_CUSTOMER_ACCOUNT_API_CLIENT_ID,
     );
 
     authorizationRequestUrl.searchParams.append('response_type', 'code');
@@ -53,7 +84,10 @@ export const Auth = {
 
     return authorizationRequestUrl.toString();
   },
-  /** @see https://shopify.dev/docs/api/customer#step-obtain-access-token */
+  /**
+   * Fetch access token after successful login
+   * @see https://shopify.dev/docs/api/customer#step-obtain-access-token
+   */
   fetchAuthToken: async (code: string) => {
     const body = new URLSearchParams();
     body.append('code', code);
@@ -61,22 +95,30 @@ export const Auth = {
     const authToken =
       await shopifyCustomerAccountTokenRequest<AuthTokenResponse>(body);
 
-    await Auth.storeAuthToken(authToken);
-
     return authToken;
   },
+  /**
+   * Store access tokens securely
+   * @see https://docs.expo.dev/guides/authentication/#storing-data
+   */
   storeAuthToken: ({
     access_token,
     refresh_token,
     id_token,
-  }: AuthTokenResponse) => {
+  }: Pick<
+    AuthTokenResponse,
+    'access_token' | 'id_token' | 'refresh_token'
+  >) => {
     return Promise.all([
       SecureStore.setItemAsync(ACCESS_TOKEN_STORAGE_KEY, access_token),
       SecureStore.setItemAsync(REFRESH_TOKEN_STORAGE_KEY, refresh_token),
       SecureStore.setItemAsync(ID_TOKEN_STORAGE_KEY, id_token),
     ]);
   },
-  /** @see https://shopify.dev/docs/api/customer#step-using-refresh-token */
+  /**
+   * Use refresh token to request a new access token once expired
+   * @see https://shopify.dev/docs/api/customer#step-using-refresh-token
+   */
   refreshAccessToken: async (refreshToken: string) => {
     const body = new URLSearchParams();
     body.append('refresh_token', refreshToken);
@@ -88,6 +130,17 @@ export const Auth = {
 
     return authToken;
   },
+  /**
+   * Return the stored access token if available.
+   * This is usually used to decide the default auth state.
+   */
+  getStoredAccessToken: () => {
+    return SecureStore.getItem(ACCESS_TOKEN_STORAGE_KEY);
+  },
+  /**
+   * Return the stored access token if available and not expired,
+   * otherwise refresh token and return a new one.
+   */
   getAccessToken: async () => {
     const storedAccessToken = SecureStore.getItem(ACCESS_TOKEN_STORAGE_KEY);
     const storedRefreshToken = SecureStore.getItem(REFRESH_TOKEN_STORAGE_KEY);
@@ -106,7 +159,11 @@ export const Auth = {
       await Auth.refreshAccessToken(storedRefreshToken);
     return newAccessToken;
   },
-  /** @see https://shopify.dev/docs/api/customer#step-use-access-token */
+  /**
+   * Due to the Token Exchange, we need to exchange the access token for another one
+   * in order to make requests to the Shopify Customer Account API.
+   * @see https://shopify.dev/docs/api/customer#step-use-access-token
+   */
   fetchCustomerAccountAPIAccessToken: async () => {
     const accessToken = await Auth.getAccessToken();
     if (!accessToken) return;
@@ -123,12 +180,21 @@ export const Auth = {
   },
 };
 
+/**
+ * State acts as a security measure to prevent cross-site request forgery (CSRF) attacks.
+ * @see https://shopify.dev/docs/api/customer#generating-state
+ */
 function generateState() {
   const timestamp = Date.now().toString();
   const randomString = Math.random().toString(36).substring(2);
   return timestamp + randomString;
 }
 
+/**
+ * Nonces help protect against unauthorized reuse of captured messages by
+ * verifying that they are recent and have not been tampered with.
+ * @see https://shopify.dev/docs/api/customer#generating-nonce
+ */
 function generateNonce(length: number) {
   const characters =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

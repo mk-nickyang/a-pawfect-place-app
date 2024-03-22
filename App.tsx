@@ -15,9 +15,10 @@ import {
   initialWindowMetrics,
 } from 'react-native-safe-area-context';
 
-import { logQueryError } from '@/api';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { shopifyCheckoutConfig } from '@/config';
+import { AuthContextProvider } from '@/context/AuthContext';
+import { Logger } from '@/modules/logger';
 import { clientPersister } from '@/modules/storage';
 import { AppNavigator } from '@/navigation/AppNavigator';
 import theme from '@/theme';
@@ -31,7 +32,7 @@ const queryClient = new QueryClient({
     },
   },
   queryCache: new QueryCache({
-    onError: (error) => logQueryError(error),
+    onError: (error) => Logger.error(error),
   }),
 });
 
@@ -49,11 +50,13 @@ function App() {
           <QueryClientProvider client={queryClient}>
             <GestureHandlerRootView style={{ flex: 1 }}>
               <BottomSheetModalProvider>
-                <ShopifyCheckoutSheetProvider
-                  configuration={shopifyCheckoutConfig}
-                >
-                  <AppNavigator />
-                </ShopifyCheckoutSheetProvider>
+                <AuthContextProvider>
+                  <ShopifyCheckoutSheetProvider
+                    configuration={shopifyCheckoutConfig}
+                  >
+                    <AppNavigator />
+                  </ShopifyCheckoutSheetProvider>
+                </AuthContextProvider>
               </BottomSheetModalProvider>
             </GestureHandlerRootView>
           </QueryClientProvider>

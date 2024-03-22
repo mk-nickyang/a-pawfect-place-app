@@ -1,8 +1,14 @@
-import { LoginButton } from './components/LoginButton';
+import { ScrollView } from 'react-native';
+
+import { AccountHeader } from './components/AccountHeader';
 import { useWarmUpBrowser } from './useWarmUpBrowser';
 
 export const Account = () => {
   useWarmUpBrowser();
 
-  return <LoginButton />;
+  return (
+    <ScrollView>
+      <AccountHeader />
+    </ScrollView>
+  );
 };

@@ -5,7 +5,7 @@ import type {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
 
-import { logQueryError, shopifyStorefrontQuery } from '@/api';
+import { shopifyStorefrontQuery } from '@/api';
 import { getCartQueryKey } from '@/screens/cart/api/utils';
 
 type RemoveCartItemPayload = { lineId: string; cartId: string };
@@ -63,9 +63,7 @@ export const useRemoveCartItem = (cartId: string) => {
     },
     // If the mutation fails,
     // use the context returned from onMutate to roll back
-    onError: (err, _removedLineId, context) => {
-      logQueryError(err);
-
+    onError: (_err, _removedLineId, context) => {
       if (context?.previousCart) {
         queryClient.setQueryData<Cart>(
           getCartQueryKey(cartId),
