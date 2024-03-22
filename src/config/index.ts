@@ -4,24 +4,26 @@ import theme from '@/theme';
 
 export const SHOPIFY_SHOP_ID = '50403049658';
 export const SHOPIFY_SHOP_SLUG = 'a-pawfect-place';
+export const SHOPIFY_WEBSITE_URL = 'https://apawfectplace.com.au';
 
 export const shopifyCheckoutConfig: Configuration = {
+  preloading: true,
   colorScheme: ColorScheme.automatic,
   colors: {
     ios: {
-      spinnerColor: theme.colors.contentPrimary,
+      tintColor: theme.colors.contentPrimary,
       backgroundColor: theme.colors.mainBackground,
     },
     android: {
       light: {
         backgroundColor: theme.colors.mainBackground,
-        spinnerColor: theme.colors.contentPrimary,
+        progressIndicator: theme.colors.contentPrimary,
         headerBackgroundColor: theme.colors.mainBackground,
         headerTextColor: theme.colors.contentPrimary,
       },
       dark: {
         backgroundColor: theme.colors.contentPrimary,
-        spinnerColor: theme.colors.contentInverse,
+        progressIndicator: theme.colors.contentInverse,
         headerBackgroundColor: theme.colors.contentPrimary,
         headerTextColor: theme.colors.contentInverse,
       },

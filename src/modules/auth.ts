@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
-import { jwtDecode } from 'jwt-decode';
+
+import { PersistedStorage } from './storage';
 
 import { SHOPIFY_SHOP_ID } from '@/config';
 
@@ -17,6 +18,8 @@ type CustomerAccountAPIAccessTokenResponse = {
 };
 
 const SHOPIFY_CUSTOMER_ACCOUNT_AUTH_URL = `https://shopify.com/${SHOPIFY_SHOP_ID}/auth/oauth/authorize`;
+const SHOPIFY_CUSTOMER_ACCOUNT_LOGOUT_URL = `https://shopify.com/${SHOPIFY_SHOP_ID}/auth/logout`;
+
 /**
  * Since Shopify only allows https OAuth callback url,
  * we created an intermediary web page in Next.js to handle the redirection.
@@ -52,13 +55,14 @@ const SHOPIFY_CUSTOMER_ACCOUNT_AUTH_TOKEN_URL = `${SHOPIFY_CUSTOMER_ACCOUNT_AUTH
 const ACCESS_TOKEN_STORAGE_KEY = 'auth.access_token';
 const REFRESH_TOKEN_STORAGE_KEY = 'auth.refresh_token';
 const ID_TOKEN_STORAGE_KEY = 'auth.id_token';
+const ACCESS_TOKEN_EXP_AT_STORAGE_KEY = 'auth.access_token_exp_at';
 
 export const Auth = {
   /**
    * Get a url that redirects customer to the Shopify login page
    * @see https://shopify.dev/docs/api/customer#step-authorization
    */
-  generateLoginUrl: async () => {
+  generateLoginUrl: () => {
     const authorizationRequestUrl = new URL(SHOPIFY_CUSTOMER_ACCOUNT_AUTH_URL);
 
     authorizationRequestUrl.searchParams.append(
@@ -85,50 +89,81 @@ export const Auth = {
     return authorizationRequestUrl.toString();
   },
   /**
-   * Fetch access token after successful login
+   * Fetch and store access token after successful login
    * @see https://shopify.dev/docs/api/customer#step-obtain-access-token
    */
-  fetchAuthToken: async (code: string) => {
+  setupAccessToken: async (code: string) => {
     const body = new URLSearchParams();
     body.append('code', code);
 
-    const authToken =
+    const { access_token, refresh_token, id_token, expires_in } =
       await shopifyCustomerAccountTokenRequest<AuthTokenResponse>(body);
 
-    return authToken;
+    await Auth.storeAuthToken({
+      accessToken: access_token,
+      refreshToken: refresh_token,
+      idToken: id_token,
+      accessTokenExpIn: expires_in,
+    });
   },
   /**
    * Store access tokens securely
    * @see https://docs.expo.dev/guides/authentication/#storing-data
    */
-  storeAuthToken: ({
-    access_token,
-    refresh_token,
-    id_token,
-  }: Pick<
-    AuthTokenResponse,
-    'access_token' | 'id_token' | 'refresh_token'
-  >) => {
-    return Promise.all([
-      SecureStore.setItemAsync(ACCESS_TOKEN_STORAGE_KEY, access_token),
-      SecureStore.setItemAsync(REFRESH_TOKEN_STORAGE_KEY, refresh_token),
-      SecureStore.setItemAsync(ID_TOKEN_STORAGE_KEY, id_token),
+  storeAuthToken: async ({
+    accessToken,
+    refreshToken,
+    accessTokenExpIn,
+    idToken,
+  }: {
+    accessToken: string;
+    refreshToken: string;
+    accessTokenExpIn: number; // In seconds
+    idToken?: string;
+  }) => {
+    PersistedStorage.setItem(
+      ACCESS_TOKEN_EXP_AT_STORAGE_KEY,
+      (Date.now() + accessTokenExpIn * 1000).toString(),
+    );
+
+    await Promise.all([
+      SecureStore.setItemAsync(ACCESS_TOKEN_STORAGE_KEY, accessToken),
+      SecureStore.setItemAsync(REFRESH_TOKEN_STORAGE_KEY, refreshToken),
+      idToken ? SecureStore.setItemAsync(ID_TOKEN_STORAGE_KEY, idToken) : null,
+    ]);
+  },
+  removeAuthToken: async () => {
+    PersistedStorage.removeItem(ACCESS_TOKEN_EXP_AT_STORAGE_KEY);
+
+    await Promise.all([
+      SecureStore.deleteItemAsync(ACCESS_TOKEN_STORAGE_KEY),
+      SecureStore.deleteItemAsync(REFRESH_TOKEN_STORAGE_KEY),
+      SecureStore.deleteItemAsync(ID_TOKEN_STORAGE_KEY),
     ]);
   },
   /**
    * Use refresh token to request a new access token once expired
    * @see https://shopify.dev/docs/api/customer#step-using-refresh-token
    */
-  refreshAccessToken: async (refreshToken: string) => {
+  refreshAccessToken: async () => {
+    const storedRefreshToken = SecureStore.getItem(REFRESH_TOKEN_STORAGE_KEY);
+    if (!storedRefreshToken) return;
+
     const body = new URLSearchParams();
-    body.append('refresh_token', refreshToken);
+    body.append('refresh_token', storedRefreshToken);
 
-    const authToken =
-      await shopifyCustomerAccountTokenRequest<AuthTokenResponse>(body);
+    const { access_token, refresh_token, expires_in } =
+      await shopifyCustomerAccountTokenRequest<
+        Omit<AuthTokenResponse, 'id_token'>
+      >(body);
 
-    await Auth.storeAuthToken(authToken);
+    await Auth.storeAuthToken({
+      accessToken: access_token,
+      refreshToken: refresh_token,
+      accessTokenExpIn: expires_in,
+    });
 
-    return authToken;
+    return access_token;
   },
   /**
    * Return the stored access token if available.
@@ -143,20 +178,21 @@ export const Auth = {
    */
   getAccessToken: async () => {
     const storedAccessToken = SecureStore.getItem(ACCESS_TOKEN_STORAGE_KEY);
-    const storedRefreshToken = SecureStore.getItem(REFRESH_TOKEN_STORAGE_KEY);
-    const storedIdToken = SecureStore.getItem(ID_TOKEN_STORAGE_KEY);
 
-    if (!storedAccessToken || !storedRefreshToken || !storedIdToken) return;
-
-    const idTokenPayload = jwtDecode(storedIdToken);
     // Use the stored token if not expired
-    if (idTokenPayload.exp && idTokenPayload.exp * 1000 > Date.now()) {
+    const accessTokenExpAt = PersistedStorage.getItem(
+      ACCESS_TOKEN_EXP_AT_STORAGE_KEY,
+    );
+    if (
+      storedAccessToken &&
+      accessTokenExpAt &&
+      Number(accessTokenExpAt) > Date.now()
+    ) {
       return storedAccessToken;
     }
 
     // Refresh access token if expired
-    const { access_token: newAccessToken } =
-      await Auth.refreshAccessToken(storedRefreshToken);
+    const newAccessToken = await Auth.refreshAccessToken();
     return newAccessToken;
   },
   /**
@@ -177,6 +213,16 @@ export const Auth = {
       );
 
     return customerAccountAPIToken.access_token;
+  },
+  /**
+   * Logging out
+   * @see https://shopify.dev/docs/api/customer#step-logging-out
+   */
+  logOut: async () => {
+    const storedIdToken = SecureStore.getItem(ID_TOKEN_STORAGE_KEY);
+    await axios.get(SHOPIFY_CUSTOMER_ACCOUNT_LOGOUT_URL, {
+      params: { id_token_hint: storedIdToken },
+    });
   },
 };
 

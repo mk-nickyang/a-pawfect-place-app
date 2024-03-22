@@ -1,4 +1,3 @@
-import '@/utils/polyfills';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import * as Sentry from '@sentry/react-native';
 import { ShopifyCheckoutSheetProvider } from '@shopify/checkout-sheet-kit';
@@ -29,6 +28,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       gcTime: 1000 * 60 * 60 * 24, // 24 hours
+      retry: false,
     },
   },
   queryCache: new QueryCache({
@@ -37,7 +37,6 @@ const queryClient = new QueryClient({
 });
 
 persistQueryClient({
-  // @ts-expect-error Ignore queryClient type mismatch
   queryClient,
   persister: clientPersister,
 });

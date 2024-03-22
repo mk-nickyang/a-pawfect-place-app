@@ -9,7 +9,10 @@ import { Icon } from '@/components/Icon';
 import { Account } from '@/screens/account/Account';
 import { Cart } from '@/screens/cart/Cart';
 import { CartBadge } from '@/screens/cart/components/CartBadge';
+import { DeliveryAddress } from '@/screens/delivery-address/DeliveryAddress';
 import { Home } from '@/screens/home/Home';
+import { Orders } from '@/screens/orders/Orders';
+import { PersonalDetails } from '@/screens/personal-details/PersonalDetails';
 import { Product } from '@/screens/product/Product';
 import { Shop } from '@/screens/shop/Shop';
 
@@ -54,6 +57,17 @@ const AccountStackNavigator = () => {
   return (
     <AccountStack.Navigator>
       <AccountStack.Screen name="Account" component={Account} />
+      <AccountStack.Screen
+        name="PersonalDetails"
+        component={PersonalDetails}
+        options={{ title: 'Personal Details' }}
+      />
+      <AccountStack.Screen name="Orders" component={Orders} />
+      <AccountStack.Screen
+        name="DeliveryAddress"
+        component={DeliveryAddress}
+        options={{ title: 'Delivery Address' }}
+      />
     </AccountStack.Navigator>
   );
 };

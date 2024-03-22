@@ -31,7 +31,9 @@ export const shopifyStorefrontQuery = async <T>(
  *
  * @see https://shopify.dev/docs/custom-storefronts/building-with-the-customer-account-api/getting-started
  */
-export const shopifyCustomerAccountQuery = async (query: string) => {
+export const shopifyCustomerAccountQuery = async <T>(
+  query: string,
+): Promise<{ data: T }> => {
   const apiAccessToken = await Auth.fetchCustomerAccountAPIAccessToken();
 
   const response = await axios.post(
@@ -40,7 +42,7 @@ export const shopifyCustomerAccountQuery = async (query: string) => {
     {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Authorization: ${apiAccessToken}`,
+        Authorization: apiAccessToken,
       },
     },
   );
