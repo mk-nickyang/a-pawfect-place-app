@@ -14,7 +14,9 @@ import {
 import { useEvent } from '@/hooks/useEvent';
 import { Auth } from '@/modules/auth';
 import { Logger } from '@/modules/logger';
-import { MY_ACCOUNT_QUERY_KEY } from '@/screens/account/api/utils';
+import { myAccountQuery } from '@/screens/account/api/myAccountQuery';
+import { useUpdateCartBuyerIdentity } from '@/screens/cart/api/useUpdateCartBuyerIdentity';
+import { useCartId } from '@/screens/cart/useCartId';
 
 export const AuthenticationStatus = {
   AUTHENTICATING: 'AUTHENTICATING',
@@ -27,8 +29,8 @@ export type AuthenticationStatus = keyof typeof AuthenticationStatus;
 
 type AuthContextType = {
   authenticationStatus: AuthenticationStatus;
-  login: () => void;
-  logOut: () => void;
+  login: () => Promise<void>;
+  logOut: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -43,13 +45,20 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
 
   const queryClient = useQueryClient();
 
+  const { cartId } = useCartId();
+
+  const updateCartBuyerIdentityMutation = useUpdateCartBuyerIdentity();
+
   // Check auth session and refetch account data when app opens
   const checkAuthSession = useEvent(async () => {
     if (authenticationStatus !== AuthenticationStatus.AUTHENTICATED) return;
 
     try {
       await Auth.refreshAccessToken();
-      queryClient.invalidateQueries({ queryKey: MY_ACCOUNT_QUERY_KEY });
+      // Fetch customer data and add customer data to cart
+      await queryClient.invalidateQueries({
+        queryKey: myAccountQuery.queryKey,
+      });
     } catch (error) {
       /**
        * If refresh access token failed, it means either auth service errors or
@@ -64,6 +73,16 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
     checkAuthSession();
   }, [checkAuthSession, queryClient]);
 
+  const addBuyerIdentityToCart = useEvent(async () => {
+    if (cartId) {
+      const account = await queryClient.fetchQuery(myAccountQuery);
+      updateCartBuyerIdentityMutation.mutate({
+        cartId,
+        email: account.emailAddress?.emailAddress,
+      });
+    }
+  });
+
   const login = useCallback(async () => {
     setAuthenticationStatus(AuthenticationStatus.AUTHENTICATING);
 
@@ -77,6 +96,8 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
         if (code && typeof code === 'string') {
           // Fetch and store auth token
           await Auth.setupAccessToken(code);
+          // Fetch customer data and add customer data to cart
+          await addBuyerIdentityToCart();
 
           setAuthenticationStatus(AuthenticationStatus.AUTHENTICATED);
         }
@@ -87,7 +108,16 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
       Logger.error(error);
       setAuthenticationStatus(AuthenticationStatus.UNAUTHENTICATED);
     }
-  }, []);
+  }, [addBuyerIdentityToCart]);
+
+  const removeBuyerIdentityFromCart = useEvent(() => {
+    if (cartId) {
+      updateCartBuyerIdentityMutation.mutate({
+        cartId,
+        email: undefined,
+      });
+    }
+  });
 
   const logOut = useCallback(async () => {
     try {
@@ -97,10 +127,14 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
     }
 
     await Auth.removeAuthToken();
-    queryClient.removeQueries({ queryKey: MY_ACCOUNT_QUERY_KEY });
+
+    // Remove account cache after logout
+    queryClient.removeQueries({ queryKey: myAccountQuery.queryKey });
+
+    removeBuyerIdentityFromCart();
 
     setAuthenticationStatus(AuthenticationStatus.UNAUTHENTICATED);
-  }, [queryClient]);
+  }, [queryClient, removeBuyerIdentityFromCart]);
 
   const authContextValue = useMemo(
     () => ({ authenticationStatus, login, logOut }),

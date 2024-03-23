@@ -178,16 +178,13 @@ export const Auth = {
    */
   getAccessToken: async () => {
     const storedAccessToken = SecureStore.getItem(ACCESS_TOKEN_STORAGE_KEY);
+    if (!storedAccessToken) return;
 
     // Use the stored token if not expired
     const accessTokenExpAt = PersistedStorage.getItem(
       ACCESS_TOKEN_EXP_AT_STORAGE_KEY,
     );
-    if (
-      storedAccessToken &&
-      accessTokenExpAt &&
-      Number(accessTokenExpAt) > Date.now()
-    ) {
+    if (accessTokenExpAt && Number(accessTokenExpAt) > Date.now()) {
       return storedAccessToken;
     }
 

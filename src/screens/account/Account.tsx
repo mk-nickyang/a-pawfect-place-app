@@ -1,12 +1,15 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { openBrowserAsync } from 'expo-web-browser';
-import { Alert, ScrollView } from 'react-native';
+import { Alert, ScrollView, Modal } from 'react-native';
 
-import { AccountHeader } from './components/AccountHeader';
+import { useMyAccount } from './api/useMyAccount';
 import { AccountListButton } from './components/AccountListButton';
 
 import { Box } from '@/components/Box';
 import { Icon } from '@/components/Icon';
+import { Loading } from '@/components/Loading';
+import { PressableOpacity } from '@/components/PressableOpacity';
+import { Text } from '@/components/Text';
 import { SHOPIFY_WEBSITE_URL } from '@/config';
 import { AuthenticationStatus, useAuth } from '@/context/AuthContext';
 import { useWarmUpBrowser } from '@/hooks/useWarmUpBrowser';
@@ -35,39 +38,65 @@ const SHOPIFY_WEBSITE_FOOTER_PAGES = [
 export const Account = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'Account'>) => {
-  const { logOut, authenticationStatus } = useAuth();
-
   useWarmUpBrowser();
+
+  const { login, logOut, authenticationStatus } = useAuth();
+
+  const { data: account } = useMyAccount(
+    authenticationStatus === AuthenticationStatus.AUTHENTICATED,
+  );
 
   const onLogOutPress = () => {
     Alert.alert('Sign out', 'Are you sure you want to sign out?', [
       { text: 'Cancel', style: 'cancel' },
-      { text: 'Sign out', style: 'destructive', onPress: logOut },
+      {
+        text: 'Sign out',
+        style: 'destructive',
+        onPress: logOut,
+      },
     ]);
   };
 
-  const isAuthed = authenticationStatus === AuthenticationStatus.AUTHENTICATED;
-
   return (
     <ScrollView>
-      <AccountHeader />
+      <Box
+        backgroundColor="mainBackground"
+        p="m"
+        mb={account ? undefined : 'm'}
+      >
+        <Text variant="h3" mb="s">
+          Hi {account?.displayName || 'there'},
+        </Text>
 
-      {isAuthed ? (
+        {account ? (
+          <Text>Welcome to your account</Text>
+        ) : (
+          <Box flexDirection="row" alignItems="center">
+            <PressableOpacity onPress={login}>
+              <Text textDecorationLine="underline">Sign in or register</Text>
+            </PressableOpacity>
+
+            <Text> to manage your account.</Text>
+          </Box>
+        )}
+      </Box>
+
+      {account ? (
         <Box mb="m">
-          <AccountListButton
+          {/* <AccountListButton
             label="Personal Details"
             leftIcon={<Icon name="account-details" size={20} />}
             onPress={() => navigation.navigate('PersonalDetails')}
           />
           <AccountListButton
-            label="Orders"
-            leftIcon={<Icon name="package-variant-closed" size={20} />}
-            onPress={() => navigation.navigate('Orders')}
-          />
-          <AccountListButton
             label="Delivery Address"
             leftIcon={<Icon name="truck-outline" size={20} />}
             onPress={() => navigation.navigate('DeliveryAddress')}
+          /> */}
+          <AccountListButton
+            label="Orders"
+            leftIcon={<Icon name="package-variant-closed" size={20} />}
+            onPress={() => navigation.navigate('Orders')}
             noBorder
           />
         </Box>
@@ -85,7 +114,7 @@ export const Account = ({
         ))}
       </Box>
 
-      {isAuthed ? (
+      {account ? (
         <AccountListButton
           label="Sign out"
           onPress={onLogOutPress}
@@ -93,6 +122,14 @@ export const Account = ({
           noBorder
         />
       ) : null}
+
+      <Modal
+        visible={authenticationStatus === AuthenticationStatus.AUTHENTICATING}
+        transparent
+        animationType="fade"
+      >
+        <Loading height="100%" />
+      </Modal>
     </ScrollView>
   );
 };

@@ -5,7 +5,7 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { shopifyStorefrontQuery } from '@/api';
-import { getCartQueryKey } from '@/screens/cart/api/utils';
+import { cartQuery } from '@/screens/cart/api/cartQuery';
 import { useCartId } from '@/screens/cart/useCartId';
 
 const createCartGQLMutation = (variantId: string) => `
@@ -83,7 +83,7 @@ export const useAddToCart = () => {
         // Update stored cartId
         setCartId(cartId);
         // Refetch cart query when cart is updated
-        queryClient.invalidateQueries({ queryKey: getCartQueryKey(cartId) });
+        queryClient.invalidateQueries({ queryKey: cartQuery(cartId).queryKey });
       }
     },
   });

@@ -11,13 +11,17 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "scheme": "apawfectplace",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "come.apawfectplace.app",
-      "associatedDomains": ["applinks:apawfectplace.com.au"],
-      "buildNumber": "2",
+      "associatedDomains": [
+        "applinks:apawfectplace.com.au"
+      ],
+      "buildNumber": "3",
       "config": {
         "usesNonExemptEncryption": false
       }
@@ -38,12 +42,12 @@
               "host": "*.apawfectplace.com.au"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
     },
     "plugins": [
       [

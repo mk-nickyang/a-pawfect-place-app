@@ -1,7 +1,7 @@
 import { CartLinesUpdatePayload } from '@shopify/hydrogen-react/storefront-api-types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { getCartQueryKey } from './utils';
+import { cartQuery } from './cartQuery';
 
 import { shopifyStorefrontQuery } from '@/api';
 
@@ -48,7 +48,7 @@ export const useUpdateCartItemQuantity = (cartId: string) => {
       updateCartItemQuantity({ lineId, quantity, cartId }),
     onSuccess: () => {
       // Refetch cart query when cart is updated
-      queryClient.invalidateQueries({ queryKey: getCartQueryKey(cartId) });
+      queryClient.invalidateQueries({ queryKey: cartQuery(cartId).queryKey });
     },
   });
 };

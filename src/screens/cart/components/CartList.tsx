@@ -6,7 +6,7 @@ import { memo, useCallback, useEffect, useMemo } from 'react';
 
 import { CartLineItem } from './CartLineItem';
 import { CartNote } from './CartNote';
-import { useCart } from '../api/useCart';
+import { selectCartItemsLength, useCart } from '../api/useCart';
 
 import { Box } from '@/components/Box';
 import { Button } from '@/components/Button';
@@ -39,7 +39,8 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
     [cartId],
   );
 
-  const cartItemsLength = cart?.lines.edges.length;
+  const cartItemsLength = cart ? selectCartItemsLength(cart) : 0;
+
   const cartSubtotal = cart?.cost.subtotalAmount.amount;
   const cartTotal = cart?.cost.totalAmount.amount;
 
@@ -75,7 +76,7 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
             </Box>
           </Box>
 
-          <CartNote note={cart.note} cartId={cartId} />
+          <CartNote note={cart?.note} cartId={cartId} />
 
           <Button
             label="CHECKOUT"
@@ -102,7 +103,7 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
     ],
   );
 
-  if (!cartItemsLength) return emptyView;
+  if (!cart) return emptyView;
 
   return (
     <FlashList

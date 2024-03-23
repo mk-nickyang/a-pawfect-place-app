@@ -1,12 +1,10 @@
-import type {
-  Cart,
-  CartLinesRemovePayload,
-} from '@shopify/hydrogen-react/storefront-api-types';
+import type { CartLinesRemovePayload } from '@shopify/hydrogen-react/storefront-api-types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
 
+import { cartQuery } from './cartQuery';
+
 import { shopifyStorefrontQuery } from '@/api';
-import { getCartQueryKey } from '@/screens/cart/api/utils';
 
 type RemoveCartItemPayload = { lineId: string; cartId: string };
 
@@ -39,17 +37,17 @@ export const useRemoveCartItem = (cartId: string) => {
   return useMutation({
     mutationFn: (lineId: string) => removeCartItem({ lineId, cartId }),
     onMutate: async (removedLineId) => {
-      const cartQueryKey = getCartQueryKey(cartId);
+      const cartQueryKey = cartQuery(cartId).queryKey;
 
       // Cancel any outgoing refetches
       // (so they don't overwrite our optimistic update)
       await queryClient.cancelQueries({ queryKey: cartQueryKey });
 
       // Snapshot the previous value
-      const previousCart = queryClient.getQueryData<Cart>(cartQueryKey);
+      const previousCart = queryClient.getQueryData(cartQueryKey);
 
       // Optimistically update to the new value
-      queryClient.setQueryData<Cart>(cartQueryKey, (oldData) => {
+      queryClient.setQueryData(cartQueryKey, (oldData) => {
         if (!oldData) return;
         return produce(oldData, (draft) => {
           draft.lines.edges = draft.lines.edges.filter(
@@ -65,15 +63,15 @@ export const useRemoveCartItem = (cartId: string) => {
     // use the context returned from onMutate to roll back
     onError: (_err, _removedLineId, context) => {
       if (context?.previousCart) {
-        queryClient.setQueryData<Cart>(
-          getCartQueryKey(cartId),
+        queryClient.setQueryData(
+          cartQuery(cartId).queryKey,
           context?.previousCart,
         );
       }
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: getCartQueryKey(cartId) });
+      queryClient.invalidateQueries({ queryKey: cartQuery(cartId).queryKey });
     },
   });
 };
