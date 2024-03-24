@@ -7,7 +7,7 @@ import { shopifyCustomerAccountQuery } from '@/api';
 const getCustomerOrdersGQLQuery = (endCursor?: string) => `
 {
   customer {
-    orders(first: 5${endCursor ? `, after: "${endCursor}", ` : ''}) {
+    orders(first: 5, ${endCursor ? `after: "${endCursor}", ` : ''}sortKey: PROCESSED_AT, reverse: true) {
       edges {
         node {
           id
@@ -17,6 +17,7 @@ const getCustomerOrdersGQLQuery = (endCursor?: string) => `
             edges {
               node {
                 id
+                quantity
                 image {
                   url
                 }
@@ -30,15 +31,6 @@ const getCustomerOrdersGQLQuery = (endCursor?: string) => `
             edges {
               node {
                 id
-                createdAt
-                updatedAt
-                status
-                trackingInformation {
-                    company
-                    number
-                    url
-                }
-                estimatedDeliveryAt
                 latestShipmentStatus
               }
             }

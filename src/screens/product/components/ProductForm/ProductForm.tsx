@@ -18,7 +18,7 @@ export const ProductForm = ({ product }: Props) => {
     product.variants.edges[0]?.node,
   );
 
-  const selectedVariantOptions = selectedVariant.selectedOptions;
+  const selectedVariantOptions = selectedVariant?.selectedOptions || [];
 
   const handleProductOptionSelect = useEvent(
     (newSelectedOption: SelectedOption) => {
@@ -62,17 +62,17 @@ export const ProductForm = ({ product }: Props) => {
     },
   );
 
-  const compareAtPrice = selectedVariant.compareAtPrice?.amount;
-  const currentPrice = selectedVariant.price.amount;
+  const compareAtPrice = selectedVariant?.compareAtPrice?.amount;
+  const currentPrice = selectedVariant?.price.amount;
 
   const isOnSale =
     !!compareAtPrice && Number(compareAtPrice) > Number(currentPrice);
-  const isSoldOut = !selectedVariant.availableForSale;
+  const isSoldOut = !selectedVariant?.availableForSale;
 
   return (
     <Box mt="m" mb="xl">
       <Box mb="m" flexDirection="row" alignItems="center" g="s">
-        <Text variant="h3">${selectedVariant.price.amount}</Text>
+        <Text variant="h3">${selectedVariant?.price.amount}</Text>
 
         {isOnSale ? (
           <Text color="contentSecondary" textDecorationLine="line-through">
@@ -137,10 +137,12 @@ export const ProductForm = ({ product }: Props) => {
           })
         : null}
 
-      <AddToCartButton
-        selectedVariantId={selectedVariant.id}
-        isSoldOut={isSoldOut}
-      />
+      {selectedVariant ? (
+        <AddToCartButton
+          selectedVariantId={selectedVariant?.id}
+          isSoldOut={isSoldOut}
+        />
+      ) : null}
     </Box>
   );
 };

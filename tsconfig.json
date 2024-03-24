@@ -4,7 +4,8 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "strict": true
+    "strict": true,
+    "noUncheckedIndexedAccess": true
   },
   "extends": "expo/tsconfig.base"
 }

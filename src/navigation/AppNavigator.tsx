@@ -11,6 +11,7 @@ import { Cart } from '@/screens/cart/Cart';
 import { CartBadge } from '@/screens/cart/components/CartBadge';
 import { DeliveryAddress } from '@/screens/delivery-address/DeliveryAddress';
 import { Home } from '@/screens/home/Home';
+import { OrderDetail } from '@/screens/order-detail/OrderDetail';
 import { Orders } from '@/screens/orders/Orders';
 import { PersonalDetails } from '@/screens/personal-details/PersonalDetails';
 import { Product } from '@/screens/product/Product';
@@ -62,11 +63,16 @@ const AccountStackNavigator = () => {
         component={PersonalDetails}
         options={{ title: 'Personal Details' }}
       />
-      <AccountStack.Screen name="Orders" component={Orders} />
       <AccountStack.Screen
         name="DeliveryAddress"
         component={DeliveryAddress}
         options={{ title: 'Delivery Address' }}
+      />
+      <AccountStack.Screen name="Orders" component={Orders} />
+      <AccountStack.Screen
+        name="OrderDetail"
+        component={OrderDetail}
+        options={{ title: '' }}
       />
     </AccountStack.Navigator>
   );

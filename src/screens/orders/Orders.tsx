@@ -6,6 +6,7 @@ import { useResetOrdersQueryPagination } from './api/useResetOrdersQueryPaginati
 import { OrderListItem } from './components/OrderListItem';
 
 import { Box } from '@/components/Box';
+import { Divider } from '@/components/Divider';
 import { Loading } from '@/components/Loading';
 import { useEvent } from '@/hooks/useEvent';
 
@@ -36,6 +37,7 @@ export const Orders = () => {
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         estimatedItemSize={150}
+        ItemSeparatorComponent={Divider}
         onEndReached={fetchNextCollectionProductsPage}
         onEndReachedThreshold={0.5}
         ListFooterComponent={hasNextPage ? ListFooter : null}
