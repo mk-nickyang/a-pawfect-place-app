@@ -67,6 +67,7 @@ export const useCollection = () => {
     queryKey: ['collection', 'products'],
     select: flattenProductsPagesData,
     initialPageParam: '',
-    getNextPageParam: (lastPage) => lastPage.pageInfo.endCursor,
+    getNextPageParam: (lastPage) =>
+      lastPage.pageInfo.hasNextPage ? lastPage.pageInfo.endCursor : undefined,
   });
 };

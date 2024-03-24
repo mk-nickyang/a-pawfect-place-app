@@ -1,13 +1,13 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { openBrowserAsync } from 'expo-web-browser';
-import { Alert, ScrollView, Modal } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 
 import { useMyAccount } from './api/useMyAccount';
 import { AccountListButton } from './components/AccountListButton';
 
 import { Box } from '@/components/Box';
 import { Icon } from '@/components/Icon';
-import { Loading } from '@/components/Loading';
+import { LoadingOverlay } from '@/components/LoadingOverlay';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
 import { SHOPIFY_WEBSITE_URL } from '@/config';
@@ -42,9 +42,9 @@ export const Account = ({
 
   const { login, logOut, authenticationStatus } = useAuth();
 
-  const { data: account } = useMyAccount(
-    authenticationStatus === AuthenticationStatus.AUTHENTICATED,
-  );
+  const { data: account, isLoading } = useMyAccount({
+    enabled: authenticationStatus === AuthenticationStatus.AUTHENTICATED,
+  });
 
   const onLogOutPress = () => {
     Alert.alert('Sign out', 'Are you sure you want to sign out?', [
@@ -123,13 +123,7 @@ export const Account = ({
         />
       ) : null}
 
-      <Modal
-        visible={authenticationStatus === AuthenticationStatus.AUTHENTICATING}
-        transparent
-        animationType="fade"
-      >
-        <Loading height="100%" />
-      </Modal>
+      <LoadingOverlay visible={isLoading} />
     </ScrollView>
   );
 };

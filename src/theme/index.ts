@@ -12,6 +12,7 @@ const theme = createTheme({
   colors: {
     mainBackground: palette.white,
     transparent: 'transparent',
+    backdropBackground: 'rgba(0, 0, 0, 0.3)',
 
     contentPrimary: palette.black,
     contentSecondary: palette.grey,

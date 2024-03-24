@@ -5,10 +5,13 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { shopifyStorefrontQuery } from '@/api';
+import { myAccountQuery } from '@/screens/account/api/myAccountQuery';
 import { cartQuery } from '@/screens/cart/api/cartQuery';
 import { useCartId } from '@/screens/cart/useCartId';
 
-const createCartGQLMutation = (variantId: string) => `
+type CreateCartPayload = { variantId: string; email?: string };
+
+const createCartGQLMutation = ({ variantId, email }: CreateCartPayload) => `
 mutation {
   cartCreate(
     input: {
@@ -18,6 +21,7 @@ mutation {
           merchandiseId: "${variantId}"
         }
       ]
+      buyerIdentity: ${email ? `{ email: "${email}" }` : '{}'}
     }
   ) {
     cart {
@@ -27,13 +31,12 @@ mutation {
 }
 `;
 
+type AddItemToCartPayload = { variantId: string; cartId: string };
+
 const addItemToCartGQLMutation = ({
   variantId,
   cartId,
-}: {
-  variantId: string;
-  cartId: string;
-}) => `
+}: AddItemToCartPayload) => `
 mutation {
   cartLinesAdd(
     cartId: "${cartId}"
@@ -46,23 +49,17 @@ mutation {
 }
 `;
 
-const createCart = async (variantId: string) => {
+const createCart = async (payload: CreateCartPayload) => {
   const res = await shopifyStorefrontQuery<{ cartCreate?: CartCreatePayload }>(
-    createCartGQLMutation(variantId),
+    createCartGQLMutation(payload),
   );
   return res.data.cartCreate?.cart?.id;
 };
 
-const addItemToCart = async ({
-  variantId,
-  cartId,
-}: {
-  variantId: string;
-  cartId: string;
-}) => {
+const addItemToCart = async (payload: AddItemToCartPayload) => {
   const res = await shopifyStorefrontQuery<{
     cartLinesAdd?: CartLinesAddPayload;
-  }>(addItemToCartGQLMutation({ variantId, cartId }));
+  }>(addItemToCartGQLMutation(payload));
   return res.data.cartLinesAdd?.cart?.id;
 };
 
@@ -76,7 +73,11 @@ export const useAddToCart = () => {
       // Check if has existing cart
       return cartId
         ? addItemToCart({ variantId, cartId })
-        : createCart(variantId);
+        : createCart({
+            variantId,
+            email: queryClient.getQueryData(myAccountQuery.queryKey)
+              ?.emailAddress?.emailAddress,
+          });
     },
     onSuccess: (cartId) => {
       if (cartId) {

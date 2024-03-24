@@ -18,11 +18,11 @@ const renderItem: ListRenderItem<ProductEdge> = ({ item }) => (
 export const Shop = () => {
   const { width: windowWidth } = useWindowDimensions();
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+  const { data, fetchNextPage, hasNextPage, isFetching, isLoading } =
     useCollection();
 
   const fetchNextCollectionProductsPage = useEvent(() => {
-    if (hasNextPage && !isFetchingNextPage) {
+    if (hasNextPage && !isFetching && !isLoading) {
       fetchNextPage();
     }
   });

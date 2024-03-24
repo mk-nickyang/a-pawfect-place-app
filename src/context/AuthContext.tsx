@@ -120,6 +120,9 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
   });
 
   const logOut = useCallback(async () => {
+    // Remove account query cache
+    queryClient.removeQueries({ queryKey: myAccountQuery.queryKey });
+
     try {
       await Auth.logOut();
     } catch (error) {
@@ -127,9 +130,6 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
     }
 
     await Auth.removeAuthToken();
-
-    // Remove account cache after logout
-    queryClient.removeQueries({ queryKey: myAccountQuery.queryKey });
 
     removeBuyerIdentityFromCart();
 

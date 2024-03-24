@@ -11,45 +11,6 @@ const getCustomerGQLQuery = () => `
     displayName
     firstName
     lastName
-    orders(first: 10) {
-      edges {
-        node {
-          id
-          name
-          processedAt
-          lineItems(first: 10) {
-            edges {
-              node {
-                id
-                image {
-                  url
-                }
-              }
-            }
-          }
-          totalPrice {
-            amount
-          }
-          fulfillments(first: 10) {
-            edges {
-              node {
-                id
-                createdAt
-                updatedAt
-                status
-                trackingInformation {
-                    company
-                    number
-                    url
-                }
-                estimatedDeliveryAt
-                latestShipmentStatus
-              }
-            }
-          }
-        }
-      }
-    }
   }
 }
 `;
@@ -64,4 +25,5 @@ const fetchMyAccount = async () => {
 export const myAccountQuery = queryOptions({
   queryFn: fetchMyAccount,
   queryKey: ['my-account'],
+  staleTime: Infinity,
 });

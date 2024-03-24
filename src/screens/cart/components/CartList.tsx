@@ -103,7 +103,7 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
     ],
   );
 
-  if (!cart) return emptyView;
+  if (!cart || cartItemsLength === 0) return emptyView;
 
   return (
     <FlashList
