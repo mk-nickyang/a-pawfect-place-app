@@ -30,7 +30,7 @@ export const OrderListItem = ({ order }: Props) => {
 
   return (
     <PressableOpacity
-      onPress={() => navigation.navigate('OrderDetail', { orderId: order.id })}
+      onPress={() => navigation.navigate('OrderDetails', { orderId: order.id })}
     >
       <Box flexDirection="row" alignItems="flex-start" g="m" p="m">
         <Image

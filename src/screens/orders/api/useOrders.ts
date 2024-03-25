@@ -9,5 +9,6 @@ const flattenOrdersPagesData = (data: InfiniteData<CustomerOrders, string>) =>
 export const useOrders = () =>
   useInfiniteQuery({
     ...ordersQuery,
+    staleTime: 1000 * 60 * 5, // 5 mins
     select: flattenOrdersPagesData,
   });

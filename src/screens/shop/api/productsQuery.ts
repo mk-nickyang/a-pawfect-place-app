@@ -1,12 +1,9 @@
-import type {
-  Collection,
-  ProductConnection,
-} from '@shopify/hydrogen-react/storefront-api-types';
-import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
+import type { Collection } from '@shopify/hydrogen-react/storefront-api-types';
+import { infiniteQueryOptions } from '@tanstack/react-query';
 
 import { shopifyStorefrontQuery } from '@/api';
 
-const getCollectionGQLQuery = (endCursor?: string) => `
+const getCollectionProductsGQLQuery = (endCursor?: string) => `
   {
     collection(handle: "all") {
       products(first: 10, ${endCursor ? `after: "${endCursor}", ` : ''}sortKey: BEST_SELLING) {
@@ -46,28 +43,17 @@ const getCollectionGQLQuery = (endCursor?: string) => `
   }
 `;
 
-const fetchCollectionProducts = async ({
-  pageParam,
-}: {
-  pageParam?: string;
-}) => {
+const fetchProducts = async ({ pageParam }: { pageParam?: string }) => {
   const res = await shopifyStorefrontQuery<{ collection: Collection }>(
-    getCollectionGQLQuery(pageParam),
+    getCollectionProductsGQLQuery(pageParam),
   );
   return res.data.collection.products;
 };
 
-const flattenProductsPagesData = (
-  data: InfiniteData<ProductConnection, string>,
-) => data.pages.flatMap((page) => page.edges);
-
-export const useCollection = () => {
-  return useInfiniteQuery({
-    queryFn: fetchCollectionProducts,
-    queryKey: ['collection', 'products'],
-    select: flattenProductsPagesData,
-    initialPageParam: '',
-    getNextPageParam: (lastPage) =>
-      lastPage.pageInfo.hasNextPage ? lastPage.pageInfo.endCursor : undefined,
-  });
-};
+export const productsQuery = infiniteQueryOptions({
+  queryFn: fetchProducts,
+  queryKey: ['collection', 'products'],
+  initialPageParam: '',
+  getNextPageParam: (lastPage) =>
+    lastPage.pageInfo.hasNextPage ? lastPage.pageInfo.endCursor : undefined,
+});

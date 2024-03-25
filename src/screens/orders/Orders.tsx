@@ -1,8 +1,10 @@
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
+import { useQueryClient } from '@tanstack/react-query';
+import { useCallback, useEffect, useState } from 'react';
 
+import { ordersQuery } from './api/ordersQuery';
 import type { CustomerOrderEdge } from './api/types';
 import { useOrders } from './api/useOrders';
-import { useResetOrdersQueryPagination } from './api/useResetOrdersQueryPagination';
 import { OrderListItem } from './components/OrderListItem';
 
 import { Box } from '@/components/Box';
@@ -17,16 +19,51 @@ const renderItem: ListRenderItem<CustomerOrderEdge> = ({ item }) => (
 );
 
 export const Orders = () => {
-  const { data, fetchNextPage, hasNextPage, isFetching, isLoading } =
+  const [isRefetching, setIsRefetching] = useState(false);
+
+  const { data, fetchNextPage, hasNextPage, isFetching, isLoading, refetch } =
     useOrders();
 
-  const fetchNextCollectionProductsPage = useEvent(() => {
+  const queryClient = useQueryClient();
+
+  const fetchNextOrdersPage = useEvent(() => {
     if (hasNextPage && !isFetching && !isLoading) {
       fetchNextPage();
     }
   });
 
-  useResetOrdersQueryPagination();
+  const resetOrdersQueryPagination = useCallback(() => {
+    queryClient.setQueryData(ordersQuery.queryKey, (oldData) => {
+      if (!oldData) return;
+      return {
+        ...oldData,
+        pages: oldData.pages.slice(0, 1),
+        pageParams: oldData.pageParams.slice(0, 1),
+      };
+    });
+  }, [queryClient]);
+
+  const refetchOrdersList = useCallback(async () => {
+    setIsRefetching(true);
+    /**
+     * Reset infinite query pagination before refetch to avoid overwhelming network requests
+     * @see https://tanstack.com/query/v5/docs/framework/react/guides/infinite-queries#what-happens-when-an-infinite-query-needs-to-be-refetched
+     */
+    resetOrdersQueryPagination();
+
+    await refetch();
+
+    setIsRefetching(false);
+  }, [refetch, resetOrdersQueryPagination]);
+
+  useEffect(
+    function resetOrdersQueryPaginationOnUnmount() {
+      return () => {
+        resetOrdersQueryPagination();
+      };
+    },
+    [resetOrdersQueryPagination],
+  );
 
   if (isLoading) return <Loading height="100%" />;
 
@@ -38,8 +75,10 @@ export const Orders = () => {
         keyExtractor={keyExtractor}
         estimatedItemSize={150}
         ItemSeparatorComponent={Divider}
-        onEndReached={fetchNextCollectionProductsPage}
+        onEndReached={fetchNextOrdersPage}
         onEndReachedThreshold={0.5}
+        refreshing={isRefetching}
+        onRefresh={refetchOrdersList}
         ListFooterComponent={hasNextPage ? ListFooter : null}
       />
     </Box>

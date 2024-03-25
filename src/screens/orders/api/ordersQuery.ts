@@ -59,4 +59,5 @@ export const ordersQuery = infiniteQueryOptions({
   initialPageParam: '',
   getNextPageParam: (lastPage) =>
     lastPage.pageInfo.hasNextPage ? lastPage.pageInfo.endCursor : undefined,
+  staleTime: 1000 * 60 * 5, // 5 mins
 });

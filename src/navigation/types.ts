@@ -18,7 +18,7 @@ type AccountTabParamList = {
   PersonalDetails: undefined;
   DeliveryAddress: undefined;
   Orders: undefined;
-  OrderDetail: { orderId: string };
+  OrderDetails: { orderId: string };
 };
 
 export type RootStackParamList = {
@@ -36,7 +36,7 @@ export type RootStackParamList = {
   PersonalDetails: undefined;
   DeliveryAddress: undefined;
   Orders: undefined;
-  OrderDetail: { orderId: string };
+  OrderDetails: { orderId: string };
 };
 
 declare global {
