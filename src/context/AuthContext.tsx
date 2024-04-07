@@ -11,12 +11,12 @@ import {
   useEffect,
 } from 'react';
 
+import { myAccountQuery } from '@/features/account/api/myAccountQuery';
+import { useUpdateCartBuyerIdentity } from '@/features/cart/api/useUpdateCartBuyerIdentity';
+import { useCartId } from '@/features/cart/hooks/useCartId';
 import { useEvent } from '@/hooks/useEvent';
 import { Auth } from '@/modules/auth';
 import { Logger } from '@/modules/logger';
-import { myAccountQuery } from '@/screens/account/api/myAccountQuery';
-import { useUpdateCartBuyerIdentity } from '@/screens/cart/api/useUpdateCartBuyerIdentity';
-import { useCartId } from '@/screens/cart/useCartId';
 
 export const AuthenticationStatus = {
   AUTHENTICATING: 'AUTHENTICATING',

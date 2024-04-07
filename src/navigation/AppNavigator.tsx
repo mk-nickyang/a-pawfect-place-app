@@ -6,16 +6,16 @@ import { View } from 'react-native';
 import type { RootStackParamList } from './types';
 
 import { Icon } from '@/components/Icon';
-import { Account } from '@/screens/account/Account';
-import { Cart } from '@/screens/cart/Cart';
-import { CartBadge } from '@/screens/cart/components/CartBadge';
-import { DeliveryAddress } from '@/screens/delivery-address/DeliveryAddress';
-import { Home } from '@/screens/home/Home';
-import { OrderDetails } from '@/screens/order-details/OrderDetails';
-import { Orders } from '@/screens/orders/Orders';
-import { PersonalDetails } from '@/screens/personal-details/PersonalDetails';
-import { Product } from '@/screens/product/Product';
-import { Shop } from '@/screens/shop/Shop';
+import { Account } from '@/features/account/screens/Account';
+import { DeliveryAddress } from '@/features/account/screens/DeliveryAddress';
+import { PersonalDetails } from '@/features/account/screens/PersonalDetails';
+import { CartBadge } from '@/features/cart/components/CartBadge';
+import { Cart } from '@/features/cart/screens/Cart';
+import { Home } from '@/features/home/Home';
+import { OrderDetails } from '@/features/orders/screens/OrderDetails';
+import { Orders } from '@/features/orders/screens/Orders';
+import { Product } from '@/features/products/screens/Product';
+import { Products } from '@/features/products/screens/Products';
 
 const HomeStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -27,18 +27,18 @@ const HomeStackNavigator = () => {
   );
 };
 
-const ShopStack = createNativeStackNavigator<RootStackParamList>();
+const ProductsStack = createNativeStackNavigator<RootStackParamList>();
 
-const ShopStackNavigator = () => {
+const ProductsStackNavigator = () => {
   return (
-    <ShopStack.Navigator>
-      <ShopStack.Screen name="Shop" component={Shop} />
-      <ShopStack.Screen
+    <ProductsStack.Navigator>
+      <ProductsStack.Screen name="Products" component={Products} />
+      <ProductsStack.Screen
         name="Product"
         component={Product}
         options={{ title: '' }}
       />
-    </ShopStack.Navigator>
+    </ProductsStack.Navigator>
   );
 };
 
@@ -95,10 +95,10 @@ export const AppNavigator = () => {
           }}
         />
         <Tab.Screen
-          name="ShopTab"
-          component={ShopStackNavigator}
+          name="ProductsTab"
+          component={ProductsStackNavigator}
           options={{
-            title: 'Shop',
+            title: 'Products',
             tabBarIcon: ({ color, size }) => (
               <Icon name="shopping-search" color={color} size={size} />
             ),

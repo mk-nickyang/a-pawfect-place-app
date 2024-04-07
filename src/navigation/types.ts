@@ -4,8 +4,8 @@ type HomeTabParamList = {
   Home: undefined;
 };
 
-type ShopTabParamList = {
-  Shop: undefined;
+type ProductsTabParamList = {
+  Products: undefined;
   Product: { productId: string };
 };
 
@@ -24,12 +24,12 @@ type AccountTabParamList = {
 export type RootStackParamList = {
   // Tabs
   HomeTab: NavigatorScreenParams<HomeTabParamList> | undefined;
-  ShopTab: NavigatorScreenParams<ShopTabParamList> | undefined;
+  ProductsTab: NavigatorScreenParams<ProductsTabParamList> | undefined;
   CartTab: NavigatorScreenParams<CartTabParamList> | undefined;
   AccountTab: NavigatorScreenParams<AccountTabParamList> | undefined;
   // Stack screens
   Home: undefined;
-  Shop: undefined;
+  Products: undefined;
   Product: { productId: string };
   Cart: undefined;
   Account: undefined;
