@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
 
-import type { Order, OrderStatus } from '../api/types';
+import type { Order } from '../api/types';
+import { getOrderStatus } from '../api/utils';
 
 import { Box } from '@/components/Box';
 import { PressableOpacity } from '@/components/PressableOpacity';
@@ -14,14 +15,10 @@ const ORDER_ITEM_IMAGE_SIZE = 120;
 
 export const OrderListItem = ({ order }: Props) => {
   const firstLineItem = order.lineItems.edges[0]?.node;
-  const firstFulfillment = order.fulfillments.edges[0]?.node;
 
   const navigation = useNavigation();
 
-  let orderStatus: OrderStatus = 'CONFIRMED';
-  if (firstFulfillment) {
-    orderStatus = firstFulfillment.latestShipmentStatus;
-  }
+  const orderStatus = getOrderStatus(order.fulfillments);
 
   let orderItemsLength = 0;
   for (const lineItemEdge of order.lineItems.edges) {

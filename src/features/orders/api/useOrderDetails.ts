@@ -9,6 +9,21 @@ const getOrderDetailsGQLQuery = (orderId: string) => `
   order(id: "${orderId}") {
     id
     name
+    createdAt
+    processedAt
+    fulfillments(first: 1) {
+      edges {
+        node {
+          id
+          latestShipmentStatus
+          trackingInformation {
+            company
+            number
+            url
+          }
+        }
+      }
+    }
   }
 }
 `;

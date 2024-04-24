@@ -27,11 +27,16 @@ const getCustomerOrdersGQLQuery = (endCursor?: string) => `
           totalPrice {
             amount
           }
-          fulfillments(first: 10) {
+          fulfillments(first: 1) {
             edges {
               node {
                 id
                 latestShipmentStatus
+                trackingInformation {
+                  company
+                  number
+                  url
+                }      
               }
             }
           }

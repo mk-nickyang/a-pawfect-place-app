@@ -8,8 +8,19 @@ type OrderLineItemEdge = {
 };
 
 type OrderFulfillmentEdge = {
-  node: { id: string; createdAt: string; latestShipmentStatus: 'DELIVERED' };
+  node: {
+    id: string;
+    createdAt: string;
+    latestShipmentStatus: 'CONFIRMED' | 'DELIVERED';
+    trackingInformation?: {
+      company: string;
+      number: string;
+      url: string;
+    }[];
+  };
 };
+
+export type OrderFulfillments = { edges: OrderFulfillmentEdge[] };
 
 export type Order = {
   id: string;
@@ -17,7 +28,7 @@ export type Order = {
   processedAt: string;
   lineItems: { edges: OrderLineItemEdge[] };
   totalPrice: MoneyV2;
-  fulfillments: { edges: OrderFulfillmentEdge[] };
+  fulfillments: OrderFulfillments;
 };
 
 export type OrderEdge = { node: Order };
@@ -27,9 +38,12 @@ export type Orders = {
   pageInfo: PageInfo;
 };
 
-export type OrderStatus = 'CONFIRMED' | 'DELIVERED';
+export type OrderStatus = 'CONFIRMED' | 'SHIPPED';
 
 export type OrderDetails = {
   id: string;
   name: string;
+  createdAt: string;
+  processedAt: string;
+  fulfillments: OrderFulfillments;
 };
