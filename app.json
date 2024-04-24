@@ -21,7 +21,7 @@
       "associatedDomains": [
         "applinks:apawfectplace.com.au"
       ],
-      "buildNumber": "4",
+      "buildNumber": "6",
       "config": {
         "usesNonExemptEncryption": false
       }
@@ -63,6 +63,12 @@
       "eas": {
         "projectId": "fa605c80-39cf-4295-836c-f59cda94fb12"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/fa605c80-39cf-4295-836c-f59cda94fb12"
     }
   }
 }

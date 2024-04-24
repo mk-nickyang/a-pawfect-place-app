@@ -123,6 +123,10 @@ export const Account = ({
         />
       ) : null}
 
+      <Text variant="h3" my="s">
+        Hello World from EAS Update
+      </Text>
+
       <LoadingOverlay visible={isLoading} />
     </ScrollView>
   );
