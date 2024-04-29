@@ -9,12 +9,14 @@ const getOrderDetailsGQLQuery = (orderId: string) => `
   order(id: "${orderId}") {
     id
     name
+    note
     createdAt
     processedAt
     fulfillments(first: 1) {
       edges {
         node {
           id
+          createdAt
           latestShipmentStatus
           trackingInformation {
             company
@@ -22,6 +24,63 @@ const getOrderDetailsGQLQuery = (orderId: string) => `
             url
           }
         }
+      }
+    }
+    lineItems(first: 10) {
+      edges {
+        node {
+          id
+          name
+          quantity
+          productId
+          totalPrice {
+            amount
+          }
+          image {
+            url
+          }
+          variantTitle
+        }
+      }
+    }
+    totalShipping {
+      amount
+      currencyCode
+    }
+    totalPrice {
+      amount
+      currencyCode
+    }
+    shippingAddress {
+      name
+      formatted
+    }
+    billingAddress {
+      name
+      formatted
+    }
+    transactions {
+      paymentIcon {
+        url
+      }
+      paymentDetails {
+        ... on CardPaymentDetails {
+          cardBrand
+          last4
+        }
+      }
+      typeDetails {
+        name
+      }
+    }
+    shippingLine {
+      title
+    }
+    refunds {
+      id
+      createdAt
+      totalRefunded {
+        amount
       }
     }
   }

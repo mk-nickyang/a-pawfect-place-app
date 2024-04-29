@@ -31,6 +31,7 @@ const getCustomerOrdersGQLQuery = (endCursor?: string) => `
             edges {
               node {
                 id
+                createdAt
                 latestShipmentStatus
                 trackingInformation {
                   company
@@ -38,6 +39,13 @@ const getCustomerOrdersGQLQuery = (endCursor?: string) => `
                   url
                 }      
               }
+            }
+          }
+          refunds {
+            id
+            createdAt
+            totalRefunded {
+              amount
             }
           }
         }

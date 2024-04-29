@@ -17,7 +17,7 @@ const _CartBadge = ({ cartId }: Props) => {
 
   return (
     <Box
-      backgroundColor="saleBadgeBackground"
+      backgroundColor="badgeBackground"
       position="absolute"
       top={-2}
       right={-10}

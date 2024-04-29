@@ -69,9 +69,7 @@ export const ProductListItem = ({ product }: Props) => {
           width={50}
           height={50}
           borderRadius={50}
-          backgroundColor={
-            isOnSale ? 'saleBadgeBackground' : 'soldOutBadgeBackground'
-          }
+          backgroundColor={isOnSale ? 'badgeBackground' : 'contentPrimary'}
           alignItems="center"
           justifyContent="center"
         >

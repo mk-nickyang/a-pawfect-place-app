@@ -18,7 +18,7 @@ export const OrderListItem = ({ order }: Props) => {
 
   const navigation = useNavigation();
 
-  const orderStatus = getOrderStatus(order.fulfillments);
+  const { status, updatedAt } = getOrderStatus(order);
 
   let orderItemsLength = 0;
   for (const lineItemEdge of order.lineItems.edges) {
@@ -42,8 +42,8 @@ export const OrderListItem = ({ order }: Props) => {
           <Text variant="h3">Order {order.name}</Text>
 
           <Box flexDirection="row" alignItems="center">
-            <Text fontWeight="600">{orderStatus}</Text>
-            <Text> - {formatDate(order.processedAt)}</Text>
+            <Text fontWeight="600">{status}</Text>
+            <Text> - {formatDate(updatedAt)}</Text>
           </Box>
 
           <Text>

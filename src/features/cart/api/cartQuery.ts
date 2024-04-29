@@ -12,9 +12,11 @@ const getCartGQLQuery = (cartId: string) => `
       cost {
         subtotalAmount {
           amount
+          currencyCode
         }
         totalAmount {
           amount
+          currencyCode
         }
       }
       buyerIdentity {

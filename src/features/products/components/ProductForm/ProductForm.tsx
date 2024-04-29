@@ -82,9 +82,7 @@ export const ProductForm = ({ product }: Props) => {
 
         {isOnSale || isSoldOut ? (
           <Box
-            borderColor={
-              isOnSale ? 'saleBadgeBackground' : 'soldOutBadgeBackground'
-            }
+            borderColor={isOnSale ? 'badgeBackground' : 'contentPrimary'}
             borderWidth={1}
             px="s"
             height={24}
@@ -93,9 +91,7 @@ export const ProductForm = ({ product }: Props) => {
             <Text
               variant="caption"
               fontWeight="600"
-              color={
-                isOnSale ? 'saleBadgeBackground' : 'soldOutBadgeBackground'
-              }
+              color={isOnSale ? 'badgeBackground' : 'contentPrimary'}
               letterSpacing={1}
             >
               {isOnSale ? 'SALE' : 'SOLD OUT'}

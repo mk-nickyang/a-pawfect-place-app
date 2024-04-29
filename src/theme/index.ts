@@ -22,8 +22,7 @@ const theme = createTheme({
     disabled: palette.grey,
     success: palette.green,
 
-    saleBadgeBackground: '#f00c',
-    soldOutBadgeBackground: palette.black,
+    badgeBackground: '#f00c',
   },
   spacing: {
     xs: 4,

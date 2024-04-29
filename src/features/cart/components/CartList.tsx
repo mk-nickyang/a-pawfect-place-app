@@ -43,6 +43,7 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
 
   const cartSubtotal = cart?.cost.subtotalAmount.amount;
   const cartTotal = cart?.cost.totalAmount.amount;
+  const cartCurrencyCode = cart?.cost.totalAmount.currencyCode;
 
   const listFooter = useMemo(
     () =>
@@ -72,7 +73,9 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
               justifyContent="space-between"
             >
               <Text fontWeight="600">ORDER TOTAL</Text>
-              <Text variant="h3">${cartTotal}</Text>
+              <Text variant="h3">
+                ${cartTotal} {cartCurrencyCode}
+              </Text>
             </Box>
           </Box>
 
@@ -94,6 +97,7 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
     [
       cart?.checkoutUrl,
       cart?.note,
+      cartCurrencyCode,
       cartId,
       cartItemsLength,
       cartSubtotal,
