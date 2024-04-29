@@ -10,7 +10,7 @@ import { Haptics } from '@/modules/haptics';
 
 type Props = { quantity: number; lineId: string; cartId: string };
 
-const QUANTITY_BUTTON_SIZE = 40;
+const QUANTITY_BUTTON_SIZE = 36;
 
 export const LineItemQuantity = memo(({ quantity, lineId, cartId }: Props) => {
   const { mutate, isPending } = useUpdateCartItemQuantity(cartId);

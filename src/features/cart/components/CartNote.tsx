@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: theme.spacing.xs,
-    marginBottom: theme.spacing.l,
+    marginBottom: theme.spacing.m,
   },
   noteText: {
     flex: 1,

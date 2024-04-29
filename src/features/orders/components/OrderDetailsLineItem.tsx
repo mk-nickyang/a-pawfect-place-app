@@ -1,11 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import { Image } from 'expo-image';
+import { StyleSheet } from 'react-native';
 
 import type { OrderDetailsLineItemEdge } from '../api/types';
 
 import { Box } from '@/components/Box';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
+import { formatPrice } from '@/utils/currency';
 
 type Props = { lineItem: OrderDetailsLineItemEdge['node'] };
 
@@ -26,13 +28,7 @@ export const OrderDetailsLineItem = ({ lineItem }: Props) => {
   return (
     <Box flexDirection="row" alignItems="center" g="l">
       <PressableOpacity onPress={navigateToProduct}>
-        <Image
-          source={lineItem.image?.url}
-          style={{
-            width: LINE_ITEM_IMAGE_SIZE,
-            height: LINE_ITEM_IMAGE_SIZE,
-          }}
-        />
+        <Image source={lineItem.image?.url} style={styles.image} />
 
         <Box
           backgroundColor="badgeBackground"
@@ -62,7 +58,15 @@ export const OrderDetailsLineItem = ({ lineItem }: Props) => {
         <Text fontWeight="600">{lineItem.name}</Text>
       </Box>
 
-      <Text>${lineItem.totalPrice?.amount}</Text>
+      <Text>{formatPrice(lineItem.totalPrice)}</Text>
     </Box>
   );
 };
+
+const styles = StyleSheet.create({
+  image: {
+    width: LINE_ITEM_IMAGE_SIZE,
+    height: LINE_ITEM_IMAGE_SIZE,
+    borderRadius: 6,
+  },
+});

@@ -1,15 +1,17 @@
 import { useNavigation } from '@react-navigation/native';
 import type { Product } from '@shopify/hydrogen-react/storefront-api-types';
 import { Image } from 'expo-image';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 
 import { Box } from '@/components/Box';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
+import theme from '@/theme';
+import { formatPrice } from '@/utils/currency';
 
-type Props = { product: Product };
+type Props = { product: Product; style?: StyleProp<ViewStyle> };
 
-export const ProductListItem = ({ product }: Props) => {
+export const ProductListItem = ({ product, style }: Props) => {
   const navigation = useNavigation();
 
   /**
@@ -27,36 +29,37 @@ export const ProductListItem = ({ product }: Props) => {
    */
   const isSoldOut = !product.availableForSale;
 
-  const compareAtPrice = product.compareAtPriceRange.minVariantPrice.amount;
-  const currentPrice = product.priceRange.minVariantPrice.amount;
+  const compareAtPrice = product.compareAtPriceRange.minVariantPrice;
+  const currentPrice = product.priceRange.minVariantPrice;
 
   const isOnSale =
-    !!compareAtPrice && Number(compareAtPrice) > Number(currentPrice);
+    !!compareAtPrice.amount &&
+    Number(compareAtPrice.amount) > Number(currentPrice.amount);
 
   const hasMultiplePrices =
-    product.priceRange.maxVariantPrice.amount !== currentPrice;
+    product.priceRange.maxVariantPrice.amount !== currentPrice.amount;
 
   return (
     <PressableOpacity
       onPress={() => navigation.navigate('Product', { productId: product.id })}
-      style={styles.container}
+      style={[styles.container, style]}
     >
       <View style={styles.imageContainer}>
-        <Image
-          source={product.featuredImage?.url}
-          style={StyleSheet.absoluteFill}
-        />
+        <Image source={product.featuredImage?.url} style={styles.image} />
       </View>
 
-      <Box p="s">
+      <Box>
         <Text>{product.title}</Text>
 
-        <Box flexDirection="row" gap="s">
-          <Text>
-            {hasMultiplePrices ? 'from ' : ''}${currentPrice}
+        <Box flexDirection="row" pt="xs" gap="s">
+          <Text fontWeight="600">
+            {hasMultiplePrices ? 'from ' : ''}
+            {formatPrice(currentPrice)}
           </Text>
           {isOnSale ? (
-            <Text textDecorationLine="line-through">${compareAtPrice}</Text>
+            <Text textDecorationLine="line-through">
+              {formatPrice(compareAtPrice)}
+            </Text>
           ) : null}
         </Box>
       </Box>
@@ -90,8 +93,14 @@ export const ProductListItem = ({ product }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingVertical: theme.spacing.s,
   },
   imageContainer: {
     paddingBottom: '100%',
+    marginBottom: theme.spacing.s,
+  },
+  image: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 6,
   },
 });

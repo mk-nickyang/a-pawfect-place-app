@@ -16,6 +16,7 @@ import { OrderDetails } from '@/features/orders/screens/OrderDetails';
 import { Orders } from '@/features/orders/screens/Orders';
 import { Product } from '@/features/products/screens/Product';
 import { Products } from '@/features/products/screens/Products';
+import theme from '@/theme';
 
 const HomeStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -83,7 +84,13 @@ const Tab = createBottomTabNavigator();
 export const AppNavigator = () => {
   return (
     <NavigationContainer>
-      <Tab.Navigator screenOptions={{ headerShown: false }}>
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false,
+          tabBarActiveTintColor: theme.colors.contentPrimary,
+          tabBarInactiveTintColor: theme.colors.contentSecondary,
+        }}
+      >
         <Tab.Screen
           name="HomeTab"
           component={HomeStackNavigator}

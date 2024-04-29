@@ -61,7 +61,9 @@ export const Account = ({
     <ScrollView>
       <Box
         backgroundColor="mainBackground"
-        p="m"
+        px="m"
+        pt="m"
+        pb={account ? undefined : 'm'}
         mb={account ? undefined : 'm'}
       >
         <Text variant="h3" mb="s">

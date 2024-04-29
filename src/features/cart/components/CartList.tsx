@@ -12,6 +12,7 @@ import { Box } from '@/components/Box';
 import { Button } from '@/components/Button';
 import { Divider } from '@/components/Divider';
 import { Text } from '@/components/Text';
+import { formatPrice } from '@/utils/currency';
 
 type Props = { cartId: string; emptyView: JSX.Element };
 
@@ -41,15 +42,14 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
 
   const cartItemsLength = cart ? selectCartItemsLength(cart) : 0;
 
-  const cartSubtotal = cart?.cost.subtotalAmount.amount;
-  const cartTotal = cart?.cost.totalAmount.amount;
-  const cartCurrencyCode = cart?.cost.totalAmount.currencyCode;
+  const cartSubtotal = formatPrice(cart?.cost.subtotalAmount);
+  const cartTotal = formatPrice(cart?.cost.totalAmount, { currencyCode: true });
 
   const listFooter = useMemo(
     () =>
       cartItemsLength ? (
         <Box p="m" g="s" borderTopWidth={1} borderColor="borderPrimary">
-          <Box mb="m" g="s">
+          <Box mb="s" g="s">
             <Box flexDirection="row" alignItems="center">
               <Text fontWeight="600">ORDER SUMMARY</Text>
               <Text>
@@ -64,7 +64,7 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
               justifyContent="space-between"
             >
               <Text fontWeight="600">SUBTOTAL</Text>
-              <Text>${cartSubtotal}</Text>
+              <Text>{cartSubtotal}</Text>
             </Box>
 
             <Box
@@ -73,9 +73,7 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
               justifyContent="space-between"
             >
               <Text fontWeight="600">ORDER TOTAL</Text>
-              <Text variant="h3">
-                ${cartTotal} {cartCurrencyCode}
-              </Text>
+              <Text variant="h3">{cartTotal}</Text>
             </Box>
           </Box>
 
@@ -97,7 +95,6 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
     [
       cart?.checkoutUrl,
       cart?.note,
-      cartCurrencyCode,
       cartId,
       cartItemsLength,
       cartSubtotal,

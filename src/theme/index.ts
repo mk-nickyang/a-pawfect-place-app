@@ -34,30 +34,30 @@ const theme = createTheme({
   textVariants: {
     h1: {
       fontWeight: 'bold',
-      fontSize: 34,
-      lineHeight: 42.5,
+      fontSize: 28,
+      lineHeight: 36,
     },
     h2: {
       fontWeight: '600',
-      fontSize: 24,
-      lineHeight: 32,
+      fontSize: 20,
+      lineHeight: 28,
     },
     h3: {
       fontWeight: '600',
-      fontSize: 20,
-      lineHeight: 24,
+      fontSize: 16,
+      lineHeight: 20,
     },
     body: {
-      fontSize: 16,
-      lineHeight: 24,
+      fontSize: 14,
+      lineHeight: 20,
     },
     caption: {
       fontSize: 12,
       lineHeight: 16,
     },
     defaults: {
-      fontSize: 16,
-      lineHeight: 24,
+      fontSize: 14,
+      lineHeight: 20,
     },
   },
 });

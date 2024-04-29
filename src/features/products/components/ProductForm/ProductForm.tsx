@@ -10,6 +10,7 @@ import { ProductOptionItem } from './ProductOptionItem';
 import { Box } from '@/components/Box';
 import { Text } from '@/components/Text';
 import { useEvent } from '@/hooks/useEvent';
+import { formatPrice } from '@/utils/currency';
 
 type Props = { product: Product };
 
@@ -70,13 +71,13 @@ export const ProductForm = ({ product }: Props) => {
   const isSoldOut = !selectedVariant?.availableForSale;
 
   return (
-    <Box mt="m" mb="xl">
-      <Box mb="m" flexDirection="row" alignItems="center" g="s">
-        <Text variant="h3">${selectedVariant?.price.amount}</Text>
+    <Box mt="s" mb="xl">
+      <Box mb="s" flexDirection="row" alignItems="center" g="s">
+        <Text variant="h3">{formatPrice(selectedVariant?.price)}</Text>
 
         {isOnSale ? (
           <Text color="contentSecondary" textDecorationLine="line-through">
-            ${selectedVariant.compareAtPrice?.amount}
+            {formatPrice(selectedVariant.compareAtPrice)}
           </Text>
         ) : null}
 

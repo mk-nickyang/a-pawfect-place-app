@@ -13,6 +13,7 @@ import { Loading } from '@/components/Loading';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
 import type { RootStackParamList } from '@/navigation/types';
+import { formatPrice } from '@/utils/currency';
 import { formatDate } from '@/utils/date';
 
 export const OrderDetails = ({
@@ -31,7 +32,7 @@ export const OrderDetails = ({
   const tracking = order.fulfillments.edges[0]?.node.trackingInformation?.[0];
   const paymentTransaction = order.transactions?.[0];
   const shippingMethod = order.shippingLine?.title;
-  const refundAmount = order.refunds?.[0]?.totalRefunded.amount;
+  const refundAmount = formatPrice(order.refunds?.[0]?.totalRefunded);
 
   return (
     <ScrollView>
@@ -58,10 +59,10 @@ export const OrderDetails = ({
       </Box>
 
       {order.lineItems?.edges.length ? (
-        <Box p="m" mb="m" g="m" backgroundColor="mainBackground">
+        <Box p="m" mb="m" g="s" backgroundColor="mainBackground">
           <Text fontWeight="600">Order Summary</Text>
 
-          <Box g="l">
+          <Box my="s" g="m">
             {order.lineItems.edges.map(({ node: lineItem }) => (
               <OrderDetailsLineItem key={lineItem.id} lineItem={lineItem} />
             ))}
@@ -88,7 +89,7 @@ export const OrderDetails = ({
               <Text>
                 {Number(order.totalShipping.amount) === 0
                   ? 'Free'
-                  : `$${order.totalShipping?.amount}`}
+                  : formatPrice(order.totalShipping)}
               </Text>
             </Box>
           ) : null}
@@ -100,7 +101,7 @@ export const OrderDetails = ({
               justifyContent="space-between"
             >
               <Text color="contentSecondary">Refunded</Text>
-              <Text>-${refundAmount}</Text>
+              <Text>-{refundAmount}</Text>
             </Box>
           ) : null}
 
@@ -111,13 +112,13 @@ export const OrderDetails = ({
           >
             <Text color="contentSecondary">Total</Text>
             <Text variant="h3">
-              ${order.totalPrice?.amount} {order.totalPrice?.currencyCode}
+              {formatPrice(order.totalPrice, { currencyCode: true })}
             </Text>
           </Box>
         </Box>
       ) : null}
 
-      <Box px="m" pt="m" pb="l" g="l" backgroundColor="mainBackground">
+      <Box px="m" pt="m" pb="l" g="m" backgroundColor="mainBackground">
         <Box>
           <Text color="contentSecondary">Shipping address</Text>
           <Text>{order.shippingAddress?.name}</Text>
