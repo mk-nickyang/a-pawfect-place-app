@@ -36,3 +36,6 @@ yarn-error.*
 
 android/
 ios/
+
+# Google Service Account Key
+google-service-account-key.json
