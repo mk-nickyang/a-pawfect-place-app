@@ -1,4 +1,3 @@
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { FlashList, type ListRenderItem } from '@shopify/flash-list';
 import type { ProductEdge } from '@shopify/hydrogen-react/storefront-api-types';
 import { useQueryClient } from '@tanstack/react-query';
@@ -8,13 +7,12 @@ import { StyleSheet } from 'react-native';
 import { productsQuery } from '../api/productsQuery';
 import { useProducts } from '../api/useProducts';
 import { ProductListItem } from '../components/ProductListItem';
+import { ProductsSearchBar } from '../components/ProductsSearch/ProductsSearchBar';
 import { ProductsSearchOverlay } from '../components/ProductsSearch/ProductsSearchOverlay';
-import { useHeaderSearchBar } from '../hooks/useHeaderSearchBar';
 
 import { Box } from '@/components/Box';
 import { Loading } from '@/components/Loading';
 import { useEvent } from '@/hooks/useEvent';
-import type { RootStackParamList } from '@/navigation/types';
 import theme from '@/theme';
 
 const keyExtractor = (item: ProductEdge) => item.node.id;
@@ -27,17 +25,13 @@ const renderItem: ListRenderItem<ProductEdge> = ({ item, index }) => (
   />
 );
 
-export const Products = ({
-  navigation,
-}: NativeStackScreenProps<RootStackParamList, 'Products'>) => {
+export const Products = () => {
   /**
    * Use `isRefetching` from `useQuery` will cause RefreshControl component flickering,
    * use local state here as a workaround.
    * @see https://github.com/TanStack/query/issues/2380
    */
   const [isRefetching, setIsRefetching] = useState(false);
-
-  useHeaderSearchBar(navigation);
 
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading, refetch } =
     useProducts();
@@ -89,7 +83,8 @@ export const Products = ({
         refreshing={isRefetching}
         onRefresh={refetchProductsList}
         contentInsetAdjustmentBehavior="automatic"
-        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
+        ListHeaderComponent={ProductsSearchBar}
         ListFooterComponent={hasNextPage ? ListFooter : null}
         contentContainerStyle={styles.list}
       />
@@ -103,7 +98,7 @@ const ListFooter = () => <Loading height={50} />;
 
 const styles = StyleSheet.create({
   list: {
-    paddingVertical: theme.spacing.s,
+    paddingBottom: theme.spacing.s,
   },
   leftListItem: {
     flex: 1,

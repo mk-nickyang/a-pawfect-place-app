@@ -14,7 +14,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { Text } from '@/components/Text';
 import theme from '@/theme';
 
-const RECENTLY_VIEWED_PRODUCT_ITEM_WIDTH = 200;
+const RECENTLY_VIEWED_PRODUCT_ITEM_WIDTH = 180;
 
 const keyExtractor = (item: Product) => item.id;
 
@@ -37,18 +37,22 @@ export const RecentlyViewedProducts = memo(() => {
        */
       onError={() => RecentlyViewedProductsStorage.clear()}
     >
-      <Text variant="h2" mb="m">
-        Recently viewed
-      </Text>
-      <FlatList
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        data={recentlyViewedProducts}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-        ItemSeparatorComponent={ListItemSeparator}
-        initialNumToRender={2}
-      />
+      <Box mb="l">
+        <Text variant="h2" mb="m">
+          Recently viewed
+        </Text>
+
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={recentlyViewedProducts}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          keyboardShouldPersistTaps="handled"
+          ItemSeparatorComponent={ListItemSeparator}
+          initialNumToRender={2}
+        />
+      </Box>
     </ErrorBoundary>
   );
 });

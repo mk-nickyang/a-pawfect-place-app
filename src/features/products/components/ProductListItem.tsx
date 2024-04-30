@@ -86,7 +86,7 @@ export const ProductListItem = memo(
             justifyContent="center"
           >
             <Text
-              variant={isOnSale ? 'body' : 'caption'}
+              variant={isOnSale ? 'body2' : 'caption'}
               color="contentInverse"
               textAlign="center"
               allowFontScaling={false}

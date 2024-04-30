@@ -1,8 +1,9 @@
-import * as Sentry from '@sentry/react-native';
-import { Component, ErrorInfo, PropsWithChildren } from 'react';
+import { Component, type PropsWithChildren } from 'react';
 
 import { Box } from './Box';
 import { Text } from './Text';
+
+import { Logger } from '@/modules/logger';
 
 type Props = PropsWithChildren<{ onError?: () => void }>;
 
@@ -17,9 +18,9 @@ class ErrorBoundary extends Component<Props, { hasError: boolean }> {
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error, info: ErrorInfo) {
+  componentDidCatch(error: Error) {
     this.props.onError?.();
-    Sentry.captureException(error, { data: info });
+    Logger.error(error);
   }
 
   render() {

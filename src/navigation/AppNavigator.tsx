@@ -33,7 +33,11 @@ const ProductsStack = createNativeStackNavigator<RootStackParamList>();
 const ProductsStackNavigator = () => {
   return (
     <ProductsStack.Navigator>
-      <ProductsStack.Screen name="Products" component={Products} />
+      <ProductsStack.Screen
+        name="Products"
+        component={Products}
+        options={{ headerShown: false }}
+      />
       <ProductsStack.Screen
         name="Product"
         component={Product}

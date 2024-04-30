@@ -23,6 +23,7 @@ const theme = createTheme({
     success: palette.green,
 
     badgeBackground: '#f00c',
+    inputBackground: 'rgba(0, 0, 0, 0.03)',
   },
   spacing: {
     xs: 4,
@@ -47,7 +48,11 @@ const theme = createTheme({
       fontSize: 16,
       lineHeight: 20,
     },
-    body: {
+    body1: {
+      fontSize: 16,
+      lineHeight: 20,
+    },
+    body2: {
       fontSize: 14,
       lineHeight: 20,
     },
