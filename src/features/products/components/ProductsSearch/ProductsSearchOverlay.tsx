@@ -14,7 +14,7 @@ const ProductsSearchOverlayView = () => {
 
   return (
     <Box
-      backgroundColor="badgeBackground"
+      backgroundColor="mainBackground"
       position="absolute"
       top={0}
       left={0}
