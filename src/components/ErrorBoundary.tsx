@@ -4,11 +4,10 @@ import { Component, ErrorInfo, PropsWithChildren } from 'react';
 import { Box } from './Box';
 import { Text } from './Text';
 
-class ErrorBoundary extends Component<
-  PropsWithChildren,
-  { hasError: boolean }
-> {
-  constructor(props: PropsWithChildren) {
+type Props = PropsWithChildren<{ onError?: () => void }>;
+
+class ErrorBoundary extends Component<Props, { hasError: boolean }> {
+  constructor(props: Props) {
     super(props);
     this.state = { hasError: false };
   }
@@ -19,6 +18,7 @@ class ErrorBoundary extends Component<
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
+    this.props.onError?.();
     Sentry.captureException(error, { data: info });
   }
 

@@ -5,6 +5,7 @@ import { useProduct } from '../api/useProduct';
 import { ProductDescription } from '../components/ProductDescription';
 import { ProductForm } from '../components/ProductForm/ProductForm';
 import { ProductImages } from '../components/ProductImages';
+import { ProductRecommendations } from '../components/ProductRecommendations';
 
 import { Box } from '@/components/Box';
 import { Loading } from '@/components/Loading';
@@ -35,6 +36,8 @@ export const Product = ({
 
         <Text variant="h2">Description</Text>
         <ProductDescription descriptionHtml={product.descriptionHtml} />
+
+        <ProductRecommendations productId={product.id} />
       </Box>
     </ScrollView>
   );

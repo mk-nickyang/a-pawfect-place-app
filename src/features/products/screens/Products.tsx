@@ -1,16 +1,20 @@
-import { FlashList, ListRenderItem } from '@shopify/flash-list';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { FlashList, type ListRenderItem } from '@shopify/flash-list';
 import type { ProductEdge } from '@shopify/hydrogen-react/storefront-api-types';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
-import { useWindowDimensions, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { productsQuery } from '../api/productsQuery';
 import { useProducts } from '../api/useProducts';
 import { ProductListItem } from '../components/ProductListItem';
+import { ProductsSearchOverlay } from '../components/ProductsSearch/ProductsSearchOverlay';
+import { useHeaderSearchBar } from '../hooks/useHeaderSearchBar';
 
 import { Box } from '@/components/Box';
 import { Loading } from '@/components/Loading';
 import { useEvent } from '@/hooks/useEvent';
+import type { RootStackParamList } from '@/navigation/types';
 import theme from '@/theme';
 
 const keyExtractor = (item: ProductEdge) => item.node.id;
@@ -18,11 +22,14 @@ const keyExtractor = (item: ProductEdge) => item.node.id;
 const renderItem: ListRenderItem<ProductEdge> = ({ item, index }) => (
   <ProductListItem
     product={item.node}
-    style={index % 2 === 0 ? styles.leftItem : styles.rightItem}
+    badgeRightOffset={index % 2 === 0 ? 0 : 8}
+    style={index % 2 === 0 ? styles.leftListItem : styles.rightListItem}
   />
 );
 
-export const Products = () => {
+export const Products = ({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, 'Products'>) => {
   /**
    * Use `isRefetching` from `useQuery` will cause RefreshControl component flickering,
    * use local state here as a workaround.
@@ -30,7 +37,7 @@ export const Products = () => {
    */
   const [isRefetching, setIsRefetching] = useState(false);
 
-  const { width: windowWidth } = useWindowDimensions();
+  useHeaderSearchBar(navigation);
 
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading, refetch } =
     useProducts();
@@ -76,14 +83,18 @@ export const Products = () => {
         data={data}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
-        estimatedItemSize={windowWidth / 2 + 112}
+        estimatedItemSize={260}
         onEndReached={fetchNextCollectionProductsPage}
         onEndReachedThreshold={0.5}
         refreshing={isRefetching}
         onRefresh={refetchProductsList}
+        contentInsetAdjustmentBehavior="automatic"
+        keyboardDismissMode="on-drag"
         ListFooterComponent={hasNextPage ? ListFooter : null}
         contentContainerStyle={styles.list}
       />
+
+      <ProductsSearchOverlay />
     </Box>
   );
 };
@@ -94,12 +105,16 @@ const styles = StyleSheet.create({
   list: {
     paddingVertical: theme.spacing.s,
   },
-  leftItem: {
+  leftListItem: {
+    flex: 1,
     paddingLeft: theme.spacing.m,
     paddingRight: theme.spacing.s,
+    paddingVertical: theme.spacing.s,
   },
-  rightItem: {
+  rightListItem: {
+    flex: 1,
     paddingLeft: theme.spacing.s,
     paddingRight: theme.spacing.m,
+    paddingVertical: theme.spacing.s,
   },
 });
