@@ -46,11 +46,11 @@ const theme = createTheme({
     h3: {
       fontWeight: '600',
       fontSize: 16,
-      lineHeight: 20,
+      lineHeight: 24,
     },
     body1: {
       fontSize: 16,
-      lineHeight: 20,
+      lineHeight: 24,
     },
     body2: {
       fontSize: 14,

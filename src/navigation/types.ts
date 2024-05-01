@@ -5,8 +5,10 @@ type HomeTabParamList = {
 };
 
 type ProductsTabParamList = {
-  Products: undefined;
-  Product: { productId: string };
+  ProductsHome: undefined;
+  CollectionProducts: { collectionHandle: string; collectionTitle: string };
+  SearchProducts: { searchQuery: string };
+  Product: { productId: string; productTitle?: string };
 };
 
 type CartTabParamList = {
@@ -22,22 +24,14 @@ type AccountTabParamList = {
 };
 
 export type RootStackParamList = {
-  // Tabs
   HomeTab: NavigatorScreenParams<HomeTabParamList> | undefined;
   ProductsTab: NavigatorScreenParams<ProductsTabParamList> | undefined;
   CartTab: NavigatorScreenParams<CartTabParamList> | undefined;
   AccountTab: NavigatorScreenParams<AccountTabParamList> | undefined;
-  // Stack screens
-  Home: undefined;
-  Products: undefined;
-  Product: { productId: string };
-  Cart: undefined;
-  Account: undefined;
-  PersonalDetails: undefined;
-  DeliveryAddress: undefined;
-  Orders: undefined;
-  OrderDetails: { orderId: string };
-};
+} & HomeTabParamList &
+  ProductsTabParamList &
+  CartTabParamList &
+  AccountTabParamList;
 
 declare global {
   namespace ReactNavigation {

@@ -6,10 +6,7 @@ type ProductsSearchStore = {
   actions: {
     showSearch: () => void;
     hideSearch: () => void;
-    updateSearchQuery: (
-      newQuery: string,
-      options?: { hideSearch?: boolean },
-    ) => void;
+    updateSearchQuery: (newQuery: string) => void;
   };
 };
 
@@ -19,11 +16,7 @@ const useProductsSearchStore = create<ProductsSearchStore>((set) => ({
   actions: {
     showSearch: () => set({ visible: true }),
     hideSearch: () => set({ visible: false }),
-    updateSearchQuery: (newQuery, options) =>
-      set((state) => ({
-        query: newQuery,
-        visible: options?.hideSearch ?? state.visible,
-      })),
+    updateSearchQuery: (newQuery) => set({ query: newQuery }),
   },
 }));
 

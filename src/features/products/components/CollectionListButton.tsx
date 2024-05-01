@@ -6,19 +6,17 @@ import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
 
 type Props = {
+  title: string;
+  bold?: boolean;
+  arrow?: boolean;
   onPress: () => void;
-  label: string;
-  leftIcon?: JSX.Element;
-  rightIcon?: JSX.Element;
-  noBorder?: boolean;
 };
 
-export const AccountListButton = ({
+export const CollectionListButton = ({
+  title,
+  bold,
+  arrow,
   onPress,
-  label,
-  leftIcon,
-  rightIcon,
-  noBorder,
 }: Props) => {
   return (
     <PressableOpacity onPress={onPress}>
@@ -26,17 +24,13 @@ export const AccountListButton = ({
         flexDirection="row"
         alignItems="center"
         justifyContent="space-between"
-        backgroundColor="mainBackground"
-        padding="m"
-        borderBottomWidth={noBorder ? 0 : StyleSheet.hairlineWidth}
+        p="m"
+        borderBottomWidth={StyleSheet.hairlineWidth}
         borderBottomColor="borderPrimary"
       >
-        <Box flexDirection="row" alignItems="center" g="s">
-          {leftIcon}
-          <Text>{label}</Text>
-        </Box>
+        <Text variant={bold ? 'h3' : 'body1'}>{title}</Text>
 
-        {rightIcon || <Icon name="chevron-right" size={24} />}
+        {arrow ? <Icon name="chevron-right" size={24} /> : null}
       </Box>
     </PressableOpacity>
   );

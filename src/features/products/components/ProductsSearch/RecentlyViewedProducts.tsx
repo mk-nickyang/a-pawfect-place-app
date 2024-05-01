@@ -7,7 +7,7 @@ import {
   RECENTLY_VIEWED_PRODUCTS_STORAGE_KEY,
   RecentlyViewedProductsStorage,
 } from '../../modules/recentlyViewedProducts';
-import { ProductListItem } from '../ProductListItem';
+import { ProductListItem } from '../ProductList/ProductListItem';
 
 import { Box } from '@/components/Box';
 import { ErrorBoundary } from '@/components/ErrorBoundary';

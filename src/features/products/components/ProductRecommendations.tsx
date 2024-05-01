@@ -2,7 +2,7 @@ import type { Product } from '@shopify/hydrogen-react/storefront-api-types';
 import { memo } from 'react';
 import { FlatList, type ListRenderItem, StyleSheet } from 'react-native';
 
-import { ProductListItem } from './ProductListItem';
+import { ProductListItem } from './ProductList/ProductListItem';
 import { useProductRecommendations } from '../api/useProductRecommendations';
 
 import { Box } from '@/components/Box';

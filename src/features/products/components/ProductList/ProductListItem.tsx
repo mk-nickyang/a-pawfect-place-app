@@ -4,7 +4,7 @@ import { Image } from 'expo-image';
 import { memo } from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 
-import { RecentlyViewedProductsStorage } from '../modules/recentlyViewedProducts';
+import { RecentlyViewedProductsStorage } from '../../modules/recentlyViewedProducts';
 
 import { Box } from '@/components/Box';
 import { PressableOpacity } from '@/components/PressableOpacity';
@@ -23,7 +23,10 @@ export const ProductListItem = memo(
     const navigation = useNavigation();
 
     const onItemPress = () => {
-      navigation.navigate('Product', { productId: product.id });
+      navigation.navigate('Product', {
+        productId: product.id,
+        productTitle: product.title,
+      });
       // Wrapping with `setTimeout` since we don't want it to block the main JS thread when loading product screen
       setTimeout(() => RecentlyViewedProductsStorage.add(product));
     };

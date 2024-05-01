@@ -1,10 +1,10 @@
-import { memo, useCallback, useEffect, useRef } from 'react';
+import debounce from 'lodash.debounce';
+import { memo, useCallback, useRef } from 'react';
 import { Keyboard, StyleSheet, TextInput } from 'react-native';
 
 import {
   useIsProductsSearchShowing,
   useProductsSearchActions,
-  useSearchQuery,
 } from '../../store/productsSearch';
 
 import { Box } from '@/components/Box';
@@ -20,15 +20,8 @@ export const ProductsSearchBar = memo(() => {
 
   const { colors } = useTheme();
 
-  const searchQuery = useSearchQuery();
-  const { showSearch, hideSearch } = useProductsSearchActions();
-
-  useEffect(
-    function syncSearchInput() {
-      inputRef.current?.setNativeProps({ text: searchQuery });
-    },
-    [searchQuery],
-  );
+  const { showSearch, hideSearch, updateSearchQuery } =
+    useProductsSearchActions();
 
   const onFocus = () => {
     showSearch();
@@ -37,7 +30,13 @@ export const ProductsSearchBar = memo(() => {
   const onCancel = useCallback(() => {
     Keyboard.dismiss();
     hideSearch();
+    inputRef.current?.setNativeProps({ text: '' });
   }, [hideSearch]);
+
+  const onChangeText = useCallback(
+    (newText: string) => updateSearchQuery(newText),
+    [updateSearchQuery],
+  );
 
   return (
     <Box
@@ -61,6 +60,7 @@ export const ProductsSearchBar = memo(() => {
         <TextInput
           ref={inputRef}
           onFocus={onFocus}
+          onChangeText={debounce(onChangeText, 300)}
           placeholder="Search by Keyword"
           placeholderTextColor={colors.contentSecondary}
           clearButtonMode="while-editing"

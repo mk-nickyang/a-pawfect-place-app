@@ -66,12 +66,12 @@ export const Account = ({
         pb={account ? undefined : 'm'}
         mb={account ? undefined : 'm'}
       >
-        <Text variant="h3" mb="s">
+        <Text variant="h2" mb="s">
           Hi {account?.displayName || 'there'},
         </Text>
 
         {account ? (
-          <Text>Welcome to your account</Text>
+          <Text variant="body1">Welcome to your account</Text>
         ) : (
           <Box flexDirection="row" alignItems="center">
             <PressableOpacity onPress={login}>

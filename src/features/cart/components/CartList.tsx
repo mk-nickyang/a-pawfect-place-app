@@ -3,6 +3,7 @@ import { useShopifyCheckoutSheet } from '@shopify/checkout-sheet-kit';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import type { BaseCartLineEdge } from '@shopify/hydrogen-react/storefront-api-types';
 import { memo, useCallback, useEffect, useMemo } from 'react';
+import { StyleSheet } from 'react-native';
 
 import { CartLineItem } from './CartLineItem';
 import { CartNote } from './CartNote';
@@ -48,7 +49,12 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
   const listFooter = useMemo(
     () =>
       cartItemsLength ? (
-        <Box p="m" g="s" borderTopWidth={1} borderColor="borderPrimary">
+        <Box
+          p="m"
+          g="s"
+          borderTopWidth={StyleSheet.hairlineWidth}
+          borderColor="borderPrimary"
+        >
           <Box mb="s" g="s">
             <Box flexDirection="row" alignItems="center">
               <Text fontWeight="600">ORDER SUMMARY</Text>

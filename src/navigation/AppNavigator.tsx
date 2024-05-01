@@ -14,8 +14,10 @@ import { Cart } from '@/features/cart/screens/Cart';
 import { Home } from '@/features/home/Home';
 import { OrderDetails } from '@/features/orders/screens/OrderDetails';
 import { Orders } from '@/features/orders/screens/Orders';
+import { CollectionProducts } from '@/features/products/screens/CollectionProducts';
 import { Product } from '@/features/products/screens/Product';
-import { Products } from '@/features/products/screens/Products';
+import { ProductsHome } from '@/features/products/screens/ProductsHome';
+import { SearchProducts } from '@/features/products/screens/SearchProducts';
 import theme from '@/theme';
 
 const HomeStack = createNativeStackNavigator<RootStackParamList>();
@@ -32,16 +34,35 @@ const ProductsStack = createNativeStackNavigator<RootStackParamList>();
 
 const ProductsStackNavigator = () => {
   return (
-    <ProductsStack.Navigator>
+    <ProductsStack.Navigator
+      screenOptions={{
+        headerBackButtonMenuEnabled: false,
+        headerBackTitleVisible: false,
+      }}
+    >
       <ProductsStack.Screen
-        name="Products"
-        component={Products}
+        name="ProductsHome"
+        component={ProductsHome}
         options={{ headerShown: false }}
+      />
+      <ProductsStack.Screen
+        name="CollectionProducts"
+        component={CollectionProducts}
+        options={({ route }) => ({ title: route.params.collectionTitle })}
+      />
+      <ProductsStack.Screen
+        name="SearchProducts"
+        component={SearchProducts}
+        options={({ route }) => ({
+          title: route.params.searchQuery
+            ? `Results for '${route.params.searchQuery}'`
+            : '',
+        })}
       />
       <ProductsStack.Screen
         name="Product"
         component={Product}
-        options={{ title: '' }}
+        options={({ route }) => ({ title: route.params.productTitle })}
       />
     </ProductsStack.Navigator>
   );

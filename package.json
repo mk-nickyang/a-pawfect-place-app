@@ -37,6 +37,7 @@
     "expo-updates": "~0.24.12",
     "expo-web-browser": "~12.8.2",
     "immer": "^10.0.4",
+    "lodash.debounce": "^4.0.8",
     "react": "18.2.0",
     "react-native": "0.73.4",
     "react-native-gesture-handler": "~2.14.0",
@@ -52,6 +53,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@tanstack/eslint-plugin-query": "^5.27.7",
+    "@types/lodash.debounce": "^4.0.9",
     "eslint": "^8.57.0",
     "eslint-config-universe": "^12.0.0",
     "eslint-plugin-react": "^7.34.1",

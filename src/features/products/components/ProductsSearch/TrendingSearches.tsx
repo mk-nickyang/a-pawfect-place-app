@@ -1,7 +1,6 @@
+import { useNavigation } from '@react-navigation/native';
 import { memo } from 'react';
 import { Keyboard } from 'react-native';
-
-import { useProductsSearchActions } from '../../store/productsSearch';
 
 import { Box } from '@/components/Box';
 import { PressableOpacity } from '@/components/PressableOpacity';
@@ -21,11 +20,11 @@ const TRENDING_SEARCH_STRINGS = [
 ] as const;
 
 export const TrendingSearches = memo(() => {
-  const { updateSearchQuery } = useProductsSearchActions();
+  const navigation = useNavigation();
 
   const onSearchStringPress = (searchString: string) => {
     Keyboard.dismiss();
-    updateSearchQuery(searchString, { hideSearch: true });
+    navigation.navigate('SearchProducts', { searchQuery: searchString });
   };
 
   return (
@@ -46,7 +45,7 @@ export const TrendingSearches = memo(() => {
               borderWidth={1}
               borderColor="borderPrimary"
             >
-              <Text variant="body1">{searchString}</Text>
+              <Text>{searchString}</Text>
             </Box>
           </PressableOpacity>
         ))}
