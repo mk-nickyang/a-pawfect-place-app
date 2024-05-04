@@ -17,11 +17,12 @@ import theme, { useTheme } from '@/theme';
 
 type Props = PropsWithChildren<{
   modalRef: RefObject<BottomSheetModalMethods>;
-  size: 'small' | 'large';
+  size: 'small' | 'medium' | 'large';
 }>;
 
 const BOTTOM_SHEET_SNAP_POINTS = {
-  small: ['40%'],
+  small: ['40%', '75%'],
+  medium: ['60', '75%'],
   large: ['75%'],
 } as const;
 

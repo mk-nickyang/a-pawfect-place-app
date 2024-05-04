@@ -7,7 +7,7 @@ import { useAddProductToCart } from '../../api/useAddProductToCart';
 import { Box } from '@/components/Box';
 import { Button } from '@/components/Button';
 import { Icon } from '@/components/Icon';
-import { Modal, ModalRef } from '@/components/Modal';
+import { Modal, type ModalRef } from '@/components/Modal';
 import { Text } from '@/components/Text';
 import { Haptics } from '@/modules/haptics';
 import theme, { useTheme } from '@/theme';

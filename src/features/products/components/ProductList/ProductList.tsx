@@ -5,10 +5,13 @@ import { StyleSheet } from 'react-native';
 
 import { ProductListItem } from './ProductListItem';
 
+import { Box } from '@/components/Box';
 import { Loading } from '@/components/Loading';
 import theme from '@/theme';
 
 const keyExtractor = (item: ProductEdge) => item.node.id;
+
+const PRODUCT_LIST_ITEM_ESTIMATED_HEIGHT = 243;
 
 const renderItem: ListRenderItem<ProductEdge> = ({ item, index }) => (
   <ProductListItem
@@ -47,13 +50,13 @@ export const ProductList = memo(
         data={data}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
-        estimatedItemSize={260}
+        estimatedItemSize={PRODUCT_LIST_ITEM_ESTIMATED_HEIGHT}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.5}
         refreshing={isRefetching}
         onRefresh={refetchProductsList}
         ListFooterComponent={hasNextPage ? ListFooter : null}
-        contentContainerStyle={styles.list}
+        ItemSeparatorComponent={ListItemSeparator}
       />
     );
   },
@@ -63,20 +66,17 @@ ProductList.displayName = 'ProductList';
 
 const ListFooter = () => <Loading height={50} />;
 
+const ListItemSeparator = () => <Box height={theme.spacing.m} />;
+
 const styles = StyleSheet.create({
-  list: {
-    paddingBottom: theme.spacing.s,
-  },
   leftListItem: {
     flex: 1,
     paddingLeft: theme.spacing.m,
     paddingRight: theme.spacing.s,
-    paddingVertical: theme.spacing.s,
   },
   rightListItem: {
     flex: 1,
     paddingLeft: theme.spacing.s,
     paddingRight: theme.spacing.m,
-    paddingVertical: theme.spacing.s,
   },
 });

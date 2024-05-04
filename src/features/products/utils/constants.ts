@@ -22,7 +22,7 @@ export const PRODUCT_LIST_SORTER_BY_ID: Record<
     sortKey: 'BEST_SELLING',
     reverse: false,
   },
-  CREATED: { label: 'New Arrivals', sortKey: 'CREATED', reverse: false },
+  CREATED: { label: 'New Arrivals', sortKey: 'CREATED', reverse: true },
   TITLE_ASC: {
     label: 'Product Title (A to Z)',
     sortKey: 'TITLE',
@@ -33,7 +33,11 @@ export const PRODUCT_LIST_SORTER_BY_ID: Record<
     sortKey: 'TITLE',
     reverse: true,
   },
-  PRICE_ASC: { label: 'Price (high to low)', sortKey: 'PRICE', reverse: false },
-  PRICE_DESC: { label: 'Price (low to high)', sortKey: 'PRICE', reverse: true },
+  PRICE_ASC: { label: 'Price (high to low)', sortKey: 'PRICE', reverse: true },
+  PRICE_DESC: {
+    label: 'Price (low to high)',
+    sortKey: 'PRICE',
+    reverse: false,
+  },
   RELEVANCE: { label: 'Relevance', sortKey: 'RELEVANCE', reverse: false },
 };
