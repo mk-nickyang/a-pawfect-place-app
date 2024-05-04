@@ -5,6 +5,7 @@ import { ProductList } from '../components/ProductList/ProductList';
 
 import { Box } from '@/components/Box';
 import { Loading } from '@/components/Loading';
+import { Text } from '@/components/Text';
 import { useEvent } from '@/hooks/useEvent';
 import type { RootStackParamList } from '@/navigation/types';
 
@@ -30,16 +31,20 @@ export const SearchProducts = ({
 
   if (isLoading) return <Loading height="100%" />;
 
-  if (!products?.length) return null;
-
   return (
     <Box flex={1} backgroundColor="mainBackground">
-      <ProductList
-        data={products}
-        hasNextPage={hasNextPage}
-        onRefresh={refetch}
-        onEndReached={fetchNextSearchPage}
-      />
+      {products?.length ? (
+        <ProductList
+          data={products}
+          hasNextPage={hasNextPage}
+          onRefresh={refetch}
+          onEndReached={fetchNextSearchPage}
+        />
+      ) : (
+        <Box p="m">
+          <Text variant="body1">No products found.</Text>
+        </Box>
+      )}
     </Box>
   );
 };

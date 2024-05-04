@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import debounce from 'lodash.debounce';
 import { memo, useCallback, useRef } from 'react';
 import { Keyboard, StyleSheet, TextInput } from 'react-native';
@@ -20,6 +21,8 @@ export const ProductsSearchBar = memo(() => {
 
   const { colors } = useTheme();
 
+  const navigation = useNavigation();
+
   const { showSearch, hideSearch, updateSearchQuery } =
     useProductsSearchActions();
 
@@ -28,15 +31,21 @@ export const ProductsSearchBar = memo(() => {
   };
 
   const onCancel = useCallback(() => {
-    Keyboard.dismiss();
-    hideSearch();
     inputRef.current?.setNativeProps({ text: '' });
+    setTimeout(() => {
+      Keyboard.dismiss();
+      hideSearch();
+    });
   }, [hideSearch]);
 
   const onChangeText = useCallback(
     (newText: string) => updateSearchQuery(newText),
     [updateSearchQuery],
   );
+
+  const onSubmitEditing = (newText: string) => {
+    navigation.navigate('SearchProducts', { searchQuery: newText });
+  };
 
   return (
     <Box
@@ -61,6 +70,8 @@ export const ProductsSearchBar = memo(() => {
           ref={inputRef}
           onFocus={onFocus}
           onChangeText={debounce(onChangeText, 300)}
+          onSubmitEditing={(e) => onSubmitEditing(e.nativeEvent.text)}
+          enablesReturnKeyAutomatically
           placeholder="Search by Keyword"
           placeholderTextColor={colors.contentSecondary}
           clearButtonMode="while-editing"

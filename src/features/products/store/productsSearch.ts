@@ -15,7 +15,7 @@ const useProductsSearchStore = create<ProductsSearchStore>((set) => ({
   query: '',
   actions: {
     showSearch: () => set({ visible: true }),
-    hideSearch: () => set({ visible: false }),
+    hideSearch: () => set({ visible: false, query: '' }),
     updateSearchQuery: (newQuery) => set({ query: newQuery }),
   },
 }));

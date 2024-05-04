@@ -12,7 +12,7 @@ import type { RootStackParamList } from '@/navigation/types';
 
 const FEATURED_COLLECTIONS = [
   { title: 'Shop All', handle: 'all' },
-  { title: 'Best Seller', handle: 'best-seller' },
+  { title: 'Best Selling', handle: 'best-seller' },
   { title: 'New Arrivals', handle: 'new-arrivals' },
   { title: 'Sale', handle: 'sale' },
 ] as const;

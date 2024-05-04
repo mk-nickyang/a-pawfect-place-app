@@ -17,6 +17,9 @@ const TRENDING_SEARCH_STRINGS = [
   'ball',
   'muzzle',
   'carrier',
+  'carrot farm',
+  'gigwi',
+  'bestever',
 ] as const;
 
 export const TrendingSearches = memo(() => {

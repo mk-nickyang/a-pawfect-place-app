@@ -14,7 +14,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { Text } from '@/components/Text';
 import theme from '@/theme';
 
-const RECENTLY_VIEWED_PRODUCT_ITEM_WIDTH = 180;
+const RECENTLY_VIEWED_PRODUCT_ITEM_WIDTH = 200;
 
 const keyExtractor = (item: Product) => item.id;
 

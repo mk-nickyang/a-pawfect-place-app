@@ -13,7 +13,8 @@ const keyExtractor = (item: ProductEdge) => item.node.id;
 const renderItem: ListRenderItem<ProductEdge> = ({ item, index }) => (
   <ProductListItem
     product={item.node}
-    badgeRightOffset={index % 2 === 0 ? 0 : 8}
+    badgeTopOffset={12}
+    badgeRightOffset={index % 2 === 0 ? 12 : 20}
     style={index % 2 === 0 ? styles.leftListItem : styles.rightListItem}
   />
 );

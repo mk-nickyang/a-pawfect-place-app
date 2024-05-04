@@ -14,12 +14,13 @@ import { formatPrice } from '@/utils/currency';
 
 type Props = {
   product: Product;
+  badgeTopOffset?: number;
   badgeRightOffset?: number;
   style?: StyleProp<ViewStyle>;
 };
 
 export const ProductListItem = memo(
-  ({ product, badgeRightOffset, style }: Props) => {
+  ({ product, badgeTopOffset = 4, badgeRightOffset = 4, style }: Props) => {
     const navigation = useNavigation();
 
     const onItemPress = () => {
@@ -79,7 +80,7 @@ export const ProductListItem = memo(
         {isSoldOut || isOnSale ? (
           <Box
             position="absolute"
-            top={4}
+            top={badgeTopOffset}
             right={badgeRightOffset}
             width={50}
             height={50}

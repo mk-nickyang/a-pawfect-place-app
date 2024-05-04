@@ -20,27 +20,37 @@ export const ProductsSearchSuggestions = memo(() => {
 
   if (isLoading) return <Loading height="100%" />;
 
-  if (!suggestedProducts?.length) return <Text>No results found.</Text>;
+  return (
+    <Box>
+      {suggestedProducts?.map((suggestedProduct) => (
+        <PressableOpacity
+          key={suggestedProduct.id}
+          onPress={() =>
+            navigation.navigate('Product', {
+              productId: suggestedProduct.id,
+              productTitle: suggestedProduct.title,
+            })
+          }
+        >
+          <Box
+            py="m"
+            borderBottomColor="borderPrimary"
+            borderBottomWidth={StyleSheet.hairlineWidth}
+          >
+            <Text>{suggestedProduct.title}</Text>
+          </Box>
+        </PressableOpacity>
+      ))}
 
-  return suggestedProducts.map((suggestedProduct) => (
-    <PressableOpacity
-      key={suggestedProduct.id}
-      onPress={() =>
-        navigation.navigate('Product', {
-          productId: suggestedProduct.id,
-          productTitle: suggestedProduct.title,
-        })
-      }
-    >
-      <Box
-        py="m"
-        borderBottomColor="borderPrimary"
-        borderBottomWidth={StyleSheet.hairlineWidth}
+      <PressableOpacity
+        onPress={() => navigation.navigate('SearchProducts', { searchQuery })}
       >
-        <Text>{suggestedProduct.title}</Text>
-      </Box>
-    </PressableOpacity>
-  ));
+        <Box py="m">
+          <Text>Search for &quot;{searchQuery}&quot;</Text>
+        </Box>
+      </PressableOpacity>
+    </Box>
+  );
 });
 
 ProductsSearchSuggestions.displayName = 'ProductsSearchSuggestions';
