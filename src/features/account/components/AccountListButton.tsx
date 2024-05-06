@@ -33,7 +33,7 @@ export const AccountListButton = ({
       >
         <Box flexDirection="row" alignItems="center" g="s">
           {leftIcon}
-          <Text>{label}</Text>
+          <Text variant="body1">{label}</Text>
         </Box>
 
         {rightIcon || <Icon name="chevron-right" size={24} />}
