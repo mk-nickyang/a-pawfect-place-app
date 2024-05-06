@@ -22,7 +22,7 @@ const SHOPIFY_WEBSITE_FOOTER_PAGES = [
   },
   {
     label: 'Return Policy',
-    link: `${SHOPIFY_WEBSITE_URL}/pages/pages/return-refund`,
+    link: `${SHOPIFY_WEBSITE_URL}/pages/return-refund`,
   },
   { label: 'Contact Us', link: `${SHOPIFY_WEBSITE_URL}/pages/contact-us` },
   {
@@ -110,7 +110,6 @@ export const Account = ({
             key={page.link}
             label={page.label}
             onPress={() => openBrowserAsync(page.link)}
-            rightIcon={<Icon name="open-in-new" size={20} />}
             noBorder={index === SHOPIFY_WEBSITE_FOOTER_PAGES.length - 1}
           />
         ))}
