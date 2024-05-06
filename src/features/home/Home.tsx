@@ -1,6 +1,7 @@
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Box } from '@/components/Box';
+import { Logo } from '@/components/Logo';
 
 export const Home = () => {
   const insets = useSafeAreaInsets();
@@ -11,7 +12,7 @@ export const Home = () => {
       backgroundColor="mainBackground"
       style={{ paddingTop: insets.top }}
     >
-      {/* //TODO: LOGO */}
+      <Logo />
     </Box>
   );
 };
