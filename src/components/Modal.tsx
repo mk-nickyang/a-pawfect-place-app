@@ -21,8 +21,8 @@ type Props = PropsWithChildren<{
 }>;
 
 const BOTTOM_SHEET_SNAP_POINTS = {
-  small: ['40%', '75%'],
-  medium: ['60', '75%'],
+  small: ['40%'],
+  medium: ['60'],
   large: ['75%'],
 } as const;
 

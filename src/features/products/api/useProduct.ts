@@ -9,6 +9,7 @@ const getProductGQLQuery = (productId: string) => `
       id
       descriptionHtml
       title
+      onlineStoreUrl
       images(first: 10) {
         edges {
           node {

@@ -22,6 +22,16 @@ import theme from '@/theme';
 
 const HomeStack = createNativeStackNavigator<RootStackParamList>();
 
+const commonScreens = (Stack: typeof HomeStack) => {
+  return (
+    <Stack.Screen
+      name="Product"
+      component={Product}
+      options={({ route }) => ({ title: route.params.productTitle })}
+    />
+  );
+};
+
 const HomeStackNavigator = () => {
   return (
     <HomeStack.Navigator>
@@ -30,6 +40,7 @@ const HomeStackNavigator = () => {
         component={Home}
         options={{ headerShown: false }}
       />
+      {commonScreens(HomeStack)}
     </HomeStack.Navigator>
   );
 };
@@ -63,11 +74,7 @@ const ProductsStackNavigator = () => {
             : '',
         })}
       />
-      <ProductsStack.Screen
-        name="Product"
-        component={Product}
-        options={({ route }) => ({ title: route.params.productTitle })}
-      />
+      {commonScreens(ProductsStack)}
     </ProductsStack.Navigator>
   );
 };

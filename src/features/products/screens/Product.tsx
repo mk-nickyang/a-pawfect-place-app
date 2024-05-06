@@ -1,4 +1,10 @@
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
+import type { Product as ShopifyProduct } from '@shopify/hydrogen-react/storefront-api-types';
+import { shareAsync } from 'expo-sharing';
+import { useEffect } from 'react';
 import { ScrollView } from 'react-native';
 
 import { useProduct } from '../api/useProduct';
@@ -8,20 +14,36 @@ import { ProductImages } from '../components/ProductImages';
 import { ProductRecommendations } from '../components/ProductRecommendations';
 
 import { Box } from '@/components/Box';
+import { Icon } from '@/components/Icon';
 import { Loading } from '@/components/Loading';
+import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
 import type { RootStackParamList } from '@/navigation/types';
 
-export const Product = ({
-  route,
-}: NativeStackScreenProps<RootStackParamList, 'Product'>) => {
-  const { productId } = route.params;
+type ProductViewProps = {
+  product: ShopifyProduct;
+  navigation: NativeStackNavigationProp<RootStackParamList, 'Product'>;
+};
 
-  const { data: product, isLoading } = useProduct(productId);
-
-  if (isLoading) return <Loading height="100%" />;
-
-  if (!product) return null;
+const ProductView = ({ product, navigation }: ProductViewProps) => {
+  useEffect(
+    function setupProductShareButton() {
+      navigation.setOptions({
+        headerRight: () => {
+          const productUrl = product.onlineStoreUrl;
+          return productUrl ? (
+            <PressableOpacity
+              hitSlop={10}
+              onPress={() => shareAsync(productUrl)}
+            >
+              <Icon name="tray-arrow-up" size={24} />
+            </PressableOpacity>
+          ) : null;
+        },
+      });
+    },
+    [navigation, product.onlineStoreUrl],
+  );
 
   return (
     <ScrollView>
@@ -41,4 +63,19 @@ export const Product = ({
       </Box>
     </ScrollView>
   );
+};
+
+export const Product = ({
+  route,
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, 'Product'>) => {
+  const { productId } = route.params;
+
+  const { data: product, isLoading } = useProduct(productId);
+
+  if (isLoading) return <Loading height="100%" />;
+
+  if (!product) return null;
+
+  return <ProductView product={product} navigation={navigation} />;
 };
