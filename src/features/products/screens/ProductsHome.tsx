@@ -9,6 +9,7 @@ import { ProductsSearchOverlay } from '../components/ProductsSearch/ProductsSear
 import { Box } from '@/components/Box';
 import { Text } from '@/components/Text';
 import type { RootStackParamList } from '@/navigation/types';
+import { useTheme } from '@/theme';
 
 const FEATURED_COLLECTIONS = [
   { title: 'Shop All', handle: 'all' },
@@ -30,13 +31,15 @@ const CATEGORY_COLLECTIONS = [
 export const ProductsHome = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'ProductsHome'>) => {
+  const { spacing } = useTheme();
+
   const insets = useSafeAreaInsets();
 
   return (
     <Box
       flex={1}
       backgroundColor="mainBackground"
-      style={{ paddingTop: insets.top }}
+      style={{ paddingTop: insets.top || spacing.s }}
     >
       <ProductsSearchBar />
 

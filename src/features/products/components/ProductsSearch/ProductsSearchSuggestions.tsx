@@ -18,7 +18,7 @@ export const ProductsSearchSuggestions = memo(() => {
   const { data: suggestedProducts, isLoading } =
     useSearchSuggestions(searchQuery);
 
-  if (isLoading) return <Loading height="100%" />;
+  if (isLoading) return <Loading flex={240} />;
 
   return (
     <Box>

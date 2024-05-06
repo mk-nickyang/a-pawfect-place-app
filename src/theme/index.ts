@@ -24,6 +24,7 @@ const theme = createTheme({
 
     badgeBackground: '#f00c',
     inputBackground: 'rgba(0, 0, 0, 0.03)',
+    announcementBarBackground: '#fffba8',
   },
   spacing: {
     xs: 4,

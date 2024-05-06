@@ -12,8 +12,11 @@ import {
 } from '../../store/productsSearch';
 
 import { Box } from '@/components/Box';
+import { useTheme } from '@/theme';
 
 const ProductsSearchOverlayView = () => {
+  const { spacing } = useTheme();
+
   const insets = useSafeAreaInsets();
 
   const isSearchQueryEmpty = useIsSearchQueryEmpty();
@@ -22,7 +25,7 @@ const ProductsSearchOverlayView = () => {
     <Box
       backgroundColor="mainBackground"
       position="absolute"
-      top={insets.top + PRODUCTS_SEARCH_BAR_HEIGHT}
+      top={(insets.top || spacing.s) + PRODUCTS_SEARCH_BAR_HEIGHT}
       left={0}
       right={0}
       bottom={0}
