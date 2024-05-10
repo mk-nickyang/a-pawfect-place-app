@@ -2,7 +2,7 @@ import { Image } from 'expo-image';
 import { memo } from 'react';
 import { StyleSheet } from 'react-native';
 
-const LOGO_HEIGHT = 36;
+const LOGO_HEIGHT = 32;
 const LOGO_WIDTH_HEIGHT_RATIO = 2.5;
 
 export const Logo = memo(() => {

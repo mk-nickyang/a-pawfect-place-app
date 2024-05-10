@@ -17,7 +17,7 @@ export const HomeHeader = ({ navigation }: Props) => {
 
   return (
     <>
-      <Box py="m" backgroundColor="announcementBarBackground">
+      <Box py="s" backgroundColor="announcementBarBackground">
         <Text textAlign="center">🚚 Free shipping on orders over $50</Text>
       </Box>
 

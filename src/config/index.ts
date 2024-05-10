@@ -4,7 +4,6 @@ import theme from '@/theme';
 
 export const SHOPIFY_SHOP_ID = '50403049658';
 export const SHOPIFY_SHOP_SLUG = 'a-pawfect-place';
-export const SHOPIFY_WEBSITE_URL = 'https://apawfectplace.com.au';
 
 export const shopifyCheckoutConfig: Configuration = {
   preloading: true,

@@ -8,7 +8,10 @@ import type { RootStackParamList } from './types';
 import { Icon } from '@/components/Icon';
 import { Account } from '@/features/account/screens/Account';
 import { DeliveryAddress } from '@/features/account/screens/DeliveryAddress';
+import { Legal } from '@/features/account/screens/Legal';
 import { PersonalDetails } from '@/features/account/screens/PersonalDetails';
+import { ReturnPolicy } from '@/features/account/screens/ReturnPolicy';
+import { ShippingPolicy } from '@/features/account/screens/ShippingPolicy';
 import { CartBadge } from '@/features/cart/components/CartBadge';
 import { Cart } from '@/features/cart/screens/Cart';
 import { Home } from '@/features/home/Home';
@@ -34,7 +37,12 @@ const commonScreens = (Stack: typeof HomeStack) => {
 
 const HomeStackNavigator = () => {
   return (
-    <HomeStack.Navigator>
+    <HomeStack.Navigator
+      screenOptions={{
+        headerBackButtonMenuEnabled: false,
+        headerBackTitleVisible: false,
+      }}
+    >
       <HomeStack.Screen
         name="Home"
         component={Home}
@@ -93,7 +101,12 @@ const AccountStack = createNativeStackNavigator<RootStackParamList>();
 
 const AccountStackNavigator = () => {
   return (
-    <AccountStack.Navigator>
+    <AccountStack.Navigator
+      screenOptions={{
+        headerBackButtonMenuEnabled: false,
+        headerBackTitleVisible: false,
+      }}
+    >
       <AccountStack.Screen name="Account" component={Account} />
       <AccountStack.Screen
         name="PersonalDetails"
@@ -110,6 +123,21 @@ const AccountStackNavigator = () => {
         name="OrderDetails"
         component={OrderDetails}
         options={{ title: '' }}
+      />
+      <AccountStack.Screen
+        name="ShippingPolicy"
+        component={ShippingPolicy}
+        options={{ title: 'Shipping Policy' }}
+      />
+      <AccountStack.Screen
+        name="ReturnPolicy"
+        component={ReturnPolicy}
+        options={{ title: 'Return Policy' }}
+      />
+      <AccountStack.Screen
+        name="Legal"
+        component={Legal}
+        options={({ route }) => ({ title: route.params.title })}
       />
     </AccountStack.Navigator>
   );

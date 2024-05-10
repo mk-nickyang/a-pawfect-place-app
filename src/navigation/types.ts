@@ -1,15 +1,16 @@
 import type { NavigatorScreenParams } from '@react-navigation/native';
 
+type ProductScreen = { Product: { productId: string; productTitle?: string } };
+
 type HomeTabParamList = {
   Home: undefined;
-};
+} & ProductScreen;
 
 type ProductsTabParamList = {
   ProductsHome: undefined;
   CollectionProducts: { collectionHandle: string; collectionTitle: string };
   SearchProducts: { searchQuery: string };
-  Product: { productId: string; productTitle?: string };
-};
+} & ProductScreen;
 
 type CartTabParamList = {
   Cart: undefined;
@@ -21,6 +22,9 @@ type AccountTabParamList = {
   DeliveryAddress: undefined;
   Orders: undefined;
   OrderDetails: { orderId: string };
+  ShippingPolicy: undefined;
+  ReturnPolicy: undefined;
+  Legal: { title: string; html?: string };
 };
 
 export type RootStackParamList = {

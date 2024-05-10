@@ -1,8 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { openBrowserAsync } from 'expo-web-browser';
 import { Alert, ScrollView } from 'react-native';
 
 import { useMyAccount } from '../api/useMyAccount';
+import { useShopInfo } from '../api/useShopInfo';
 import { AccountListButton } from '../components/AccountListButton';
 
 import { Box } from '@/components/Box';
@@ -10,30 +10,9 @@ import { Icon } from '@/components/Icon';
 import { LoadingOverlay } from '@/components/LoadingOverlay';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
-import { SHOPIFY_WEBSITE_URL } from '@/config';
 import { AuthenticationStatus, useAuth } from '@/context/AuthContext';
 import { useWarmUpBrowser } from '@/hooks/useWarmUpBrowser';
 import type { RootStackParamList } from '@/navigation/types';
-
-const SHOPIFY_WEBSITE_FOOTER_PAGES = [
-  {
-    label: 'Shipping Policy',
-    link: `${SHOPIFY_WEBSITE_URL}/pages/shipping-and-delivery`,
-  },
-  {
-    label: 'Return Policy',
-    link: `${SHOPIFY_WEBSITE_URL}/pages/return-refund`,
-  },
-  { label: 'Contact Us', link: `${SHOPIFY_WEBSITE_URL}/pages/contact-us` },
-  {
-    label: 'Privacy Policy',
-    link: `${SHOPIFY_WEBSITE_URL}/policies/privacy-policy`,
-  },
-  {
-    label: 'Terms of Service',
-    link: `${SHOPIFY_WEBSITE_URL}/policies/terms-of-service`,
-  },
-] as const;
 
 export const Account = ({
   navigation,
@@ -45,6 +24,8 @@ export const Account = ({
   const { data: account, isLoading } = useMyAccount({
     enabled: authenticationStatus === AuthenticationStatus.AUTHENTICATED,
   });
+
+  const { data: shop } = useShopInfo();
 
   const onLogOutPress = () => {
     Alert.alert('Sign out', 'Are you sure you want to sign out?', [
@@ -105,14 +86,36 @@ export const Account = ({
       ) : null}
 
       <Box mb="m">
-        {SHOPIFY_WEBSITE_FOOTER_PAGES.map((page, index) => (
-          <AccountListButton
-            key={page.link}
-            label={page.label}
-            onPress={() => openBrowserAsync(page.link)}
-            noBorder={index === SHOPIFY_WEBSITE_FOOTER_PAGES.length - 1}
-          />
-        ))}
+        <AccountListButton
+          label="Shipping Policy"
+          onPress={() => navigation.navigate('ShippingPolicy')}
+        />
+
+        <AccountListButton
+          label="Return Policy"
+          onPress={() => navigation.navigate('ReturnPolicy')}
+        />
+
+        <AccountListButton
+          label="Privacy Policy"
+          onPress={() =>
+            navigation.navigate('Legal', {
+              title: 'Privacy Policy',
+              html: shop?.privacyPolicy?.body,
+            })
+          }
+        />
+
+        <AccountListButton
+          label="Terms of Service"
+          onPress={() =>
+            navigation.navigate('Legal', {
+              title: 'Terms of Service',
+              html: shop?.termsOfService?.body,
+            })
+          }
+          noBorder
+        />
       </Box>
 
       {account ? (
