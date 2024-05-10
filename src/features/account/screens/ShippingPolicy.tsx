@@ -73,7 +73,7 @@ export const ShippingPolicy = () => {
         </Text>
 
         <Text variant="body1">
-          If your country or region is not listed above, please email us at
+          If your country or region is not listed above, please email us at{' '}
           <EmailLink subject="International Shipping Enquiry" /> with your order
           items and shipping address, and we will be in contact to discuss
           options.
