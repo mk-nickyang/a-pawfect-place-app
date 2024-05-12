@@ -119,18 +119,19 @@ export const Account = ({
               html: shop?.termsOfService?.body,
             })
           }
-          noBorder
         />
-      </Box>
 
-      {account ? (
-        <AccountListButton
-          label="Sign out"
-          onPress={onLogOutPress}
-          rightIcon={<Icon name="logout-variant" size={20} />}
-          noBorder
-        />
-      ) : null}
+        <Box pb="m" />
+
+        {account ? (
+          <AccountListButton
+            label="Sign out"
+            onPress={onLogOutPress}
+            rightIcon={<Icon name="logout-variant" size={20} />}
+            noBorder
+          />
+        ) : null}
+      </Box>
 
       <AppVersion />
 
