@@ -1,13 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
-import { useShopifyCheckoutSheet } from '@shopify/checkout-sheet-kit';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import type { BaseCartLineEdge } from '@shopify/hydrogen-react/storefront-api-types';
-import { memo, useCallback, useEffect, useMemo } from 'react';
+import { memo, useCallback, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { CartLineItem } from './CartLineItem';
 import { CartNote } from './CartNote';
+import { CheckoutSuccessModal } from './CheckoutSuccessModal';
 import { selectCartItemsLength, useCart } from '../api/useCart';
+import { useShopifyCheckout } from '../hooks/useShopifyCheckout';
 
 import { Box } from '@/components/Box';
 import { Button } from '@/components/Button';
@@ -24,17 +25,8 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
 
   const { data: cart } = useCart(cartId);
 
-  const shopifyCheckout = useShopifyCheckoutSheet();
-
-  /**
-   * Preload checkout page for faster loading
-   * @see https://github.com/Shopify/checkout-sheet-kit-react-native?tab=readme-ov-file#preloading
-   */
-  useEffect(() => {
-    if (cart?.checkoutUrl) {
-      shopifyCheckout.preload(cart.checkoutUrl);
-    }
-  }, [cart?.checkoutUrl, shopifyCheckout]);
+  const { openCheckoutModal, checkoutSuccessModalRef } =
+    useShopifyCheckout(cart);
 
   const renderItem: ListRenderItem<BaseCartLineEdge> = useCallback(
     ({ item }) => <CartLineItem cartLine={item.node} cartId={cartId} />,
@@ -85,12 +77,7 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
 
           <CartNote note={cart?.note} cartId={cartId} />
 
-          <Button
-            label="CHECKOUT"
-            onPress={() =>
-              cart?.checkoutUrl && shopifyCheckout.present(cart.checkoutUrl)
-            }
-          />
+          <Button label="CHECKOUT" onPress={openCheckoutModal} />
           <Button
             variant="secondary"
             label="CONTINUE SHOPPING"
@@ -99,28 +86,31 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
         </Box>
       ) : null,
     [
-      cart?.checkoutUrl,
       cart?.note,
       cartId,
       cartItemsLength,
       cartSubtotal,
       cartTotal,
       navigation,
-      shopifyCheckout,
+      openCheckoutModal,
     ],
   );
 
   if (!cart || cartItemsLength === 0) return emptyView;
 
   return (
-    <FlashList
-      data={cart.lines.edges}
-      renderItem={renderItem}
-      keyExtractor={keyExtractor}
-      estimatedItemSize={250}
-      ItemSeparatorComponent={Divider}
-      ListFooterComponent={listFooter}
-    />
+    <>
+      <FlashList
+        data={cart.lines.edges}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        estimatedItemSize={250}
+        ItemSeparatorComponent={Divider}
+        ListFooterComponent={listFooter}
+      />
+
+      <CheckoutSuccessModal modalRef={checkoutSuccessModalRef} />
+    </>
   );
 });
 

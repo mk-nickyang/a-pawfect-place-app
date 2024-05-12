@@ -46,8 +46,8 @@ export const AddToCartButton = memo(
         <Modal modalRef={modalRef} size="small">
           <Box flex={1} justifyContent="space-between">
             <Box g="l" alignItems="center">
-              <Text variant="h3">ITEM ADDED TO YOUR CART</Text>
               <Icon name="check-circle" size={64} color={colors.success} />
+              <Text variant="h3">ITEM ADDED TO YOUR CART</Text>
             </Box>
 
             <Box g="s">

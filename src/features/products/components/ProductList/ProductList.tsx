@@ -16,7 +16,6 @@ const PRODUCT_LIST_ITEM_ESTIMATED_HEIGHT = 243;
 const renderItem: ListRenderItem<ProductEdge> = ({ item, index }) => (
   <ProductListItem
     product={item.node}
-    badgeTopOffset={12}
     badgeRightOffset={index % 2 === 0 ? 12 : 20}
     style={index % 2 === 0 ? styles.leftListItem : styles.rightListItem}
   />

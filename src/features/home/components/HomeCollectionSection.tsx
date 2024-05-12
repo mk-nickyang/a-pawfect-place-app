@@ -59,6 +59,7 @@ export const HomeCollectionSection = memo(
             <ProductListItem
               key={product.node.id}
               product={product.node}
+              badgeRightOffset={index % 2 === 0 ? 12 : 20}
               style={
                 index % 2 === 0 ? styles.leftListItem : styles.rightListItem
               }

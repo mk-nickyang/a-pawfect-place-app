@@ -24,6 +24,7 @@ type AccountTabParamList = {
   OrderDetails: { orderId: string };
   ShippingPolicy: undefined;
   ReturnPolicy: undefined;
+  ContactUs: undefined;
   Legal: { title: string; html?: string };
 } & CommonScreens;
 

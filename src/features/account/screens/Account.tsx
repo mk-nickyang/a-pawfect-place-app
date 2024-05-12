@@ -5,6 +5,7 @@ import { useMyAccount } from '../api/useMyAccount';
 import { useShopInfo } from '../api/useShopInfo';
 import { AccountListButton } from '../components/AccountListButton';
 
+import { AppVersion } from '@/components/AppVersion';
 import { Box } from '@/components/Box';
 import { Icon } from '@/components/Icon';
 import { LoadingOverlay } from '@/components/LoadingOverlay';
@@ -95,6 +96,10 @@ export const Account = ({
           label="Return Policy"
           onPress={() => navigation.navigate('ReturnPolicy')}
         />
+        <AccountListButton
+          label="Contact Us"
+          onPress={() => navigation.navigate('ContactUs')}
+        />
 
         <AccountListButton
           label="Privacy Policy"
@@ -126,6 +131,8 @@ export const Account = ({
           noBorder
         />
       ) : null}
+
+      <AppVersion />
 
       <LoadingOverlay visible={isLoading} />
     </ScrollView>

@@ -7,6 +7,7 @@ import type { RootStackParamList } from './types';
 
 import { Icon } from '@/components/Icon';
 import { Account } from '@/features/account/screens/Account';
+import { ContactUs } from '@/features/account/screens/ContactUs';
 import { DeliveryAddress } from '@/features/account/screens/DeliveryAddress';
 import { Legal } from '@/features/account/screens/Legal';
 import { PersonalDetails } from '@/features/account/screens/PersonalDetails';
@@ -131,6 +132,11 @@ const AccountStackNavigator = () => {
         name="ReturnPolicy"
         component={ReturnPolicy}
         options={{ title: 'Return Policy' }}
+      />
+      <AccountStack.Screen
+        name="ContactUs"
+        component={ContactUs}
+        options={{ title: 'Contact Us' }}
       />
       <AccountStack.Screen
         name="Legal"

@@ -28,6 +28,7 @@
     "@types/react": "~18.2.79",
     "axios": "^1.6.7",
     "expo": "^51.0.2",
+    "expo-application": "~5.9.1",
     "expo-constants": "~16.0.1",
     "expo-haptics": "~13.0.1",
     "expo-image": "~1.12.9",
