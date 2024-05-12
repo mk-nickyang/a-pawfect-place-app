@@ -6,9 +6,9 @@ import { useCallback, useEffect, useRef } from 'react';
 import { cartQuery } from '../api/cartQuery';
 
 import type { ModalRef } from '@/components/Modal';
-import { Haptics } from '@/modules/haptics';
 
 export const useShopifyCheckout = (cart: Cart | undefined) => {
+  const isCheckoutSuccessRef = useRef(false);
   const checkoutSuccessModalRef = useRef<ModalRef>(null);
 
   const queryClient = useQueryClient();
@@ -30,6 +30,10 @@ export const useShopifyCheckout = (cart: Cart | undefined) => {
   useEffect(
     function addCheckoutCloseEventListener() {
       const subscription = shopifyCheckout.addEventListener('close', () => {
+        if (isCheckoutSuccessRef.current) {
+          setTimeout(() => checkoutSuccessModalRef.current?.present());
+          isCheckoutSuccessRef.current = false;
+        }
         // Refetch cart when checkout is closed
         if (cart?.id) {
           queryClient.invalidateQueries({
@@ -48,8 +52,7 @@ export const useShopifyCheckout = (cart: Cart | undefined) => {
   useEffect(
     function addCheckoutCompleteEventListener() {
       const subscription = shopifyCheckout.addEventListener('completed', () => {
-        Haptics.impact();
-        checkoutSuccessModalRef.current?.present();
+        isCheckoutSuccessRef.current = true;
       });
 
       return () => {
