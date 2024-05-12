@@ -18,10 +18,9 @@ export const OrderDetailsLineItem = ({ lineItem }: Props) => {
   const navigation = useNavigation();
 
   const navigateToProduct = () => {
-    navigation.navigate('ProductsTab', {
-      screen: 'Product',
-      params: { productId: lineItem.productId },
-      initial: false,
+    navigation.navigate('Product', {
+      productId: lineItem.productId,
+      productTitle: lineItem.name,
     });
   };
 

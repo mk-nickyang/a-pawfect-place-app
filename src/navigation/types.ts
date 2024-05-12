@@ -1,20 +1,20 @@
 import type { NavigatorScreenParams } from '@react-navigation/native';
 
-type ProductScreen = { Product: { productId: string; productTitle?: string } };
+type CommonScreens = { Product: { productId: string; productTitle?: string } };
 
 type HomeTabParamList = {
   Home: undefined;
-} & ProductScreen;
+} & CommonScreens;
 
 type ProductsTabParamList = {
   ProductsHome: undefined;
   CollectionProducts: { collectionHandle: string; collectionTitle: string };
   SearchProducts: { searchQuery: string };
-} & ProductScreen;
+} & CommonScreens;
 
 type CartTabParamList = {
   Cart: undefined;
-};
+} & CommonScreens;
 
 type AccountTabParamList = {
   Account: undefined;
@@ -25,7 +25,7 @@ type AccountTabParamList = {
   ShippingPolicy: undefined;
   ReturnPolicy: undefined;
   Legal: { title: string; html?: string };
-};
+} & CommonScreens;
 
 export type RootStackParamList = {
   HomeTab: NavigatorScreenParams<HomeTabParamList> | undefined;

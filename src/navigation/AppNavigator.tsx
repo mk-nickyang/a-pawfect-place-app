@@ -91,8 +91,9 @@ const CartStack = createNativeStackNavigator<RootStackParamList>();
 
 const CartStackNavigator = () => {
   return (
-    <CartStack.Navigator>
+    <CartStack.Navigator screenOptions={{ headerBackButtonMenuEnabled: false }}>
       <CartStack.Screen name="Cart" component={Cart} />
+      {commonScreens(CartStack)}
     </CartStack.Navigator>
   );
 };
@@ -102,10 +103,7 @@ const AccountStack = createNativeStackNavigator<RootStackParamList>();
 const AccountStackNavigator = () => {
   return (
     <AccountStack.Navigator
-      screenOptions={{
-        headerBackButtonMenuEnabled: false,
-        headerBackTitleVisible: false,
-      }}
+      screenOptions={{ headerBackButtonMenuEnabled: false }}
     >
       <AccountStack.Screen name="Account" component={Account} />
       <AccountStack.Screen
@@ -139,6 +137,7 @@ const AccountStackNavigator = () => {
         component={Legal}
         options={({ route }) => ({ title: route.params.title })}
       />
+      {commonScreens(AccountStack)}
     </AccountStack.Navigator>
   );
 };

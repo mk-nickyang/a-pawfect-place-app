@@ -25,10 +25,9 @@ export const CartLineItem = ({ cartLine, cartId }: Props) => {
   const navigation = useNavigation();
 
   const navigateToProduct = () => {
-    navigation.navigate('ProductsTab', {
-      screen: 'Product',
-      params: { productId: product.id },
-      initial: false,
+    navigation.navigate('Product', {
+      productId: product.id,
+      productTitle: product.title,
     });
   };
 
