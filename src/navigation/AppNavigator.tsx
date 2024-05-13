@@ -6,6 +6,7 @@ import { View } from 'react-native';
 import type { RootStackParamList } from './types';
 
 import { Icon } from '@/components/Icon';
+import { IS_ACCOUNT_ENABLED } from '@/config';
 import { Account } from '@/features/account/screens/Account';
 import { ContactUs } from '@/features/account/screens/ContactUs';
 import { DeliveryAddress } from '@/features/account/screens/DeliveryAddress';
@@ -106,7 +107,11 @@ const AccountStackNavigator = () => {
     <AccountStack.Navigator
       screenOptions={{ headerBackButtonMenuEnabled: false }}
     >
-      <AccountStack.Screen name="Account" component={Account} />
+      <AccountStack.Screen
+        name="Account"
+        component={Account}
+        options={{ title: IS_ACCOUNT_ENABLED ? 'Account' : '' }}
+      />
       <AccountStack.Screen
         name="PersonalDetails"
         component={PersonalDetails}
@@ -197,9 +202,13 @@ export const AppNavigator = () => {
           name="AccountTab"
           component={AccountStackNavigator}
           options={{
-            title: 'Account',
+            title: IS_ACCOUNT_ENABLED ? 'Account' : 'More',
             tabBarIcon: ({ color, size }) => (
-              <Icon name="account" color={color} size={size} />
+              <Icon
+                name={IS_ACCOUNT_ENABLED ? 'account' : 'menu'}
+                color={color}
+                size={size}
+              />
             ),
           }}
         />
