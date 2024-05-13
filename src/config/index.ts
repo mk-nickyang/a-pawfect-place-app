@@ -2,7 +2,7 @@ import { ColorScheme, type Configuration } from '@shopify/checkout-sheet-kit';
 
 import theme from '@/theme';
 
-export const IS_ACCOUNT_ENABLED = false;
+export const IS_ACCOUNT_ENABLED = true;
 
 export const SHOPIFY_SHOP_ID = '50403049658';
 export const SHOPIFY_SHOP_SLUG = 'a-pawfect-place';
