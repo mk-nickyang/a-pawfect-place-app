@@ -23,7 +23,7 @@ const ProductsSearchOverlayView = () => {
 
   return (
     <Box
-      backgroundColor="mainBackground"
+      backgroundColor="screenBackground"
       position="absolute"
       top={(insets.top || spacing.s) + PRODUCTS_SEARCH_BAR_HEIGHT}
       left={0}

@@ -10,7 +10,7 @@ import { Icon } from '@/components/Icon';
 import { Modal, type ModalRef } from '@/components/Modal';
 import { Text } from '@/components/Text';
 import { Haptics } from '@/modules/haptics';
-import theme, { useTheme } from '@/theme';
+import { useTheme, spacing } from '@/theme';
 
 type Props = { selectedVariantId: string; isSoldOut: boolean };
 
@@ -76,7 +76,7 @@ AddToCartButton.displayName = 'AddToCartButton';
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: theme.spacing.s,
+    marginTop: spacing.s,
   },
   skottie: {
     width: 60,

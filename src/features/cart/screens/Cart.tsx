@@ -31,7 +31,7 @@ export const Cart = ({
   );
 
   return (
-    <Box flex={1} backgroundColor="mainBackground">
+    <Box flex={1} backgroundColor="screenBackground">
       {cartId ? <CartList cartId={cartId} emptyView={emptyView} /> : emptyView}
     </Box>
   );

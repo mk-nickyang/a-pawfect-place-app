@@ -1,4 +1,4 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Alert, ScrollView } from 'react-native';
 
 import { useMyAccount } from '../api/useMyAccount';
@@ -13,12 +13,18 @@ import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
 import { IS_ACCOUNT_ENABLED } from '@/config';
 import { AuthenticationStatus, useAuth } from '@/context/AuthContext';
+import { useSelectedThemeMode } from '@/context/ThemeContext';
 import { useWarmUpBrowser } from '@/hooks/useWarmUpBrowser';
 import type { RootStackParamList } from '@/navigation/types';
+import { useTheme } from '@/theme';
 
 export const Account = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, 'Account'>) => {
+  const { colors } = useTheme();
+
+  const { selectedThemeMode } = useSelectedThemeMode();
+
   useWarmUpBrowser();
 
   const { login, logOut, authenticationStatus } = useAuth();
@@ -84,59 +90,93 @@ export const Account = ({
           /> */}
           <AccountListButton
             label="Orders"
-            leftIcon={<Icon name="package-variant-closed" size={20} />}
+            leftIcon={
+              <Icon
+                name="package-variant-closed"
+                size={20}
+                color={colors.contentPrimary}
+              />
+            }
             onPress={() => navigation.navigate('Orders')}
             noBorder
           />
         </Box>
       ) : null}
 
-      <Box mb="m">
-        <AccountListButton
-          label="Shipping Policy"
-          onPress={() => navigation.navigate('ShippingPolicy')}
-        />
+      <AccountListButton
+        label="Shipping Policy"
+        onPress={() => navigation.navigate('ShippingPolicy')}
+      />
 
-        <AccountListButton
-          label="Return Policy"
-          onPress={() => navigation.navigate('ReturnPolicy')}
-        />
-        <AccountListButton
-          label="Contact Us"
-          onPress={() => navigation.navigate('ContactUs')}
-        />
+      <AccountListButton
+        label="Return Policy"
+        onPress={() => navigation.navigate('ReturnPolicy')}
+      />
+      <AccountListButton
+        label="Contact Us"
+        onPress={() => navigation.navigate('ContactUs')}
+      />
 
+      <AccountListButton
+        label="Privacy Policy"
+        onPress={() =>
+          navigation.navigate('Legal', {
+            title: 'Privacy Policy',
+            html: shop?.privacyPolicy?.body,
+          })
+        }
+      />
+
+      <AccountListButton
+        label="Terms of Service"
+        onPress={() =>
+          navigation.navigate('Legal', {
+            title: 'Terms of Service',
+            html: shop?.termsOfService?.body,
+          })
+        }
+      />
+
+      <Box pb="m" />
+
+      <AccountListButton
+        noBorder
+        marginBottom
+        label="Appearance"
+        rightElement={
+          <Box flexDirection="row" alignItems="center" g="xs">
+            <Text
+              color="contentSecondary"
+              variant="body1"
+              textTransform="capitalize"
+            >
+              {selectedThemeMode}
+            </Text>
+            <Icon
+              name="chevron-right"
+              size={24}
+              color={colors.contentSecondary}
+            />
+          </Box>
+        }
+        onPress={() => navigation.navigate('Appearance')}
+      />
+
+      {IS_ACCOUNT_ENABLED && account ? (
         <AccountListButton
-          label="Privacy Policy"
-          onPress={() =>
-            navigation.navigate('Legal', {
-              title: 'Privacy Policy',
-              html: shop?.privacyPolicy?.body,
-            })
+          noBorder
+          marginBottom
+          label="Sign out"
+          onPress={onLogOutPress}
+          rightElement={
+            <Icon
+              name="logout-variant"
+              size={20}
+              color={colors.contentSecondary}
+            />
           }
         />
-
-        <AccountListButton
-          label="Terms of Service"
-          onPress={() =>
-            navigation.navigate('Legal', {
-              title: 'Terms of Service',
-              html: shop?.termsOfService?.body,
-            })
-          }
-        />
-
-        <Box pb="m" />
-
-        {IS_ACCOUNT_ENABLED && account ? (
-          <AccountListButton
-            label="Sign out"
-            onPress={onLogOutPress}
-            rightIcon={<Icon name="logout-variant" size={20} />}
-            noBorder
-          />
-        ) : null}
-      </Box>
+      ) : null}
 
       <AppVersion />
 

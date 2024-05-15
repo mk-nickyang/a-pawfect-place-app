@@ -13,7 +13,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import theme, { useTheme } from '@/theme';
+import { useTheme, spacing } from '@/theme';
 
 type Props = PropsWithChildren<{
   modalRef: RefObject<BottomSheetModalMethods>;
@@ -29,7 +29,7 @@ const BOTTOM_SHEET_SNAP_POINTS = {
 export type ModalRef = BottomSheetModal;
 
 export const Modal = ({ modalRef, size, children }: Props) => {
-  const { spacing } = useTheme();
+  const { spacing, colors } = useTheme();
 
   const insets = useSafeAreaInsets();
 
@@ -52,9 +52,15 @@ export const Modal = ({ modalRef, size, children }: Props) => {
       backdropComponent={renderBackdrop}
       keyboardBehavior="extend"
       keyboardBlurBehavior="restore"
+      backgroundStyle={{ backgroundColor: colors.mainBackground }}
     >
       <BottomSheetView
-        style={[styles.container, { paddingBottom: spacing.s + insets.bottom }]}
+        style={[
+          styles.container,
+          {
+            paddingBottom: spacing.s + insets.bottom,
+          },
+        ]}
       >
         {children}
       </BottomSheetView>
@@ -84,11 +90,11 @@ const BottomSheetBackdrop = ({
     () => [
       style,
       {
-        backgroundColor: colors.contentPrimary,
+        backgroundColor: colors.modalBackground,
       },
       containerAnimatedStyle,
     ],
-    [style, colors.contentPrimary, containerAnimatedStyle],
+    [style, colors.modalBackground, containerAnimatedStyle],
   );
 
   return (
@@ -101,11 +107,11 @@ const BottomSheetBackdrop = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: theme.spacing.l,
-    paddingHorizontal: theme.spacing.l,
+    paddingTop: spacing.l,
+    paddingHorizontal: spacing.l,
   },
   closeBtn: {
-    marginBottom: theme.spacing.m,
+    marginBottom: spacing.m,
     alignSelf: 'flex-end',
   },
 });

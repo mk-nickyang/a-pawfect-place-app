@@ -1,13 +1,20 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import type { PropsWithChildren } from 'react';
 import { View } from 'react-native';
 
 import type { RootStackParamList } from './types';
 
 import { Icon } from '@/components/Icon';
 import { IS_ACCOUNT_ENABLED } from '@/config';
+import { useThemeMode } from '@/context/ThemeContext';
 import { Account } from '@/features/account/screens/Account';
+import { Appearance } from '@/features/account/screens/Appearance';
 import { ContactUs } from '@/features/account/screens/ContactUs';
 import { DeliveryAddress } from '@/features/account/screens/DeliveryAddress';
 import { Legal } from '@/features/account/screens/Legal';
@@ -23,7 +30,7 @@ import { CollectionProducts } from '@/features/products/screens/CollectionProduc
 import { Product } from '@/features/products/screens/Product';
 import { ProductsHome } from '@/features/products/screens/ProductsHome';
 import { SearchProducts } from '@/features/products/screens/SearchProducts';
-import theme from '@/theme';
+import { useTheme } from '@/theme';
 
 const HomeStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -148,6 +155,7 @@ const AccountStackNavigator = () => {
         component={Legal}
         options={({ route }) => ({ title: route.params.title })}
       />
+      <AccountStack.Screen name="Appearance" component={Appearance} />
       {commonScreens(AccountStack)}
     </AccountStack.Navigator>
   );
@@ -155,14 +163,28 @@ const AccountStackNavigator = () => {
 
 const Tab = createBottomTabNavigator();
 
-export const AppNavigator = () => {
+const ThemedNavigationContainer = ({ children }: PropsWithChildren) => {
+  const themeMode = useThemeMode();
+
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      theme={themeMode === 'dark' ? DarkTheme : DefaultTheme}
+    >
+      {children}
+    </NavigationContainer>
+  );
+};
+
+export const AppNavigator = () => {
+  const { colors } = useTheme();
+
+  return (
+    <ThemedNavigationContainer>
       <Tab.Navigator
         screenOptions={{
           headerShown: false,
-          tabBarActiveTintColor: theme.colors.contentPrimary,
-          tabBarInactiveTintColor: theme.colors.contentSecondary,
+          tabBarActiveTintColor: colors.contentPrimary,
+          tabBarInactiveTintColor: colors.contentSecondary,
         }}
       >
         <Tab.Screen
@@ -213,6 +235,6 @@ export const AppNavigator = () => {
           }}
         />
       </Tab.Navigator>
-    </NavigationContainer>
+    </ThemedNavigationContainer>
   );
 };

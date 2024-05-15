@@ -61,7 +61,7 @@ export const CollectionProducts = ({
   if (isLoading) return <Loading height="100%" />;
 
   return (
-    <Box flex={1} backgroundColor="mainBackground">
+    <Box flex={1} backgroundColor="screenBackground">
       <Box
         p="m"
         flexDirection="row"

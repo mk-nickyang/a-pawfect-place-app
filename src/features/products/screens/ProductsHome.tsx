@@ -1,5 +1,5 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CollectionListButton } from '../components/CollectionListButton';
@@ -38,17 +38,18 @@ export const ProductsHome = ({
   return (
     <Box
       flex={1}
-      backgroundColor="mainBackground"
+      backgroundColor="screenBackground"
       style={{ paddingTop: insets.top || spacing.s }}
     >
       <ProductsSearchBar />
 
       <ScrollView keyboardShouldPersistTaps="handled">
-        {FEATURED_COLLECTIONS.map((collection) => (
+        {FEATURED_COLLECTIONS.map((collection, index) => (
           <CollectionListButton
             key={collection.handle}
             title={collection.title}
             bold
+            noBorder={index === FEATURED_COLLECTIONS.length - 1}
             onPress={() =>
               navigation.navigate('CollectionProducts', {
                 collectionHandle: collection.handle,
@@ -58,15 +59,8 @@ export const ProductsHome = ({
           />
         ))}
 
-        <Box
-          px="m"
-          pt="l"
-          p="m"
-          backgroundColor="inputBackground"
-          borderBottomColor="borderPrimary"
-          borderBottomWidth={StyleSheet.hairlineWidth}
-        >
-          <Text variant="body1">Shop by category</Text>
+        <Box px="m" pt="l" p="m" backgroundColor="secondaryBackground">
+          <Text variant="h3">Shop by category</Text>
         </Box>
 
         {CATEGORY_COLLECTIONS.map((collection) => (

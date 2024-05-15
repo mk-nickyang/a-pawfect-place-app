@@ -19,6 +19,7 @@ import { Loading } from '@/components/Loading';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
 import type { RootStackParamList } from '@/navigation/types';
+import { useTheme } from '@/theme';
 
 type ProductViewProps = {
   product: ShopifyProduct;
@@ -26,6 +27,8 @@ type ProductViewProps = {
 };
 
 const ProductView = ({ product, navigation }: ProductViewProps) => {
+  const { colors } = useTheme();
+
   useEffect(
     function setupProductShareButton() {
       navigation.setOptions({
@@ -36,13 +39,17 @@ const ProductView = ({ product, navigation }: ProductViewProps) => {
               hitSlop={10}
               onPress={() => shareAsync(productUrl)}
             >
-              <Icon name="tray-arrow-up" size={24} />
+              <Icon
+                name="tray-arrow-up"
+                size={24}
+                color={colors.contentPrimary}
+              />
             </PressableOpacity>
           ) : null;
         },
       });
     },
-    [navigation, product.onlineStoreUrl],
+    [colors.contentPrimary, navigation, product.onlineStoreUrl],
   );
 
   return (

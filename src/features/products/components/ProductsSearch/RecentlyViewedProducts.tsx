@@ -12,7 +12,7 @@ import { ProductListItem } from '../ProductList/ProductListItem';
 import { Box } from '@/components/Box';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { Text } from '@/components/Text';
-import theme from '@/theme';
+import { spacing } from '@/theme';
 
 const RECENTLY_VIEWED_PRODUCT_ITEM_WIDTH = 200;
 
@@ -57,7 +57,7 @@ export const RecentlyViewedProducts = memo(() => {
   );
 });
 
-const ListItemSeparator = () => <Box width={theme.spacing.m} />;
+const ListItemSeparator = () => <Box width={spacing.m} />;
 
 RecentlyViewedProducts.displayName = 'RecentlyViewedProducts';
 

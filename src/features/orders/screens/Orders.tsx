@@ -1,6 +1,6 @@
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import { useQueryClient } from '@tanstack/react-query';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import { ordersQuery } from '../api/ordersQuery';
 import type { OrderEdge } from '../api/types';
@@ -10,6 +10,7 @@ import { OrderListItem } from '../components/OrderListItem';
 import { Box } from '@/components/Box';
 import { Divider } from '@/components/Divider';
 import { Loading } from '@/components/Loading';
+import { RefreshControl } from '@/components/RefreshControl';
 import { useEvent } from '@/hooks/useEvent';
 
 const keyExtractor = (item: OrderEdge) => item.node.id;
@@ -19,8 +20,6 @@ const renderItem: ListRenderItem<OrderEdge> = ({ item }) => (
 );
 
 export const Orders = () => {
-  const [isRefetching, setIsRefetching] = useState(false);
-
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading, refetch } =
     useOrders();
 
@@ -44,7 +43,6 @@ export const Orders = () => {
   }, [queryClient]);
 
   const refetchOrdersList = useCallback(async () => {
-    setIsRefetching(true);
     /**
      * Reset infinite query pagination before refetch to avoid overwhelming network requests
      * @see https://tanstack.com/query/v5/docs/framework/react/guides/infinite-queries#what-happens-when-an-infinite-query-needs-to-be-refetched
@@ -52,8 +50,6 @@ export const Orders = () => {
     resetOrdersQueryPagination();
 
     await refetch();
-
-    setIsRefetching(false);
   }, [refetch, resetOrdersQueryPagination]);
 
   useEffect(
@@ -65,10 +61,15 @@ export const Orders = () => {
     [resetOrdersQueryPagination],
   );
 
+  const refreshControl = useMemo(
+    () => <RefreshControl onRefresh={refetchOrdersList} />,
+    [refetchOrdersList],
+  );
+
   if (isLoading) return <Loading height="100%" />;
 
   return (
-    <Box flex={1} backgroundColor="mainBackground">
+    <Box flex={1} backgroundColor="screenBackground">
       <FlashList
         data={data}
         renderItem={renderItem}
@@ -77,8 +78,7 @@ export const Orders = () => {
         ItemSeparatorComponent={Divider}
         onEndReached={fetchNextOrdersPage}
         onEndReachedThreshold={0.5}
-        refreshing={isRefetching}
-        onRefresh={refetchOrdersList}
+        refreshControl={refreshControl}
         ListFooterComponent={hasNextPage ? ListFooter : null}
       />
     </Box>

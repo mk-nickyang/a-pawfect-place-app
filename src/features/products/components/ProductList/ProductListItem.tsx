@@ -9,7 +9,7 @@ import { RecentlyViewedProductsStorage } from '../../modules/recentlyViewedProdu
 import { Box } from '@/components/Box';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
-import theme from '@/theme';
+import { spacing } from '@/theme';
 import { formatPrice } from '@/utils/currency';
 
 type Props = {
@@ -112,7 +112,7 @@ ProductListItem.displayName = 'ProductListItem';
 const styles = StyleSheet.create({
   imageContainer: {
     paddingBottom: '100%',
-    marginBottom: theme.spacing.s,
+    marginBottom: spacing.s,
   },
   image: {
     ...StyleSheet.absoluteFillObject,
