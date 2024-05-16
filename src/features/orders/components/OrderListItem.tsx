@@ -32,7 +32,11 @@ export const OrderListItem = ({ order }: Props) => {
       onPress={() => navigation.navigate('OrderDetails', { orderId: order.id })}
     >
       <Box flexDirection="row" alignItems="flex-start" g="m" p="m">
-        <Image source={firstLineItem?.image?.url} style={styles.image} />
+        <Image
+          source={firstLineItem?.image?.url}
+          recyclingKey={firstLineItem?.image?.url}
+          style={styles.image}
+        />
 
         <Box flex={1} g="s">
           <Text variant="h3">Order {order.name}</Text>
