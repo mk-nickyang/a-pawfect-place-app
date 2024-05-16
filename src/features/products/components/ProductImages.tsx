@@ -59,8 +59,9 @@ export const ProductImages = memo(({ images }: Props) => {
         renderItem={renderItem}
         estimatedItemSize={windowWidth}
         showsHorizontalScrollIndicator={false}
-        maximumZoomScale={2}
+        maximumZoomScale={3}
         minimumZoomScale={1}
+        bouncesZoom={false}
         onMomentumScrollEnd={handleMomentumScrollEnd}
       />
 

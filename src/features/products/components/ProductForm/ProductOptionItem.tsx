@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
-import theme, { useTheme } from '@/theme';
+import { useTheme } from '@/theme';
 
 type Props = {
   name: string;
@@ -17,13 +17,13 @@ const OPTION_BOX_SIZE = 44;
 
 export const ProductOptionItem = memo(
   ({ name, value, checked, onChange }: Props) => {
-    const { colors } = useTheme();
+    const { colors, spacing } = useTheme();
 
     const isColorOption = name.toLowerCase() === 'color';
 
     let backgroundColor = checked
-      ? theme.colors.contentPrimary
-      : theme.colors.mainBackground;
+      ? colors.contentPrimary
+      : colors.mainBackground;
 
     if (isColorOption) {
       backgroundColor = value.toLowerCase();
@@ -55,11 +55,12 @@ export const ProductOptionItem = memo(
                 ? colors.contentInverse
                 : colors.borderPrimary,
               borderRadius: isColorOption ? OPTION_BOX_SIZE : 0,
+              paddingHorizontal: spacing.m,
             },
           ]}
         >
           {isColorOption ? null : (
-            <Text color={checked ? 'contentInverse' : 'contentPrimary'}>
+            <Text color={checked ? 'mainBackground' : 'contentPrimary'}>
               {value}
             </Text>
           )}
@@ -80,7 +81,6 @@ const styles = StyleSheet.create({
     height: OPTION_BOX_SIZE,
     minWidth: OPTION_BOX_SIZE,
     borderWidth: 1,
-    paddingHorizontal: theme.spacing.m,
     alignItems: 'center',
     justifyContent: 'center',
   },

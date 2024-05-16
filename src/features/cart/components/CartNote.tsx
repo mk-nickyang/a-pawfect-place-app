@@ -10,8 +10,9 @@ import { Icon } from '@/components/Icon';
 import { Modal, ModalRef } from '@/components/Modal';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
+import { useThemeMode } from '@/context/ThemeContext';
 import { Haptics } from '@/modules/haptics';
-import theme from '@/theme';
+import { spacing, useTheme } from '@/theme';
 
 type Props = { note: string | undefined | null; cartId: string };
 
@@ -20,6 +21,9 @@ export const CartNote = memo(({ note, cartId }: Props) => {
 
   const modalRef = useRef<ModalRef>(null);
   const noteRef = useRef(noteString);
+
+  const { colors } = useTheme();
+  const themeMode = useThemeMode();
 
   const { mutate, isPending } = useUpdateCartNote(cartId);
 
@@ -41,7 +45,7 @@ export const CartNote = memo(({ note, cartId }: Props) => {
   return (
     <>
       <PressableOpacity
-        hitSlop={theme.spacing.s}
+        hitSlop={spacing.s}
         onPress={() => {
           modalRef.current?.present();
           noteRef.current = noteString;
@@ -51,12 +55,20 @@ export const CartNote = memo(({ note, cartId }: Props) => {
         {noteString ? (
           <>
             <Text fontWeight="600">NOTE</Text>
-            <Icon name="square-edit-outline" size={20} />
+            <Icon
+              name="square-edit-outline"
+              size={20}
+              color={colors.contentPrimary}
+            />
             <Text style={styles.noteText}>{noteString}</Text>
           </>
         ) : (
           <>
-            <Icon name="note-text-outline" size={20} />
+            <Icon
+              name="note-text-outline"
+              size={20}
+              color={colors.contentPrimary}
+            />
             <Text>Add a Note</Text>
           </>
         )}
@@ -77,7 +89,9 @@ export const CartNote = memo(({ note, cartId }: Props) => {
             placeholder="e.g. Bella. Please leave by the front door."
             maxLength={255}
             returnKeyType="done"
-            style={styles.input}
+            placeholderTextColor={colors.contentSecondary}
+            keyboardAppearance={themeMode}
+            style={[styles.input, { color: colors.contentPrimary }]}
           />
         </Box>
 
@@ -93,12 +107,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: theme.spacing.xs,
-    marginBottom: theme.spacing.m,
+    gap: spacing.xs,
+    marginBottom: spacing.m,
   },
   noteText: {
     flex: 1,
-    marginLeft: theme.spacing.l,
+    marginLeft: spacing.l,
     textAlign: 'right',
   },
   input: {

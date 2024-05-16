@@ -7,7 +7,7 @@ import { useProductRecommendations } from '../api/useProductRecommendations';
 
 import { Box } from '@/components/Box';
 import { Text } from '@/components/Text';
-import theme from '@/theme';
+import { spacing } from '@/theme';
 
 type Props = { productId: string };
 
@@ -42,7 +42,7 @@ export const ProductRecommendations = memo(({ productId }: Props) => {
   );
 });
 
-const ListItemSeparator = () => <Box width={theme.spacing.m} />;
+const ListItemSeparator = () => <Box width={spacing.m} />;
 
 ProductRecommendations.displayName = 'ProductRecommendations';
 

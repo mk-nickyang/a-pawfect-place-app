@@ -12,6 +12,7 @@ import { Box } from '@/components/Box';
 import { Icon } from '@/components/Icon';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
+import { useThemeMode } from '@/context/ThemeContext';
 import { useTheme } from '@/theme';
 
 export const PRODUCTS_SEARCH_BAR_HEIGHT = 48;
@@ -20,6 +21,7 @@ export const ProductsSearchBar = memo(() => {
   const inputRef = useRef<TextInput>(null);
 
   const { colors } = useTheme();
+  const themeMode = useThemeMode();
 
   const navigation = useNavigation();
 
@@ -80,7 +82,8 @@ export const ProductsSearchBar = memo(() => {
           autoCorrect={false}
           enterKeyHint="search"
           returnKeyType="search"
-          style={styles.input}
+          keyboardAppearance={themeMode}
+          style={[styles.input, { color: colors.contentPrimary }]}
         />
       </Box>
 

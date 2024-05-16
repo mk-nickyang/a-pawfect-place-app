@@ -11,6 +11,7 @@ import { Icon } from '@/components/Icon';
 import { Modal, type ModalRef } from '@/components/Modal';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
+import { useTheme } from '@/theme';
 
 type Props = {
   availableSortIds: ProductListSortId[];
@@ -21,6 +22,8 @@ type Props = {
 export const ProductListSorter = memo(
   ({ availableSortIds, value, onChange }: Props) => {
     const modalRef = useRef<ModalRef>(null);
+
+    const { colors } = useTheme();
 
     return (
       <>
@@ -34,7 +37,7 @@ export const ProductListSorter = memo(
             borderWidth={1}
             borderColor="borderPrimary"
           >
-            <Icon name="sort" size={20} />
+            <Icon name="sort" size={20} color={colors.contentPrimary} />
             <Text>Sort</Text>
           </Box>
         </PressableOpacity>
@@ -52,7 +55,7 @@ export const ProductListSorter = memo(
                 hitSlop={12}
                 onPress={() => modalRef.current?.close()}
               >
-                <Icon name="close" size={20} />
+                <Icon name="close" size={20} color={colors.contentPrimary} />
               </PressableOpacity>
             </Box>
 
@@ -82,7 +85,13 @@ export const ProductListSorter = memo(
                     >
                       {PRODUCT_LIST_SORTER_BY_ID[sortId].label}
                     </Text>
-                    {isSelected ? <Icon name="check" size={20} /> : null}
+                    {isSelected ? (
+                      <Icon
+                        name="check"
+                        size={20}
+                        color={colors.contentPrimary}
+                      />
+                    ) : null}
                   </Box>
                 </PressableOpacity>
               );

@@ -14,6 +14,7 @@ import { Box } from '@/components/Box';
 import { Button } from '@/components/Button';
 import { Divider } from '@/components/Divider';
 import { Text } from '@/components/Text';
+import { spacing } from '@/theme';
 import { formatPrice } from '@/utils/currency';
 
 type Props = { cartId: string; emptyView: JSX.Element };
@@ -77,7 +78,11 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
 
           <CartNote note={cart?.note} cartId={cartId} />
 
-          <Button label="CHECKOUT" onPress={openCheckoutModal} />
+          <Button
+            label="CHECKOUT"
+            onPress={openCheckoutModal}
+            style={styles.checkoutBtn}
+          />
           <Button
             variant="secondary"
             label="CONTINUE SHOPPING"
@@ -115,3 +120,9 @@ export const CartList = memo(({ cartId, emptyView }: Props) => {
 });
 
 CartList.displayName = 'CartList';
+
+const styles = StyleSheet.create({
+  checkoutBtn: {
+    marginBottom: spacing.s,
+  },
+});

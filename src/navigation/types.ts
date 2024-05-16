@@ -26,6 +26,7 @@ type AccountTabParamList = {
   ReturnPolicy: undefined;
   ContactUs: undefined;
   Legal: { title: string; html?: string };
+  Appearance: undefined;
 } & CommonScreens;
 
 export type RootStackParamList = {

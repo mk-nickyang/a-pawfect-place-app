@@ -30,7 +30,9 @@ export const Button = ({
   const { colors } = useTheme();
 
   const backgroundColor =
-    variant === 'secondary' ? colors.mainBackground : colors.contentPrimary;
+    variant === 'secondary'
+      ? colors.secondaryButtonBackground
+      : colors.primaryButtonBackground;
 
   return (
     <PressableOpacity
@@ -43,12 +45,22 @@ export const Button = ({
       ]}
     >
       {loading ? (
-        <ActivityIndicator color={colors.contentInverse} />
+        <ActivityIndicator
+          color={
+            variant === 'secondary'
+              ? colors.secondaryButtonText
+              : colors.primaryButtonText
+          }
+        />
       ) : (
         <Text
           fontWeight="600"
           letterSpacing={0.5}
-          color={variant === 'secondary' ? 'contentPrimary' : 'contentInverse'}
+          color={
+            variant === 'secondary'
+              ? 'secondaryButtonText'
+              : 'primaryButtonText'
+          }
         >
           {label}
         </Text>

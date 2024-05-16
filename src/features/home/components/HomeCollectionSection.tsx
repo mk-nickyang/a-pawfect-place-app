@@ -7,7 +7,7 @@ import { Box } from '@/components/Box';
 import { Button } from '@/components/Button';
 import { Text } from '@/components/Text';
 import { ProductListItem } from '@/features/products/components/ProductList/ProductListItem';
-import theme from '@/theme';
+import { spacing } from '@/theme';
 
 type Props = {
   title: string;
@@ -84,15 +84,15 @@ HomeCollectionSection.displayName = 'HomeCollectionSection';
 const styles = StyleSheet.create({
   leftListItem: {
     width: '50%',
-    paddingLeft: theme.spacing.m,
-    paddingRight: theme.spacing.s,
-    paddingBottom: theme.spacing.m,
+    paddingLeft: spacing.m,
+    paddingRight: spacing.s,
+    paddingBottom: spacing.m,
   },
   rightListItem: {
     width: '50%',
-    paddingLeft: theme.spacing.s,
-    paddingRight: theme.spacing.m,
-    paddingBottom: theme.spacing.m,
+    paddingLeft: spacing.s,
+    paddingRight: spacing.m,
+    paddingBottom: spacing.m,
   },
   actionButton: {
     width: '100%',

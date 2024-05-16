@@ -19,6 +19,8 @@ import { Icon } from '@/components/Icon';
 import { Modal, type ModalRef } from '@/components/Modal';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
+import { useThemeMode } from '@/context/ThemeContext';
+import { useTheme } from '@/theme';
 
 type Props = {
   value: ProductFilter;
@@ -30,6 +32,8 @@ export const ProductListFilter = memo(({ value: filters, onChange }: Props) => {
 
   const minPriceInputRef = useRef<PriceRangeInputRef>(null);
   const maxPriceInputRef = useRef<PriceRangeInputRef>(null);
+
+  const { colors } = useTheme();
 
   const onOutOfStockFilterToggle = (value: boolean) => {
     onChange((prevFilters) => ({
@@ -87,7 +91,7 @@ export const ProductListFilter = memo(({ value: filters, onChange }: Props) => {
           borderWidth={1}
           borderColor="borderPrimary"
         >
-          <Icon name="filter-variant" size={20} />
+          <Icon name="filter-variant" size={20} color={colors.contentPrimary} />
           <Text>
             Filter{appliedFiltersCount > 0 ? ` (${appliedFiltersCount})` : ''}
           </Text>
@@ -107,7 +111,7 @@ export const ProductListFilter = memo(({ value: filters, onChange }: Props) => {
               hitSlop={12}
               onPress={() => modalRef.current?.close()}
             >
-              <Icon name="close" size={20} />
+              <Icon name="close" size={20} color={colors.contentPrimary} />
             </PressableOpacity>
           </Box>
 
@@ -181,6 +185,9 @@ const PriceRangeInput = ({
 
   const inputValueRef = useRef(defaultValueString);
 
+  const { colors } = useTheme();
+  const themeMode = useThemeMode();
+
   useImperativeHandle(inputRef, () => ({
     getValue: () => inputValueRef.current,
   }));
@@ -201,7 +208,9 @@ const PriceRangeInput = ({
           placeholder={placeholder}
           onChangeText={(text) => (inputValueRef.current = text)}
           inputMode="decimal"
-          style={styles.input}
+          placeholderTextColor={colors.contentSecondary}
+          keyboardAppearance={themeMode}
+          style={[styles.input, { color: colors.contentPrimary }]}
         />
       </Box>
     </Box>

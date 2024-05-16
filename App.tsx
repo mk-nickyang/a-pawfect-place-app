@@ -1,7 +1,5 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import * as Sentry from '@sentry/react-native';
-import { ShopifyCheckoutSheetProvider } from '@shopify/checkout-sheet-kit';
-import { ThemeProvider } from '@shopify/restyle';
 import {
   QueryCache,
   QueryClient,
@@ -15,12 +13,12 @@ import {
 } from 'react-native-safe-area-context';
 
 import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { shopifyCheckoutConfig } from '@/config';
 import { AuthContextProvider } from '@/context/AuthContext';
+import { ShopifyCheckoutContext } from '@/context/ShopifyCheckoutContext';
+import { ThemeContextProvider } from '@/context/ThemeContext';
 import { Logger } from '@/modules/logger';
 import { clientPersister } from '@/modules/storage';
 import { AppNavigator } from '@/navigation/AppNavigator';
-import theme from '@/theme';
 
 Sentry.init({ dsn: process.env.EXPO_PUBLIC_SENTRY_DSN, enabled: !__DEV__ });
 
@@ -43,25 +41,23 @@ persistQueryClient({
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeContextProvider>
       <ErrorBoundary>
         <SafeAreaProvider initialMetrics={initialWindowMetrics}>
           <QueryClientProvider client={queryClient}>
             <GestureHandlerRootView style={{ flex: 1 }}>
               <BottomSheetModalProvider>
                 <AuthContextProvider>
-                  <ShopifyCheckoutSheetProvider
-                    configuration={shopifyCheckoutConfig}
-                  >
+                  <ShopifyCheckoutContext>
                     <AppNavigator />
-                  </ShopifyCheckoutSheetProvider>
+                  </ShopifyCheckoutContext>
                 </AuthContextProvider>
               </BottomSheetModalProvider>
             </GestureHandlerRootView>
           </QueryClientProvider>
         </SafeAreaProvider>
       </ErrorBoundary>
-    </ThemeProvider>
+    </ThemeContextProvider>
   );
 }
 

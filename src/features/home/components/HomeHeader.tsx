@@ -7,18 +7,23 @@ import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
 import { useProductsSearchActions } from '@/features/products/store/productsSearch';
 import type { RootStackParamList } from '@/navigation/types';
+import { useTheme } from '@/theme';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Home'>;
 };
 
 export const HomeHeader = ({ navigation }: Props) => {
+  const { colors } = useTheme();
+
   const { showSearch } = useProductsSearchActions();
 
   return (
     <>
       <Box py="s" backgroundColor="announcementBarBackground">
-        <Text textAlign="center">🚚 Free shipping on orders over $50</Text>
+        <Text textAlign="center" color="announcementBarText">
+          🚚 Free shipping on orders over $50
+        </Text>
       </Box>
 
       <Box py="m" alignItems="center">
@@ -38,7 +43,7 @@ export const HomeHeader = ({ navigation }: Props) => {
               navigation.navigate('ProductsTab', { screen: 'ProductsHome' });
             }}
           >
-            <Icon name="magnify" size={24} />
+            <Icon name="magnify" size={24} color={colors.contentPrimary} />
           </PressableOpacity>
         </Box>
       </Box>

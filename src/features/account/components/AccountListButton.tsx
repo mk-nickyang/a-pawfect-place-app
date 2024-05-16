@@ -4,22 +4,27 @@ import { Box } from '@/components/Box';
 import { Icon } from '@/components/Icon';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
+import { useTheme } from '@/theme';
 
 type Props = {
   onPress: () => void;
   label: string;
   leftIcon?: JSX.Element;
-  rightIcon?: JSX.Element;
+  rightElement?: JSX.Element;
   noBorder?: boolean;
+  marginBottom?: boolean;
 };
 
 export const AccountListButton = ({
   onPress,
   label,
   leftIcon,
-  rightIcon,
+  rightElement,
   noBorder,
+  marginBottom,
 }: Props) => {
+  const { colors } = useTheme();
+
   return (
     <PressableOpacity onPress={onPress}>
       <Box
@@ -28,6 +33,7 @@ export const AccountListButton = ({
         justifyContent="space-between"
         backgroundColor="mainBackground"
         padding="m"
+        mb={marginBottom ? 'm' : undefined}
         borderBottomWidth={noBorder ? 0 : StyleSheet.hairlineWidth}
         borderBottomColor="borderPrimary"
       >
@@ -36,7 +42,13 @@ export const AccountListButton = ({
           <Text variant="body1">{label}</Text>
         </Box>
 
-        {rightIcon || <Icon name="chevron-right" size={24} />}
+        {rightElement || (
+          <Icon
+            name="chevron-right"
+            size={24}
+            color={colors.contentSecondary}
+          />
+        )}
       </Box>
     </PressableOpacity>
   );
