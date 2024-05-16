@@ -59,7 +59,11 @@ export const ProductListItem = memo(
     return (
       <PressableOpacity onPress={onItemPress} style={style}>
         <View style={styles.imageContainer}>
-          <Image source={product.featuredImage?.url} style={styles.image} />
+          <Image
+            source={product.featuredImage?.url}
+            recyclingKey={product.featuredImage?.url}
+            style={styles.image}
+          />
         </View>
 
         <Text>{product.title}</Text>
