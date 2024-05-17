@@ -123,6 +123,7 @@ export const Account = ({
       />
 
       <AccountListButton
+        noBorder
         label="Terms of Service"
         onPress={() =>
           navigation.navigate('Legal', {
