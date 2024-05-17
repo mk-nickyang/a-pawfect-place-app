@@ -3,9 +3,12 @@ import { useQuery } from '@tanstack/react-query';
 
 import { shopifyStorefrontQuery } from '@/api';
 
-const getProductGQLQuery = (productId: string) => `
+const getProductGQLQuery = (
+  productIdOrHandle: string,
+  productKey?: 'handle' | 'id',
+) => `
   {
-    product(id: "${productId}") {
+    product(${productKey || 'id'}: "${productIdOrHandle}") {
       id
       descriptionHtml
       title
@@ -46,16 +49,29 @@ const getProductGQLQuery = (productId: string) => `
   }
 `;
 
-const fetchProduct = async (productId: string) => {
+const fetchProduct = async (
+  productIdOrHandle: string,
+  productKey?: 'handle' | 'id',
+) => {
   const res = await shopifyStorefrontQuery<{ product: Product }>(
-    getProductGQLQuery(productId),
+    getProductGQLQuery(productIdOrHandle, productKey),
   );
   return res.data.product;
 };
 
-export const useProduct = (productId: string) => {
+/**
+ * When navigate to a product screen via deep linking,
+ * it's possible we only have `productHandle` available.
+ * So here we check if the Shopify `productId` has hyphens,
+ * if so, we assume it's a `productHandle` and use it for query.
+ */
+export const useProduct = (productIdOrHandle: string) => {
   return useQuery({
-    queryFn: () => fetchProduct(productId),
-    queryKey: ['product', { productId }],
+    queryFn: () =>
+      fetchProduct(
+        productIdOrHandle,
+        productIdOrHandle.includes('-') ? 'handle' : 'id',
+      ),
+    queryKey: ['product', { productId: productIdOrHandle }],
   });
 };

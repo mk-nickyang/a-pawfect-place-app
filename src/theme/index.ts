@@ -1,4 +1,4 @@
-import { DarkTheme, DefaultTheme } from '@react-navigation/native';
+import { DarkTheme } from '@react-navigation/native';
 import { createTheme, useTheme as _useTheme } from '@shopify/restyle';
 
 const palette = {
@@ -13,7 +13,7 @@ const theme = createTheme({
   colors: {
     mainBackground: palette.white,
     secondaryBackground: 'rgba(0, 0, 0, 0.03)',
-    screenBackground: DefaultTheme.colors.background,
+    screenBackground: palette.white,
     transparent: 'transparent',
     backdropBackground: 'rgba(0, 0, 0, 0.3)',
 
