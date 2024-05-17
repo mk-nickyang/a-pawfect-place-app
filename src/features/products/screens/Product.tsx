@@ -32,6 +32,7 @@ const ProductView = ({ product, navigation }: ProductViewProps) => {
   useEffect(
     function setupProductShareButton() {
       navigation.setOptions({
+        title: product.title,
         headerRight: () => {
           const productUrl = product.onlineStoreUrl;
           return productUrl ? (
@@ -49,7 +50,7 @@ const ProductView = ({ product, navigation }: ProductViewProps) => {
         },
       });
     },
-    [colors.contentPrimary, navigation, product.onlineStoreUrl],
+    [colors.contentPrimary, navigation, product.onlineStoreUrl, product.title],
   );
 
   return (
@@ -82,7 +83,12 @@ export const Product = ({
 
   if (isLoading) return <Loading height="100%" />;
 
-  if (!product) return null;
+  if (!product)
+    return (
+      <Box p="m">
+        <Text variant="body1">Product not found.</Text>
+      </Box>
+    );
 
   return <ProductView product={product} navigation={navigation} />;
 };

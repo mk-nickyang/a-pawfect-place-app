@@ -5,3 +5,13 @@ export const safeJSONParse = <T>(jsonString: string, fallback: T): T => {
     return fallback;
   }
 };
+
+export const capitalize = (str: string) =>
+  str.charAt(0).toUpperCase() + str.slice(1);
+
+export const transformHandleToTitle = (handle: string): string => {
+  return handle
+    .split('-')
+    .map((word) => capitalize(word))
+    .join(' ');
+};

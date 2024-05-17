@@ -9,6 +9,7 @@ import type { PropsWithChildren } from 'react';
 import { View } from 'react-native';
 
 import type { RootStackParamList } from './types';
+import { DEEP_LINKING } from './utils';
 
 import { Icon } from '@/components/Icon';
 import { useThemeMode } from '@/context/ThemeContext';
@@ -30,6 +31,7 @@ import { Product } from '@/features/products/screens/Product';
 import { ProductsHome } from '@/features/products/screens/ProductsHome';
 import { SearchProducts } from '@/features/products/screens/SearchProducts';
 import { useTheme } from '@/theme';
+import { transformHandleToTitle } from '@/utils/misc';
 
 const HomeStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -79,7 +81,11 @@ const ProductsStackNavigator = () => {
       <ProductsStack.Screen
         name="CollectionProducts"
         component={CollectionProducts}
-        options={({ route }) => ({ title: route.params.collectionTitle })}
+        options={({ route }) => ({
+          title:
+            route.params.collectionTitle ||
+            transformHandleToTitle(route.params.collectionHandle),
+        })}
       />
       <ProductsStack.Screen
         name="SearchProducts"
@@ -164,6 +170,7 @@ const ThemedNavigationContainer = ({ children }: PropsWithChildren) => {
   return (
     <NavigationContainer
       theme={themeMode === 'dark' ? DarkTheme : DefaultTheme}
+      linking={DEEP_LINKING}
     >
       {children}
     </NavigationContainer>
