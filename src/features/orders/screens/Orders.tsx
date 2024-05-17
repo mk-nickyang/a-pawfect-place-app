@@ -11,6 +11,7 @@ import { Box } from '@/components/Box';
 import { Divider } from '@/components/Divider';
 import { Loading } from '@/components/Loading';
 import { RefreshControl } from '@/components/RefreshControl';
+import { Text } from '@/components/Text';
 import { useEvent } from '@/hooks/useEvent';
 
 const keyExtractor = (item: OrderEdge) => item.node.id;
@@ -67,6 +68,13 @@ export const Orders = () => {
   );
 
   if (isLoading) return <Loading height="100%" />;
+
+  if (!data?.length)
+    return (
+      <Box p="m">
+        <Text variant="body1">No orders found.</Text>
+      </Box>
+    );
 
   return (
     <Box flex={1} backgroundColor="screenBackground">
