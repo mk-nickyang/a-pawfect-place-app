@@ -11,7 +11,6 @@ import { Icon } from '@/components/Icon';
 import { LoadingOverlay } from '@/components/LoadingOverlay';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
-import { IS_ACCOUNT_ENABLED } from '@/config';
 import { AuthenticationStatus, useAuth } from '@/context/AuthContext';
 import { useSelectedThemeMode } from '@/context/ThemeContext';
 import { useWarmUpBrowser } from '@/hooks/useWarmUpBrowser';
@@ -30,9 +29,7 @@ export const Account = ({
   const { login, logOut, authenticationStatus } = useAuth();
 
   const { data: account, isLoading } = useMyAccount({
-    enabled:
-      IS_ACCOUNT_ENABLED &&
-      authenticationStatus === AuthenticationStatus.AUTHENTICATED,
+    enabled: authenticationStatus === AuthenticationStatus.AUTHENTICATED,
   });
 
   const { data: shop } = useShopInfo();
@@ -50,33 +47,31 @@ export const Account = ({
 
   return (
     <ScrollView>
-      {IS_ACCOUNT_ENABLED ? (
-        <Box
-          backgroundColor="mainBackground"
-          px="m"
-          pt="m"
-          pb={account ? undefined : 'm'}
-          mb={account ? undefined : 'm'}
-        >
-          <Text variant="h2" mb="s">
-            Hi {account?.displayName || 'there'},
-          </Text>
+      <Box
+        backgroundColor="mainBackground"
+        px="m"
+        pt="m"
+        pb={account ? undefined : 'm'}
+        mb={account ? undefined : 'm'}
+      >
+        <Text variant="h2" mb="s">
+          Hi {account?.displayName || 'there'},
+        </Text>
 
-          {account ? (
-            <Text variant="body1">Welcome to your account</Text>
-          ) : (
-            <Box flexDirection="row" alignItems="center">
-              <PressableOpacity onPress={login}>
-                <Text textDecorationLine="underline">Sign in or register</Text>
-              </PressableOpacity>
+        {account ? (
+          <Text variant="body1">Welcome to your account</Text>
+        ) : (
+          <Box flexDirection="row" alignItems="center">
+            <PressableOpacity onPress={login}>
+              <Text textDecorationLine="underline">Sign in or register</Text>
+            </PressableOpacity>
 
-              <Text> to manage your account.</Text>
-            </Box>
-          )}
-        </Box>
-      ) : null}
+            <Text> to manage your account.</Text>
+          </Box>
+        )}
+      </Box>
 
-      {IS_ACCOUNT_ENABLED && account ? (
+      {account ? (
         <Box mb="m">
           {/* <AccountListButton
             label="Personal Details"
@@ -162,7 +157,7 @@ export const Account = ({
         onPress={() => navigation.navigate('Appearance')}
       />
 
-      {IS_ACCOUNT_ENABLED && account ? (
+      {account ? (
         <AccountListButton
           noBorder
           marginBottom
@@ -180,7 +175,7 @@ export const Account = ({
 
       <AppVersion />
 
-      {IS_ACCOUNT_ENABLED ? <LoadingOverlay visible={isLoading} /> : null}
+      <LoadingOverlay visible={isLoading} />
     </ScrollView>
   );
 };
