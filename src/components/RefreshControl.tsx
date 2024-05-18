@@ -1,11 +1,16 @@
 import { useState } from 'react';
-import { RefreshControl as RNRefreshControl } from 'react-native';
+import {
+  RefreshControl as RNRefreshControl,
+  RefreshControlProps,
+} from 'react-native';
 
 import { useTheme } from '@/theme';
 
-type Props = { onRefresh: () => Promise<unknown> };
+type Props = Omit<RefreshControlProps, 'onRefresh' | 'refreshing'> & {
+  onRefresh: () => Promise<unknown>;
+};
 
-export const RefreshControl = ({ onRefresh }: Props) => {
+export const RefreshControl = ({ onRefresh, ...props }: Props) => {
   const [isRefetching, setIsRefetching] = useState(false);
 
   const { colors } = useTheme();
@@ -19,6 +24,7 @@ export const RefreshControl = ({ onRefresh }: Props) => {
         setIsRefetching(false);
       }}
       tintColor={colors.contentPrimary}
+      {...props}
     />
   );
 };

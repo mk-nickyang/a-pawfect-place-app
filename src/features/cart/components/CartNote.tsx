@@ -1,6 +1,5 @@
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { memo, useRef, useCallback } from 'react';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet, TextInput } from 'react-native';
 
 import { useUpdateCartNote } from '../api/useUpdateCartNote';
 
@@ -79,8 +78,13 @@ export const CartNote = memo(({ note, cartId }: Props) => {
           Name of your pets and delivery instruction (optional)
         </Text>
 
-        <Box borderWidth={1} borderColor="borderPrimary" p="m" mb="l">
-          <BottomSheetTextInput
+        <Box
+          borderWidth={1}
+          borderColor="borderPrimary"
+          p={Platform.select({ ios: 'm', default: 's' })}
+          mb="l"
+        >
+          <TextInput
             autoFocus
             allowFontScaling={false}
             clearButtonMode="while-editing"
@@ -116,7 +120,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   input: {
-    fontSize: 16,
+    fontSize: Platform.select({ ios: 16, default: 14 }),
     paddingTop: 0,
   },
 });

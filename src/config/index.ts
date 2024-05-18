@@ -1,2 +1,10 @@
-export const SHOPIFY_SHOP_ID = '50403049658';
-export const SHOPIFY_SHOP_SLUG = 'a-pawfect-place';
+export const SHOP = {
+  id: '50403049658',
+  slug: 'a-pawfect-place',
+  URL: 'https://apawfectplace.com.au',
+  email: 'hello@apawfectplace.com.au',
+  social: {
+    instagram: 'apawfectplace',
+    facebook: 'apawfectplace',
+  },
+} as const;

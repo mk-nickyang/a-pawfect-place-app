@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-import { SHOPIFY_SHOP_SLUG, SHOPIFY_SHOP_ID } from '@/config';
+import { SHOP } from '@/config';
 import { Auth } from '@/modules/auth';
 
-const SHOPIFY_STOREFRONT_API_URL = `https://${SHOPIFY_SHOP_SLUG}.myshopify.com/api/2024-01/graphql.json`;
-const SHOPIFY_CUSTOMER_ACCOUNT_API_URL = `https://shopify.com/${SHOPIFY_SHOP_ID}/account/customer/api/2023-10/graphql`;
+const SHOPIFY_STOREFRONT_API_URL = `https://${SHOP.slug}.myshopify.com/api/2024-01/graphql.json`;
+const SHOPIFY_CUSTOMER_ACCOUNT_API_URL = `https://shopify.com/${SHOP.id}/account/customer/api/2023-10/graphql`;
 
 /**
  * Storefront API

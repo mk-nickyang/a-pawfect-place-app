@@ -49,7 +49,7 @@
           "data": [
             {
               "scheme": "https",
-              "host": "*.apawfectplace.com.au"
+              "host": "apawfectplace.com.au"
             }
           ],
           "category": [
@@ -58,7 +58,7 @@
           ]
         }
       ],
-      "versionCode": 2
+      "versionCode": 6
     },
     "plugins": [
       [

@@ -1,9 +1,11 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Alert, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 
 import { useMyAccount } from '../api/useMyAccount';
 import { useShopInfo } from '../api/useShopInfo';
 import { AccountListButton } from '../components/AccountListButton';
+import { AppearanceButton } from '../components/AppearanceButton';
+import { LogOutButton } from '../components/LogOutButton';
 
 import { AppVersion } from '@/components/AppVersion';
 import { Box } from '@/components/Box';
@@ -12,7 +14,6 @@ import { LoadingOverlay } from '@/components/LoadingOverlay';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
 import { AuthenticationStatus, useAuth } from '@/context/AuthContext';
-import { useSelectedThemeMode } from '@/context/ThemeContext';
 import { useWarmUpBrowser } from '@/hooks/useWarmUpBrowser';
 import type { RootStackParamList } from '@/navigation/types';
 import { useTheme } from '@/theme';
@@ -22,28 +23,15 @@ export const Account = ({
 }: NativeStackScreenProps<RootStackParamList, 'Account'>) => {
   const { colors } = useTheme();
 
-  const { selectedThemeMode } = useSelectedThemeMode();
-
   useWarmUpBrowser();
 
-  const { login, logOut, authenticationStatus } = useAuth();
+  const { login, authenticationStatus } = useAuth();
 
   const { data: account, isLoading } = useMyAccount({
     enabled: authenticationStatus === AuthenticationStatus.AUTHENTICATED,
   });
 
   const { data: shop } = useShopInfo();
-
-  const onLogOutPress = () => {
-    Alert.alert('Sign out', 'Are you sure you want to sign out?', [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Sign out',
-        style: 'destructive',
-        onPress: logOut,
-      },
-    ]);
-  };
 
   return (
     <ScrollView>
@@ -62,7 +50,7 @@ export const Account = ({
           <Text variant="body1">Welcome to your account</Text>
         ) : (
           <Box flexDirection="row" alignItems="center">
-            <PressableOpacity onPress={login}>
+            <PressableOpacity hitSlop={10} onPress={login}>
               <Text textDecorationLine="underline">Sign in or register</Text>
             </PressableOpacity>
 
@@ -73,16 +61,6 @@ export const Account = ({
 
       {account ? (
         <Box mb="m">
-          {/* <AccountListButton
-            label="Personal Details"
-            leftIcon={<Icon name="account-details" size={20} />}
-            onPress={() => navigation.navigate('PersonalDetails')}
-          />
-          <AccountListButton
-            label="Delivery Address"
-            leftIcon={<Icon name="truck-outline" size={20} />}
-            onPress={() => navigation.navigate('DeliveryAddress')}
-          /> */}
           <AccountListButton
             label="Orders"
             leftIcon={
@@ -124,6 +102,7 @@ export const Account = ({
 
       <AccountListButton
         noBorder
+        marginBottom
         label="Terms of Service"
         onPress={() =>
           navigation.navigate('Legal', {
@@ -133,50 +112,18 @@ export const Account = ({
         }
       />
 
-      <Box pb="m" />
+      <AppearanceButton />
 
-      <AccountListButton
-        noBorder
-        marginBottom
-        label="Appearance"
-        rightElement={
-          <Box flexDirection="row" alignItems="center" g="xs">
-            <Text
-              color="contentSecondary"
-              variant="body1"
-              textTransform="capitalize"
-            >
-              {selectedThemeMode}
-            </Text>
-            <Icon
-              name="chevron-right"
-              size={24}
-              color={colors.contentSecondary}
-            />
-          </Box>
-        }
-        onPress={() => navigation.navigate('Appearance')}
-      />
-
-      {account ? (
-        <AccountListButton
-          noBorder
-          marginBottom
-          label="Sign out"
-          onPress={onLogOutPress}
-          rightElement={
-            <Icon
-              name="logout-variant"
-              size={20}
-              color={colors.contentSecondary}
-            />
-          }
-        />
-      ) : null}
+      {account ? <LogOutButton /> : null}
 
       <AppVersion />
 
-      <LoadingOverlay visible={isLoading} />
+      <LoadingOverlay
+        visible={
+          isLoading ||
+          authenticationStatus === AuthenticationStatus.AUTHENTICATING
+        }
+      />
     </ScrollView>
   );
 };

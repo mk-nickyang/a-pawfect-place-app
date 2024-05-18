@@ -7,6 +7,7 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import type { PropsWithChildren } from 'react';
 import { View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import type { RootStackParamList } from './types';
 import { DEEP_LINKING } from './utils';
@@ -180,13 +181,17 @@ const ThemedNavigationContainer = ({ children }: PropsWithChildren) => {
 export const AppNavigator = () => {
   const { colors } = useTheme();
 
+  const insets = useSafeAreaInsets();
+
   return (
     <ThemedNavigationContainer>
       <Tab.Navigator
         screenOptions={{
           headerShown: false,
+          tabBarHideOnKeyboard: true,
           tabBarActiveTintColor: colors.contentPrimary,
           tabBarInactiveTintColor: colors.contentSecondary,
+          tabBarItemStyle: { paddingBottom: insets.bottom > 0 ? 0 : 4 },
         }}
       >
         <Tab.Screen

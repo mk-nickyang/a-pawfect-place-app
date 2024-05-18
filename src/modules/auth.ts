@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 
 import { PersistedStorage } from './storage';
 
-import { SHOPIFY_SHOP_ID } from '@/config';
+import { SHOP } from '@/config';
 
 type AuthTokenResponse = {
   access_token: string;
@@ -17,8 +17,8 @@ type CustomerAccountAPIAccessTokenResponse = {
   expires_in: number;
 };
 
-const SHOPIFY_CUSTOMER_ACCOUNT_AUTH_URL = `https://shopify.com/${SHOPIFY_SHOP_ID}/auth/oauth/authorize`;
-const SHOPIFY_CUSTOMER_ACCOUNT_LOGOUT_URL = `https://shopify.com/${SHOPIFY_SHOP_ID}/auth/logout`;
+const SHOPIFY_CUSTOMER_ACCOUNT_AUTH_URL = `https://shopify.com/${SHOP.id}/auth/oauth/authorize`;
+const SHOPIFY_CUSTOMER_ACCOUNT_LOGOUT_URL = `https://shopify.com/${SHOP.id}/auth/logout`;
 
 /**
  * Since Shopify only allows https OAuth callback url,

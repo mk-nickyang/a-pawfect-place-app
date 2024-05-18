@@ -30,6 +30,11 @@ export const ProductRecommendations = memo(({ productId }: Props) => {
         You may also like
       </Text>
       <FlatList
+        /**
+         * FlashList has a limitation where variable item heights are not supported
+         * @see https://github.com/Shopify/flash-list/issues/581
+         * Use FlatList here for now
+         */
         horizontal
         showsHorizontalScrollIndicator={false}
         data={products}

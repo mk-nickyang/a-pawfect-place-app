@@ -3,6 +3,7 @@ import * as MailComposer from 'expo-mail-composer';
 import { openBrowserAsync } from 'expo-web-browser';
 
 import { Text } from '@/components/Text';
+import { SHOP } from '@/config';
 
 type Props = {
   text: string;
@@ -41,7 +42,7 @@ export const Link = ({ text, type, deeplinkUrl, subject }: Props) => {
 type EmailLinkProps = { subject: string };
 
 export const EmailLink = ({ subject }: EmailLinkProps) => (
-  <Link type="email" text="hello@apawfectplace.com.au" subject={subject} />
+  <Link type="email" text={SHOP.email} subject={subject} />
 );
 
 export const SMSLink = () => (

@@ -9,7 +9,9 @@ import {
   useMemo,
   useState,
   useEffect,
+  useRef,
 } from 'react';
+import { Platform } from 'react-native';
 
 import { myAccountQuery } from '@/features/account/api/myAccountQuery';
 import { useUpdateCartBuyerIdentity } from '@/features/cart/api/useUpdateCartBuyerIdentity';
@@ -43,6 +45,8 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
         : AuthenticationStatus.UNAUTHENTICATED,
     );
 
+  const checkLoginRedirectRef = useRef(false);
+
   const queryClient = useQueryClient();
 
   const { cartId } = useCartId();
@@ -69,9 +73,49 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
     }
   });
 
-  useEffect(() => {
-    checkAuthSession();
-  }, [checkAuthSession, queryClient]);
+  useEffect(
+    function checkAuthSessionOnMount() {
+      checkAuthSession();
+    },
+    [checkAuthSession, queryClient],
+  );
+
+  const onLoginSuccess = useEvent(async (loginRedirectUrl: string) => {
+    try {
+      const { queryParams } = Linking.parse(loginRedirectUrl);
+      const code = queryParams?.['code'];
+      if (code && typeof code === 'string') {
+        // Fetch and store auth token
+        await Auth.setupAccessToken(code);
+        // Fetch customer data and add customer data to cart
+        await addBuyerIdentityToCart();
+
+        setAuthenticationStatus(AuthenticationStatus.AUTHENTICATED);
+      }
+    } catch (error) {
+      Logger.error(error);
+      setAuthenticationStatus(AuthenticationStatus.UNAUTHENTICATED);
+    }
+  });
+
+  useEffect(
+    function addLoginRedirectListener() {
+      // On iOS, login redirect url is retrieved in `openAuthSessionAsync` response below
+      if (Platform.OS === 'ios') return;
+
+      const subscription = Linking.addEventListener('url', (event) => {
+        if (checkLoginRedirectRef.current) {
+          checkLoginRedirectRef.current = false;
+          onLoginSuccess(event.url);
+        }
+      });
+
+      return () => {
+        subscription.remove();
+      };
+    },
+    [onLoginSuccess],
+  );
 
   const addBuyerIdentityToCart = useEvent(async () => {
     if (cartId) {
@@ -88,19 +132,18 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
 
     try {
       const loginUrl = Auth.generateLoginUrl();
+
+      if (Platform.OS === 'android') {
+        checkLoginRedirectRef.current = true;
+      }
+
       const authSessionResult = await openAuthSessionAsync(loginUrl);
 
-      if (authSessionResult.type === 'success' && authSessionResult.url) {
-        const { queryParams } = Linking.parse(authSessionResult.url);
-        const code = queryParams?.['code'];
-        if (code && typeof code === 'string') {
-          // Fetch and store auth token
-          await Auth.setupAccessToken(code);
-          // Fetch customer data and add customer data to cart
-          await addBuyerIdentityToCart();
+      // On Android, login redirect url is retrieved via `Linking` API above
+      if (Platform.OS === 'android') return;
 
-          setAuthenticationStatus(AuthenticationStatus.AUTHENTICATED);
-        }
+      if (authSessionResult.type === 'success' && authSessionResult.url) {
+        onLoginSuccess(authSessionResult.url);
       } else {
         setAuthenticationStatus(AuthenticationStatus.UNAUTHENTICATED);
       }
@@ -108,7 +151,7 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
       Logger.error(error);
       setAuthenticationStatus(AuthenticationStatus.UNAUTHENTICATED);
     }
-  }, [addBuyerIdentityToCart]);
+  }, [onLoginSuccess]);
 
   const removeBuyerIdentityFromCart = useEvent(() => {
     if (cartId) {

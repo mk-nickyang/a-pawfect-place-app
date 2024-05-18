@@ -3,10 +3,12 @@ import * as Linking from 'expo-linking';
 
 import type { RootStackParamList } from './types';
 
+import { SHOP } from '@/config';
+
 const prefix = Linking.createURL('/');
 
 export const DEEP_LINKING: LinkingOptions<RootStackParamList> = {
-  prefixes: [prefix, 'https://apawfectplace.com.au'],
+  prefixes: [prefix, SHOP.URL],
   config: {
     screens: {
       HomeTab: {

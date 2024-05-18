@@ -116,7 +116,7 @@ export const ProductForm = ({ product }: Props) => {
                   <Text fontWeight="600"> {selectedOption.value}</Text>
                 </Text>
 
-                <Box flexDirection="row" flexWrap="wrap" g="m">
+                <Box flexDirection="row" flexWrap="wrap" g="s">
                   {productOption.values.map((optionValue) => {
                     return (
                       <ProductOptionItem

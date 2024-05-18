@@ -2,6 +2,7 @@ import { ArticleScreenContainer } from '@/components/ArticleScreenContainer';
 import { Box } from '@/components/Box';
 import { Link, EmailLink, SMSLink } from '@/components/Link';
 import { Text } from '@/components/Text';
+import { SHOP } from '@/config';
 
 export const ContactUs = () => {
   return (
@@ -32,19 +33,19 @@ export const ContactUs = () => {
       </Box>
 
       <Box g="s">
-        <Text variant="h3">📬 Follow Us</Text>
+        <Text variant="h3">⭐ Follow Us</Text>
         <Text variant="body1">
           Don&apos;t miss out on any updates! Follow us on{' '}
           <Link
             text="Instagram"
             type="deeplink"
-            deeplinkUrl="https://www.instagram.com/apawfectplace/"
+            deeplinkUrl={`https://www.instagram.com/${SHOP.social.instagram}/`}
           />{' '}
           and{' '}
           <Link
             text="Facebook"
             type="deeplink"
-            deeplinkUrl="https://www.facebook.com/apawfectplace/"
+            deeplinkUrl={`https://www.facebook.com/${SHOP.social.facebook}/`}
           />{' '}
           to stay connected with our community and get the latest on pet care
           tips, new products, and exclusive offers.

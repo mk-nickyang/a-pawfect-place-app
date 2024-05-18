@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { PRODUCTS_SEARCH_BAR_HEIGHT } from './ProductsSearchBar';
@@ -12,7 +12,7 @@ import {
 } from '../../store/productsSearch';
 
 import { Box } from '@/components/Box';
-import { useTheme } from '@/theme';
+import { spacing, useTheme } from '@/theme';
 
 const ProductsSearchOverlayView = () => {
   const { spacing } = useTheme();
@@ -31,9 +31,11 @@ const ProductsSearchOverlayView = () => {
       bottom={0}
       px="m"
       pt="s"
-      pb="xl"
     >
-      <ScrollView keyboardShouldPersistTaps="handled">
+      <ScrollView
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={styles.list}
+      >
         {isSearchQueryEmpty ? (
           <>
             <RecentlyViewedProducts />
@@ -56,3 +58,9 @@ export const ProductsSearchOverlay = memo(() => {
 });
 
 ProductsSearchOverlay.displayName = 'ProductsSearchOverlay';
+
+const styles = StyleSheet.create({
+  list: {
+    paddingBottom: spacing.l,
+  },
+});
