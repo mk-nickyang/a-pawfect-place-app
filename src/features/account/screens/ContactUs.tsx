@@ -53,7 +53,7 @@ export const ContactUs = () => {
       </Box>
 
       <Text variant="body1">
-        We are here to ensure you and your pet have a pawfect experience with
+        We are here to ensure you and your pets have a pawfect experience with
         us!
       </Text>
     </ArticleScreenContainer>
