@@ -24,7 +24,7 @@ export const useShopifyCheckout = (cart: Cart | undefined) => {
         shopifyCheckout.preload(cart.checkoutUrl);
       }
     },
-    [cart?.checkoutUrl, shopifyCheckout],
+    [cart?.checkoutUrl, cart?.updatedAt, shopifyCheckout],
   );
 
   useEffect(

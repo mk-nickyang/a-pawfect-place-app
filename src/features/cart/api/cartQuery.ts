@@ -9,6 +9,7 @@ const getCartGQLQuery = (cartId: string) => `
       id
       checkoutUrl
       note
+      updatedAt
       cost {
         subtotalAmount {
           amount
