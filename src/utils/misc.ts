@@ -15,3 +15,9 @@ export const transformHandleToTitle = (handle: string): string => {
     .map((word) => capitalize(word))
     .join(' ');
 };
+
+export const fromGlobalId = (id: string) => {
+  if (!id) return id;
+  const arr = id.split('/');
+  return arr[arr.length - 1];
+};

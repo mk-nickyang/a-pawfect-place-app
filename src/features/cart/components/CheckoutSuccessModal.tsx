@@ -1,14 +1,17 @@
 import { useNavigation } from '@react-navigation/native';
 import { memo, type RefObject } from 'react';
 
+import {
+  BottomSheetModal,
+  type BottomSheetModalRef,
+} from '@/components/BottomSheetModal';
 import { Box } from '@/components/Box';
 import { Button } from '@/components/Button';
 import { Icon } from '@/components/Icon';
-import { Modal, type ModalRef } from '@/components/Modal';
 import { Text } from '@/components/Text';
 import { useTheme } from '@/theme';
 
-type Props = { modalRef: RefObject<ModalRef> };
+type Props = { modalRef: RefObject<BottomSheetModalRef> };
 
 export const CheckoutSuccessModal = memo(({ modalRef }: Props) => {
   const navigation = useNavigation();
@@ -16,7 +19,7 @@ export const CheckoutSuccessModal = memo(({ modalRef }: Props) => {
   const { colors } = useTheme();
 
   return (
-    <Modal modalRef={modalRef} size="medium">
+    <BottomSheetModal modalRef={modalRef} size="medium">
       <Box flex={1} justifyContent="space-between">
         <Box alignItems="center">
           <Icon name="check-circle" size={64} color={colors.success} />
@@ -48,7 +51,7 @@ export const CheckoutSuccessModal = memo(({ modalRef }: Props) => {
           />
         </Box>
       </Box>
-    </Modal>
+    </BottomSheetModal>
   );
 });
 

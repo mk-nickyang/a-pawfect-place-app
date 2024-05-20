@@ -12,11 +12,14 @@ import {
 } from 'react';
 import { ScrollView, Switch, TextInput, StyleSheet } from 'react-native';
 
+import {
+  BottomSheetModal,
+  type BottomSheetModalRef,
+} from '@/components/BottomSheetModal';
 import { Box } from '@/components/Box';
 import { Button } from '@/components/Button';
 import { Divider } from '@/components/Divider';
 import { Icon } from '@/components/Icon';
-import { Modal, type ModalRef } from '@/components/Modal';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
 import { useThemeMode } from '@/context/ThemeContext';
@@ -28,7 +31,7 @@ type Props = {
 };
 
 export const ProductListFilter = memo(({ value: filters, onChange }: Props) => {
-  const modalRef = useRef<ModalRef>(null);
+  const modalRef = useRef<BottomSheetModalRef>(null);
 
   const minPriceInputRef = useRef<PriceRangeInputRef>(null);
   const maxPriceInputRef = useRef<PriceRangeInputRef>(null);
@@ -98,7 +101,7 @@ export const ProductListFilter = memo(({ value: filters, onChange }: Props) => {
         </Box>
       </PressableOpacity>
 
-      <Modal modalRef={modalRef} size="large">
+      <BottomSheetModal modalRef={modalRef} size="large">
         <ScrollView keyboardShouldPersistTaps="handled">
           <Box
             flexDirection="row"
@@ -160,7 +163,7 @@ export const ProductListFilter = memo(({ value: filters, onChange }: Props) => {
             onPress={onFiltersClear}
           />
         </ScrollView>
-      </Modal>
+      </BottomSheetModal>
     </>
   );
 });

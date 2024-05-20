@@ -4,10 +4,13 @@ import { StyleSheet } from 'react-native';
 
 import { useAddProductToCart } from '../../api/useAddProductToCart';
 
+import {
+  BottomSheetModal,
+  type BottomSheetModalRef,
+} from '@/components/BottomSheetModal';
 import { Box } from '@/components/Box';
 import { Button } from '@/components/Button';
 import { Icon } from '@/components/Icon';
-import { Modal, type ModalRef } from '@/components/Modal';
 import { Text } from '@/components/Text';
 import { Haptics } from '@/modules/haptics';
 import { useTheme, spacing } from '@/theme';
@@ -16,7 +19,7 @@ type Props = { selectedVariantId: string; isSoldOut: boolean };
 
 export const AddToCartButton = memo(
   ({ selectedVariantId, isSoldOut }: Props) => {
-    const modalRef = useRef<ModalRef>(null);
+    const modalRef = useRef<BottomSheetModalRef>(null);
 
     const { colors } = useTheme();
 
@@ -43,7 +46,7 @@ export const AddToCartButton = memo(
           style={styles.container}
         />
 
-        <Modal modalRef={modalRef} size="medium">
+        <BottomSheetModal modalRef={modalRef} size="medium">
           <Box flex={1} justifyContent="space-between">
             <Box g="m" alignItems="center">
               <Icon name="check-circle" size={64} color={colors.success} />
@@ -66,7 +69,7 @@ export const AddToCartButton = memo(
               />
             </Box>
           </Box>
-        </Modal>
+        </BottomSheetModal>
       </>
     );
   },

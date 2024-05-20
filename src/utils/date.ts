@@ -3,6 +3,8 @@
  * Output: 'Dec 21, 2020'
  */
 export const formatDate = (dateString: string): string => {
+  if (!dateString) return '';
+
   const date = new Date(dateString);
   const currentYear = new Date().getFullYear();
   const formatOptions: Intl.DateTimeFormatOptions = {

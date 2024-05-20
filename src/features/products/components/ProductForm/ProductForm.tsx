@@ -73,7 +73,7 @@ export const ProductForm = ({ product }: Props) => {
   return (
     <Box mt="s" mb="xl">
       <Box mb="s" flexDirection="row" alignItems="center" g="s">
-        <Text variant="h3">{formatPrice(selectedVariant?.price)}</Text>
+        <Text variant="h2">{formatPrice(selectedVariant?.price)}</Text>
 
         {isOnSale ? (
           <Text color="contentSecondary" textDecorationLine="line-through">
@@ -111,9 +111,9 @@ export const ProductForm = ({ product }: Props) => {
 
             return (
               <Box mb="m" key={productOption.id}>
-                <Text mb="s">
+                <Text variant="body1" mb="s">
                   {productOption.name}:
-                  <Text fontWeight="600"> {selectedOption.value}</Text>
+                  <Text variant="h3"> {selectedOption.value}</Text>
                 </Text>
 
                 <Box flexDirection="row" flexWrap="wrap" g="s">

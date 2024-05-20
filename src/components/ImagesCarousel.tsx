@@ -1,12 +1,7 @@
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
-import type {
-  ImageConnection,
-  ImageEdge,
-} from '@shopify/hydrogen-react/storefront-api-types';
 import { Image } from 'expo-image';
 import {
   type RefObject,
-  memo,
   useCallback,
   useState,
   useImperativeHandle,
@@ -21,19 +16,19 @@ import {
 import { Box } from '@/components/Box';
 import { Text } from '@/components/Text';
 
-type Props = { images: ImageConnection };
+type Props = { imageUrls: string[]; initialImageIndex?: number };
 
-const keyExtractor = (item: ImageEdge) => item.node.url;
+const keyExtractor = (item: string) => item;
 
-export const ProductImages = memo(({ images }: Props) => {
+export const ImagesCarousel = ({ imageUrls, initialImageIndex }: Props) => {
   const imagesListIndicatorRef = useRef<ImagesListIndicatorRef>(null);
 
   const { width: windowWidth } = useWindowDimensions();
 
-  const renderItem: ListRenderItem<ImageEdge> = useCallback(
+  const renderItem: ListRenderItem<string> = useCallback(
     ({ item }) => (
       <Image
-        source={item.node.url}
+        source={item}
         style={{ width: windowWidth, height: windowWidth }}
       />
     ),
@@ -54,9 +49,10 @@ export const ProductImages = memo(({ images }: Props) => {
       <FlashList
         pagingEnabled
         horizontal
-        data={images.edges}
+        data={imageUrls}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
+        initialScrollIndex={initialImageIndex}
         estimatedItemSize={windowWidth}
         showsHorizontalScrollIndicator={false}
         maximumZoomScale={3}
@@ -67,13 +63,14 @@ export const ProductImages = memo(({ images }: Props) => {
 
       <ImagesListIndicator
         listIndicatorRef={imagesListIndicatorRef}
-        listLength={images.edges.length}
+        listLength={imageUrls.length}
+        initialImageIndex={initialImageIndex}
       />
     </Box>
   );
-});
+};
 
-ProductImages.displayName = 'ProductImages';
+ImagesCarousel.displayName = 'ImagesCarousel';
 
 // ImagesListIndicator
 type ImagesListIndicatorRef = { setCurrentIndex: (newIndex: number) => void };
@@ -81,13 +78,17 @@ type ImagesListIndicatorRef = { setCurrentIndex: (newIndex: number) => void };
 type ImagesListIndicatorProps = {
   listIndicatorRef: RefObject<ImagesListIndicatorRef>;
   listLength: number;
+  initialImageIndex?: number;
 };
 
 const ImagesListIndicator = ({
   listIndicatorRef,
   listLength,
+  initialImageIndex,
 }: ImagesListIndicatorProps) => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(
+    initialImageIndex ?? 0,
+  );
 
   useImperativeHandle(listIndicatorRef, () => ({
     setCurrentIndex: setCurrentImageIndex,

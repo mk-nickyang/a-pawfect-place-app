@@ -4,6 +4,7 @@ import { Image } from 'expo-image';
 import { memo } from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 
+import { ProductListItemRating } from './ProductListItemRating';
 import { RecentlyViewedProductsStorage } from '../../modules/recentlyViewedProducts';
 
 import { Box } from '@/components/Box';
@@ -67,6 +68,8 @@ export const ProductListItem = memo(
         </View>
 
         <Text>{product.title}</Text>
+
+        <ProductListItemRating productId={product.id} />
 
         <Box flexDirection="row" pt="xs" gap="s">
           <Text fontWeight="600">
