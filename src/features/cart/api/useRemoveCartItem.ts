@@ -35,6 +35,7 @@ export const useRemoveCartItem = (cartId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
+    mutationKey: ['remove-cart', { cartId }],
     mutationFn: (lineId: string) => removeCartItem({ lineId, cartId }),
     onMutate: async (removedLineId) => {
       const cartQueryKey = cartQuery(cartId).queryKey;
@@ -69,8 +70,14 @@ export const useRemoveCartItem = (cartId: string) => {
         );
       }
     },
-    // Always refetch after error or success:
     onSettled: () => {
+      const hasOtherRemovingCartMutation =
+        queryClient.isMutating({ mutationKey: ['remove-cart', { cartId }] }) >
+        1;
+
+      if (hasOtherRemovingCartMutation) return;
+
+      // IF there is no other ongoing mutation, refetch cart after error or success
       queryClient.invalidateQueries({ queryKey: cartQuery(cartId).queryKey });
     },
   });
