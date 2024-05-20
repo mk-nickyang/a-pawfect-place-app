@@ -71,3 +71,7 @@ Android
 ```
 yarn android
 ```
+
+## Build & Deploy
+
+I use `eas build` & `eas submit` locally for now, but planning to move it onto Github Actions in the near future.
