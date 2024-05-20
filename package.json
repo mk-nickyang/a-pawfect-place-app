@@ -33,6 +33,7 @@
     "expo": "~51.0.8",
     "expo-application": "~5.9.1",
     "expo-constants": "~16.0.1",
+    "expo-dev-client": "~4.0.14",
     "expo-haptics": "~13.0.1",
     "expo-image": "~1.12.9",
     "expo-linking": "~6.3.1",
