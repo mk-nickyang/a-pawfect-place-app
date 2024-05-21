@@ -2489,10 +2489,10 @@
   dependencies:
     "@sentry/types" "7.113.0"
 
-"@shopify/checkout-sheet-kit@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@shopify/checkout-sheet-kit/-/checkout-sheet-kit-2.0.0.tgz#f4f3731930b31eebb3650a10e2bfa2249aa06117"
-  integrity sha512-pTCuNs9KvaJ1ZwcgRMBvf9EKaKjk6WgDl+LfNO8wmR3DJQCHcBuiCum59mFh8jtVs1ZmcccqNQ6N0UuL8BXu0w==
+"@shopify/checkout-sheet-kit@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@shopify/checkout-sheet-kit/-/checkout-sheet-kit-3.0.0.tgz#ae294cd8f41ab76e214700286853cad60c82c6e9"
+  integrity sha512-17omok3HM2FI9/dO/byNFawfBHx3Fdts6nRtZCngpG5Kn/VkM9xF0hCv9sYGSKJE+K2EtcFal99FNUBrGGk5Ug==
 
 "@shopify/flash-list@1.6.4":
   version "1.6.4"

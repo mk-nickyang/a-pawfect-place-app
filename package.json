@@ -21,7 +21,7 @@
     "@react-navigation/native": "^6.1.16",
     "@react-navigation/native-stack": "^6.9.25",
     "@sentry/react-native": "~5.22.0",
-    "@shopify/checkout-sheet-kit": "^2.0.0",
+    "@shopify/checkout-sheet-kit": "^3.0.0",
     "@shopify/flash-list": "1.6.4",
     "@shopify/hydrogen-react": "^2024.1.1",
     "@shopify/restyle": "^2.4.2",
