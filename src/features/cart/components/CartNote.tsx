@@ -3,10 +3,13 @@ import { Platform, StyleSheet, TextInput } from 'react-native';
 
 import { useUpdateCartNote } from '../api/useUpdateCartNote';
 
+import {
+  BottomSheetModal,
+  type BottomSheetModalRef,
+} from '@/components/BottomSheetModal';
 import { Box } from '@/components/Box';
 import { Button } from '@/components/Button';
 import { Icon } from '@/components/Icon';
-import { Modal, ModalRef } from '@/components/Modal';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
 import { useThemeMode } from '@/context/ThemeContext';
@@ -18,7 +21,7 @@ type Props = { note: string | undefined | null; cartId: string };
 export const CartNote = memo(({ note, cartId }: Props) => {
   const noteString = (note || '').trim();
 
-  const modalRef = useRef<ModalRef>(null);
+  const modalRef = useRef<BottomSheetModalRef>(null);
   const noteRef = useRef(noteString);
 
   const { colors } = useTheme();
@@ -73,7 +76,7 @@ export const CartNote = memo(({ note, cartId }: Props) => {
         )}
       </PressableOpacity>
 
-      <Modal modalRef={modalRef} size="large">
+      <BottomSheetModal modalRef={modalRef} size="large">
         <Text variant="h3" mb="m">
           Name of your pets and delivery instruction (optional)
         </Text>
@@ -100,7 +103,7 @@ export const CartNote = memo(({ note, cartId }: Props) => {
         </Box>
 
         <Button label="SAVE" loading={isPending} onPress={onCartNoteSave} />
-      </Modal>
+      </BottomSheetModal>
     </>
   );
 });

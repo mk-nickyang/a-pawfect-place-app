@@ -6,9 +6,12 @@ import {
   PRODUCT_LIST_SORTER_BY_ID,
 } from '../../utils/constants';
 
+import {
+  BottomSheetModal,
+  type BottomSheetModalRef,
+} from '@/components/BottomSheetModal';
 import { Box } from '@/components/Box';
 import { Icon } from '@/components/Icon';
-import { Modal, type ModalRef } from '@/components/Modal';
 import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
 import { useTheme } from '@/theme';
@@ -21,7 +24,7 @@ type Props = {
 
 export const ProductListSorter = memo(
   ({ availableSortIds, value, onChange }: Props) => {
-    const modalRef = useRef<ModalRef>(null);
+    const modalRef = useRef<BottomSheetModalRef>(null);
 
     const { colors } = useTheme();
 
@@ -42,7 +45,7 @@ export const ProductListSorter = memo(
           </Box>
         </PressableOpacity>
 
-        <Modal modalRef={modalRef} size="medium">
+        <BottomSheetModal modalRef={modalRef} size="medium">
           <ScrollView>
             <Box
               flexDirection="row"
@@ -97,7 +100,7 @@ export const ProductListSorter = memo(
               );
             })}
           </ScrollView>
-        </Modal>
+        </BottomSheetModal>
       </>
     );
   },

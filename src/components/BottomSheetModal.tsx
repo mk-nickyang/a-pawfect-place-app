@@ -1,6 +1,6 @@
 import {
   BottomSheetBackdropProps,
-  BottomSheetModal,
+  BottomSheetModal as BottomSheet,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
@@ -26,9 +26,9 @@ const BOTTOM_SHEET_SNAP_POINTS = {
   large: ['75%'],
 } as const;
 
-export type ModalRef = BottomSheetModal;
+export type BottomSheetModalRef = BottomSheet;
 
-export const Modal = ({ modalRef, size, children }: Props) => {
+export const BottomSheetModal = ({ modalRef, size, children }: Props) => {
   const { spacing, colors } = useTheme();
 
   const insets = useSafeAreaInsets();
@@ -45,7 +45,7 @@ export const Modal = ({ modalRef, size, children }: Props) => {
   );
 
   return (
-    <BottomSheetModal
+    <BottomSheet
       ref={modalRef}
       snapPoints={BOTTOM_SHEET_SNAP_POINTS[size]}
       enablePanDownToClose
@@ -64,7 +64,7 @@ export const Modal = ({ modalRef, size, children }: Props) => {
       >
         {children}
       </BottomSheetView>
-    </BottomSheetModal>
+    </BottomSheet>
   );
 };
 

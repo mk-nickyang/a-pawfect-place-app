@@ -1,5 +1,7 @@
 import type { ProductFilter } from '@shopify/hydrogen-react/storefront-api-types';
 
+import { ProductReview } from './types';
+
 export const parseProductFilterGQLQueryString = (filters: ProductFilter) => {
   const availableFilterString = filters.available ? '{ available: true }' : '';
 
@@ -18,4 +20,9 @@ export const parseProductFilterGQLQueryString = (filters: ProductFilter) => {
 
   if (!availableFilterString) return priceFilterString;
   return `${availableFilterString}, ${priceFilterString}`;
+};
+
+export const calculateAverageRating = (reviews: ProductReview[]): number => {
+  const total = reviews.reduce((sum, review) => sum + review.rating, 0);
+  return total / reviews.length;
 };

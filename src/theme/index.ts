@@ -7,6 +7,9 @@ const palette = {
   lightGrey: '#e3e3e3',
   grey: '#8a8a8a',
   green: '#4caf50',
+  red: '#f00c',
+  yellow: '#fffba8',
+  gold: '#ffb800',
 };
 
 const theme = createTheme({
@@ -29,12 +32,13 @@ const theme = createTheme({
     primaryButtonText: palette.white,
     secondaryButtonBackground: palette.white,
     secondaryButtonText: palette.black,
-    announcementBarBackground: '#fffba8',
+    announcementBarBackground: palette.yellow,
     announcementBarText: palette.black,
 
-    modalBackground: palette.black,
-    badgeBackground: '#f00c',
+    modalBackground: '#000000',
+    badgeBackground: palette.red,
     inputBackground: 'rgba(0, 0, 0, 0.03)',
+    ratingBackground: palette.gold,
   },
   spacing: {
     xs: 4,

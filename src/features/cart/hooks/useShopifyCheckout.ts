@@ -5,11 +5,11 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import { cartQuery } from '../api/cartQuery';
 
-import type { ModalRef } from '@/components/Modal';
+import type { BottomSheetModalRef } from '@/components/BottomSheetModal';
 
 export const useShopifyCheckout = (cart: Cart | undefined) => {
   const isCheckoutSuccessRef = useRef(false);
-  const checkoutSuccessModalRef = useRef<ModalRef>(null);
+  const checkoutSuccessModalRef = useRef<BottomSheetModalRef>(null);
 
   const queryClient = useQueryClient();
   const shopifyCheckout = useShopifyCheckoutSheet();
