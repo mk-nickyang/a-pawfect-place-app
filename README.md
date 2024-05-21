@@ -4,10 +4,11 @@ A Pawfect Place is a React Native Expo app designed to provide a mobile shopping
 
 Download it from stores: [App Store](https://apps.apple.com/au/app/a-pawfect-place/id6479609584), Google Play (under review).
 
-## Features
+## Featured API and packages
 
 - Products listing with [Shopify Storefront API](https://shopify.dev/docs/api/storefront)
 - Passwordless login with [Shopify Customer Account API](https://shopify.dev/docs/api/customer)
+- Products reviews with [Judge.me API](https://judge.me/api/docs)
 - Checkout with [@shopify/checkout-sheet-kit](https://github.com/Shopify/checkout-sheet-kit-react-native)
 - List component with [@shopify/flash-list](https://github.com/Shopify/flash-list)
 - Dark Mode and Styling with [@shopify/restyle](https://github.com/Shopify/restyle)

@@ -2,7 +2,7 @@
   "expo": {
     "name": "A Pawfect Place",
     "slug": "a-pawfect-place",
-    "version": "1.0.3",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -21,7 +21,7 @@
       "associatedDomains": [
         "applinks:apawfectplace.com.au"
       ],
-      "buildNumber": "4",
+      "buildNumber": "5",
       "config": {
         "usesNonExemptEncryption": false
       },
