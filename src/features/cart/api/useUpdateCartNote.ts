@@ -37,7 +37,9 @@ export const useUpdateCartNote = (cartId: string) => {
     mutationFn: (note: string) => updateCartNote({ cartId, note }),
     onSuccess: () => {
       // Refetch cart query when cart is updated
-      queryClient.invalidateQueries({ queryKey: cartQuery(cartId).queryKey });
+      return queryClient.invalidateQueries({
+        queryKey: cartQuery(cartId).queryKey,
+      });
     },
   });
 };

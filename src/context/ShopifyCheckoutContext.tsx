@@ -12,7 +12,6 @@ export const ShopifyCheckoutContext = ({ children }: PropsWithChildren) => {
   return (
     <ShopifyCheckoutSheetProvider
       configuration={{
-        preloading: true,
         colorScheme:
           themeMode === 'dark' ? ColorScheme.dark : ColorScheme.light,
       }}
