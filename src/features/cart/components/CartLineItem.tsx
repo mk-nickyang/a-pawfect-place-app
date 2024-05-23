@@ -20,7 +20,7 @@ const CART_ITEM_IMAGE_SIZE = 120;
 
 export const CartLineItem = ({ cartLine, cartId }: Props) => {
   const { merchandise, quantity, cost } = cartLine;
-  const { image, product, selectedOptions } = merchandise;
+  const { image, product, selectedOptions, quantityAvailable } = merchandise;
 
   const navigation = useNavigation();
 
@@ -64,6 +64,7 @@ export const CartLineItem = ({ cartLine, cartId }: Props) => {
 
         <LineItemQuantity
           quantity={quantity}
+          quantityAvailable={quantityAvailable ?? undefined}
           lineId={cartLine.id}
           cartId={cartId}
         />

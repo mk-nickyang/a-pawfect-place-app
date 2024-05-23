@@ -20,6 +20,11 @@ const removeCartItemGQLMutation = ({
       cart {
         id
       }
+      userErrors {
+        code
+        field
+        message
+      }
     }
   }
 `;
@@ -78,7 +83,9 @@ export const useRemoveCartItem = (cartId: string) => {
       if (hasOtherRemovingCartMutation) return;
 
       // IF there is no other ongoing mutation, refetch cart after error or success
-      queryClient.invalidateQueries({ queryKey: cartQuery(cartId).queryKey });
+      return queryClient.invalidateQueries({
+        queryKey: cartQuery(cartId).queryKey,
+      });
     },
   });
 };

@@ -8,57 +8,77 @@ import { PressableOpacity } from '@/components/PressableOpacity';
 import { Text } from '@/components/Text';
 import { Haptics } from '@/modules/haptics';
 
-type Props = { quantity: number; lineId: string; cartId: string };
+type Props = {
+  quantity: number;
+  lineId: string;
+  cartId: string;
+  quantityAvailable?: number;
+};
 
 const QUANTITY_BUTTON_SIZE = 36;
 
-export const LineItemQuantity = memo(({ quantity, lineId, cartId }: Props) => {
-  const { mutate, isPending } = useUpdateCartItemQuantity(cartId);
+export const LineItemQuantity = memo(
+  ({ quantity, lineId, cartId, quantityAvailable }: Props) => {
+    const { mutate, isPending } = useUpdateCartItemQuantity(cartId);
 
-  const onQuantityUpdate = (newQuantity: number) => {
-    mutate(
-      { lineId, quantity: newQuantity },
-      {
-        onSuccess: () => {
-          Haptics.impact();
+    const onQuantityUpdate = (newQuantity: number) => {
+      mutate(
+        { lineId, quantity: newQuantity },
+        {
+          onSuccess: () => {
+            Haptics.impact();
+          },
         },
-      },
-    );
-  };
+      );
+    };
 
-  return (
-    <Box mb="s" flexDirection="row" borderWidth={1} borderColor="borderPrimary">
-      <PressableOpacity
-        disabled={isPending}
-        onPress={() => onQuantityUpdate(quantity - 1)}
-        style={styles.box}
-      >
-        <Text color={isPending ? 'disabled' : 'contentPrimary'}>-</Text>
-      </PressableOpacity>
+    const isQtyMinusDisabled = isPending;
+    const isQtyPlusDisabled =
+      isPending || (!!quantityAvailable && quantity >= quantityAvailable);
 
+    return (
       <Box
-        style={styles.box}
-        borderLeftWidth={1}
-        borderRightWidth={1}
+        mb="s"
+        flexDirection="row"
+        borderWidth={1}
         borderColor="borderPrimary"
       >
-        {isPending ? (
-          <ActivityIndicator size="small" />
-        ) : (
-          <Text>{quantity}</Text>
-        )}
-      </Box>
+        <PressableOpacity
+          disabled={isQtyMinusDisabled}
+          onPress={() => onQuantityUpdate(quantity - 1)}
+          style={styles.box}
+        >
+          <Text color={isQtyMinusDisabled ? 'disabled' : 'contentPrimary'}>
+            -
+          </Text>
+        </PressableOpacity>
 
-      <PressableOpacity
-        disabled={isPending}
-        onPress={() => onQuantityUpdate(quantity + 1)}
-        style={styles.box}
-      >
-        <Text color={isPending ? 'disabled' : 'contentPrimary'}>+</Text>
-      </PressableOpacity>
-    </Box>
-  );
-});
+        <Box
+          style={styles.box}
+          borderLeftWidth={1}
+          borderRightWidth={1}
+          borderColor="borderPrimary"
+        >
+          {isPending ? (
+            <ActivityIndicator size="small" />
+          ) : (
+            <Text>{quantity}</Text>
+          )}
+        </Box>
+
+        <PressableOpacity
+          disabled={isQtyPlusDisabled}
+          onPress={() => onQuantityUpdate(quantity + 1)}
+          style={styles.box}
+        >
+          <Text color={isQtyPlusDisabled ? 'disabled' : 'contentPrimary'}>
+            +
+          </Text>
+        </PressableOpacity>
+      </Box>
+    );
+  },
+);
 
 LineItemQuantity.displayName = 'LineItemQuantity';
 

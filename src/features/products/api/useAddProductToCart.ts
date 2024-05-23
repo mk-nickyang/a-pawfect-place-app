@@ -27,6 +27,11 @@ mutation {
     cart {
       id
     }
+    userErrors {
+      code
+      field
+      message
+    }
   }
 }
 `;
@@ -44,6 +49,11 @@ mutation {
   ) {
     cart {
       id
+    }
+    userErrors {
+      code
+      field
+      message
     }
   }
 }
@@ -84,7 +94,9 @@ export const useAddProductToCart = () => {
         // Update stored cartId
         setCartId(cartId);
         // Refetch cart query when cart is updated
-        queryClient.invalidateQueries({ queryKey: cartQuery(cartId).queryKey });
+        return queryClient.invalidateQueries({
+          queryKey: cartQuery(cartId).queryKey,
+        });
       }
     },
   });

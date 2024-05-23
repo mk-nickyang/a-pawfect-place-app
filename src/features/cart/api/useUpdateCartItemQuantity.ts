@@ -24,6 +24,11 @@ const updateCartItemQuantityGQLMutation = ({
       cart {
         id
       }
+      userErrors {
+        code
+        field
+        message
+      }
     }
   }
 `;
@@ -34,7 +39,7 @@ const updateCartItemQuantity = async (
   const res = await shopifyStorefrontQuery<{
     cartLinesUpdate?: CartLinesUpdatePayload;
   }>(updateCartItemQuantityGQLMutation(payload));
-  return res.data.cartLinesUpdate?.cart?.id;
+  return res.data.cartLinesUpdate;
 };
 
 export const useUpdateCartItemQuantity = (cartId: string) => {
@@ -48,7 +53,9 @@ export const useUpdateCartItemQuantity = (cartId: string) => {
       updateCartItemQuantity({ lineId, quantity, cartId }),
     onSuccess: () => {
       // Refetch cart query when cart is updated
-      queryClient.invalidateQueries({ queryKey: cartQuery(cartId).queryKey });
+      return queryClient.invalidateQueries({
+        queryKey: cartQuery(cartId).queryKey,
+      });
     },
   });
 };

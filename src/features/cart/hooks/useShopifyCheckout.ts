@@ -14,19 +14,6 @@ export const useShopifyCheckout = (cart: Cart | undefined) => {
   const queryClient = useQueryClient();
   const shopifyCheckout = useShopifyCheckoutSheet();
 
-  /**
-   * Preload checkout page for faster loading
-   * @see https://github.com/Shopify/checkout-sheet-kit-react-native?tab=readme-ov-file#preloading
-   */
-  useEffect(
-    function preloadCheckoutPage() {
-      if (cart?.checkoutUrl) {
-        shopifyCheckout.preload(cart.checkoutUrl);
-      }
-    },
-    [cart?.checkoutUrl, cart?.updatedAt, shopifyCheckout],
-  );
-
   useEffect(
     function addCheckoutCloseEventListener() {
       const subscription = shopifyCheckout.addEventListener('close', () => {

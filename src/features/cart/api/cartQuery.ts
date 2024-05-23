@@ -46,6 +46,7 @@ const getCartGQLQuery = (cartId: string) => `
                   id
                   title
                 }
+                quantityAvailable
                 image {
                   url
                 }

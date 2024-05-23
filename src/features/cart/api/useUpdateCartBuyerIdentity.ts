@@ -44,7 +44,9 @@ export const useUpdateCartBuyerIdentity = () => {
       updateCartBuyerIdentity(payload),
     onSuccess: (_data, { cartId }) => {
       // Refetch cart query when cart is updated
-      queryClient.invalidateQueries({ queryKey: cartQuery(cartId).queryKey });
+      return queryClient.invalidateQueries({
+        queryKey: cartQuery(cartId).queryKey,
+      });
     },
   });
 };
