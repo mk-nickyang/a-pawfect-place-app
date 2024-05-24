@@ -7,4 +7,8 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:@tanstack/eslint-plugin-query/recommended',
   ],
+  plugins: ['eslint-plugin-react-compiler'],
+  rules: {
+    'react-compiler/react-compiler': 'error',
+  },
 };
