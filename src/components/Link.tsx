@@ -12,6 +12,22 @@ type Props = {
   subject?: string;
 };
 
+const composeEmail = async (emailAddress: string, subject?: string) => {
+  try {
+    const isAvailable = await MailComposer.isAvailableAsync();
+    if (isAvailable) {
+      await MailComposer.composeAsync({
+        subject,
+        recipients: [emailAddress],
+      });
+    } else {
+      await Linking.openURL(`mailto:${emailAddress}`);
+    }
+  } catch {
+    // Do nothing
+  }
+};
+
 export const Link = ({ text, type, deeplinkUrl, subject }: Props) => {
   const onLinkPress = () => {
     switch (type) {
@@ -22,10 +38,7 @@ export const Link = ({ text, type, deeplinkUrl, subject }: Props) => {
         Linking.openURL(deeplinkUrl || text);
         break;
       case 'email':
-        MailComposer.composeAsync({
-          subject,
-          recipients: [text],
-        });
+        composeEmail(text, subject);
         break;
       default:
         break;
