@@ -3,9 +3,8 @@ import type {
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 import type { Product as ShopifyProduct } from '@shopify/hydrogen-react/storefront-api-types';
-import { shareAsync } from 'expo-sharing';
 import { useCallback, useEffect, useRef } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, Share, Platform } from 'react-native';
 
 import { useProduct } from '../api/useProduct';
 import { ProductDescription } from '../components/ProductDescription';
@@ -43,7 +42,13 @@ const ProductView = ({ product, navigation }: ProductViewProps) => {
           return productUrl ? (
             <PressableOpacity
               hitSlop={10}
-              onPress={() => shareAsync(productUrl)}
+              onPress={() =>
+                Share.share(
+                  Platform.OS === 'ios'
+                    ? { url: productUrl }
+                    : { message: productUrl },
+                )
+              }
             >
               <Icon
                 name="tray-arrow-up"
