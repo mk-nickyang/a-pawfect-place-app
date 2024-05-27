@@ -18,6 +18,7 @@ import { Icon } from '@/components/Icon';
 import { ImagesCarousel } from '@/components/ImagesCarousel';
 import { Loading } from '@/components/Loading';
 import { PressableOpacity } from '@/components/PressableOpacity';
+import { RenderAfterInteraction } from '@/components/RenderAfterInteraction';
 import { Text } from '@/components/Text';
 import type { RootStackParamList } from '@/navigation/types';
 import { useTheme } from '@/theme';
@@ -89,16 +90,20 @@ const ProductView = ({ product, navigation }: ProductViewProps) => {
 
         <ProductForm product={product} />
 
-        <Text variant="h2">Description</Text>
-        <ProductDescription descriptionHtml={product.descriptionHtml} />
+        {/* Description and Reviews components are kinda heavy to render */}
+        {/* Delay the mount so navigating to Product screen can be smooth */}
+        <RenderAfterInteraction>
+          <Text variant="h2">Description</Text>
+          <ProductDescription descriptionHtml={product.descriptionHtml} />
 
-        <ProductReviews
-          productId={product.id}
-          productReviewsRef={productReviewsRef}
-          scrollToReviews={scrollToReviews}
-        />
+          <ProductReviews
+            productId={product.id}
+            productReviewsRef={productReviewsRef}
+            scrollToReviews={scrollToReviews}
+          />
 
-        <ProductRecommendations productId={product.id} />
+          <ProductRecommendations productId={product.id} />
+        </RenderAfterInteraction>
       </Box>
     </ScrollView>
   );
